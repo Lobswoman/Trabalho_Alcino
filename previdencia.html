@@ -55,7 +55,8 @@ summary{cursor:pointer;font-weight:650}
 .plan-details{margin:0;padding:0;border:0;border-top:1px solid var(--line);border-radius:0}
 .plan-details summary{color:var(--accent);padding-block:.65rem .15rem}
 .plan-details[open] summary{margin-bottom:.75rem}
-.details-body{display:grid;gap:.85rem}
+.plan-details > .details-body{display:none}
+.plan-details[open] > .details-body{display:grid;gap:.85rem}
 .details-body p{margin:.25rem 0 0}
 footer{border-top:1px solid var(--line);background:#fff;padding:1.35rem 0;color:var(--muted)}
 @media(max-width:36rem){.hero-inner,.plans,.fields{grid-template-columns:1fr}.hero img{height:clamp(11rem,46vw,15rem)}}
