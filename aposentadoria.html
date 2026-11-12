@@ -1,0 +1,118 @@
+<!doctype html><html lang="pt-BR"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Simulador de aposentadoria | Renda em Frente</title><link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@500;600;700;800&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet"><style>
+:root{color-scheme:light;--paper:#faf8f1;--ink:#14362f;--muted:#40554e;--green:#0e4a3d;--line:#d8e1d6}
+*{box-sizing:border-box}
+body{margin:0;background:var(--paper);color:var(--ink);font:1.0625rem/1.55 "DM Sans",system-ui,sans-serif}
+a{color:inherit}
+:focus-visible{outline:3px solid #b34929;outline-offset:5px}
+.wrap{width:min(73rem,calc(100% - 2.5rem));margin-inline:auto}
+.skip{position:absolute;top:.5rem;left:.5rem;z-index:3;padding:.65rem;background:white;transform:translateY(-170%)}
+.skip:focus{transform:none}
+header{background:#fffdf8}
+.bar{display:flex;align-items:center;justify-content:space-between;gap:1rem;min-height:5rem}
+.brand{display:inline-flex;flex:none}
+.brand img{display:block;width:clamp(10.5rem,24vw,13.5rem);height:auto}
+nav{display:flex;flex-wrap:wrap;gap:.25rem 1.25rem}
+nav a{display:flex;align-items:center;min-height:2.75rem;text-decoration:none;font-weight:700}
+nav a:hover{text-decoration:underline;text-underline-offset:.25em}
+.hero{padding:clamp(2.5rem,7vw,6.25rem) 0 clamp(5rem,11vw,8rem);color:#fffdf5;background:#10483d linear-gradient(100deg,#0c3c32f5 8%,#10483de8 46%,#10483d50 100%);background-image:linear-gradient(100deg,#0c3c32f5 8%,#10483de8 46%,#10483d50 100%),url('images/hero.webp');background-size:cover;background-position:center 52%;border-end-start-radius:clamp(1.4rem,4vw,3.2rem);border-end-end-radius:clamp(1.4rem,4vw,3.2rem)}
+h1,h2,p{margin:0}
+h1,h2{font-family:"Bricolage Grotesque",Georgia,serif;line-height:1.02;letter-spacing:-.04em}
+h1{max-width:12ch;font-size:clamp(2.75rem,7.7vw,6.1rem);font-weight:800;text-wrap:balance}
+h1 span{color:#ffd17a}
+.intro p{max-width:38ch;margin-top:1rem;font-size:clamp(1.08rem,2vw,1.3rem);color:#fffdf5}
+.cards{position:relative;margin-top:clamp(-4.25rem,-7vw,-2.8rem);display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:clamp(.9rem,2.5vw,1.55rem)}
+.card{--tone:#136654;--tint:#e2f4e9;display:flex;flex-direction:column;min-width:0;background:white;border:1px solid var(--line);border-top:5px solid var(--tone);border-radius:1.35rem;overflow:hidden;text-decoration:none;box-shadow:0 10px 30px #203b321a;transition:box-shadow .18s,transform .18s}
+.card:hover{transform:translateY(-4px);box-shadow:0 16px 36px #203b3226}
+.card--business{--tone:#a64424;--tint:#ffe8d5}
+.card--stocks{--tone:#294c8f;--tint:#e6edff}
+.card img{display:block;width:100%;height:clamp(8rem,14vw,11.5rem);object-fit:cover;object-position:center 40%}
+.card--business img{object-position:center 15%}
+.card-copy{display:flex;flex:1;flex-direction:column;align-items:flex-start;gap:.65rem;padding:clamp(1rem,2.6vw,1.5rem)}
+.card h2{font-size:clamp(1.45rem,2.5vw,2rem);font-weight:750}
+.card p{color:var(--muted)}
+.card-highlights{display:grid;justify-items:start;gap:.35rem;margin-top:auto}
+.benefit{display:inline-block;padding:.35rem .7rem;border-radius:1rem;background:var(--tint);color:var(--tone);font-size:.95rem;font-weight:750}
+.card-action{color:var(--tone);font-weight:750;text-decoration:underline;text-underline-offset:.2em}
+main{padding-bottom:clamp(2rem,5vw,3.5rem)}
+footer{background:#e9efe7;padding-block:1.25rem;font-weight:650}
+@media(max-width:52rem){.bar{flex-wrap:wrap;gap:0;padding-block:.45rem}.cards{grid-template-columns:1fr;max-width:35rem}.card img{height:clamp(8rem,31vw,12rem)}.hero{background-image:linear-gradient(100deg,#0c3c32f5,#10483db0),url('images/hero.webp')}}
+@media(prefers-reduced-motion:reduce){.card{transition:none}.card:hover{transform:none}}
+
+.header-panel{display:none;margin-top:1.5rem;padding:clamp(1rem,3vw,1.5rem);background:#fff;border:1px solid var(--line);border-radius:1rem;scroll-margin-top:1rem}
+.header-panel:target{display:block}
+.header-panel h2{font-size:1.65rem}
+.header-panel p{margin-top:.6rem;color:var(--muted)}
+.header-panel form{display:grid;gap:.65rem;max-width:32rem;margin-top:1rem}
+.header-panel label{display:grid;gap:.25rem;font-weight:650}
+.header-panel input,.header-panel textarea,.header-panel select{width:100%;padding:.6rem;border:1px solid #71877d;border-radius:.5rem;font:inherit;background:#fff;color:var(--ink)}
+.header-panel button{justify-self:start;padding:.55rem .8rem;border:0;border-radius:.5rem;background:var(--green);color:#fff;font:inherit;cursor:pointer}
+
+.retirement{margin-top:clamp(2.5rem,6vw,5rem);padding:clamp(1.3rem,4vw,2.8rem);border:1px solid var(--line);border-radius:1.5rem;background:#fff;box-shadow:0 10px 30px #203b3210}
+.retirement h2{font-size:clamp(1.8rem,4vw,3rem);margin:.5rem 0 1rem}
+.retirement .eyebrow{color:#136654;font-weight:800;text-transform:uppercase;letter-spacing:.08em;font-size:.8rem}
+.retirement .lead{max-width:65ch;color:var(--muted);margin-bottom:1.4rem}
+.retirement-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:1rem}
+.retirement label{display:grid;gap:.35rem;font-weight:700;font-size:.94rem}
+.retirement input,.retirement select{width:100%;min-width:0;padding:.75rem;border:1px solid #9caea4;border-radius:.7rem;font:inherit;color:var(--ink);background:#fff}
+.retirement button{border:0;border-radius:.8rem;background:var(--green);color:white;font:700 1rem "DM Sans",sans-serif;padding:.85rem 1.3rem;margin-top:1.2rem;cursor:pointer}
+.retirement-output{margin-top:1.3rem;padding:1.2rem;border-radius:1rem;background:#edf5ef}
+.retirement-output[hidden]{display:none}
+.retirement-output h3{margin:0 0 .5rem;font-size:1.2rem}
+.retirement-output p+p{margin-top:.55rem}
+.retirement-note{font-size:.9rem;color:var(--muted);margin-top:1rem}
+@media(max-width:52rem){.retirement-grid{grid-template-columns:1fr}}
+
+.card--retirement{--tone:#73522b;--tint:#f7eddb}
+@media(min-width:52.01rem){.cards{grid-template-columns:repeat(4,minmax(0,1fr))}.card h2{font-size:clamp(1.25rem,2vw,1.75rem)}}
+</style></head><body><header><div class="bar wrap"><a href="index.html" style="font-weight:800;text-decoration:none">← Renda em Frente</a></div></header><main><section class="retirement wrap" id="simulador-aposentadoria" aria-labelledby="retirement-title">
+<p class="eyebrow">Planejamento para o futuro</p>
+<h2 id="retirement-title">Simulador de aposentadoria</h2>
+<p class="lead">Comece a planejar sua aposentadoria. Informe seu vínculo e sua trajetória profissional para estimar quanto precisaria acumular para complementar a renda desejada.</p>
+<form id="retirement-form">
+<div class="retirement-grid">
+<label>Vínculo previdenciário<select name="regime" required><option value="inss">INSS / iniciativa privada</option><option value="federal">Servidor público federal</option><option value="mg">Servidor público estadual de Minas Gerais</option></select></label>
+<label>Idade atual<input name="idade" type="number" min="18" max="100" value="40" required></label>
+<label>Idade desejada para se aposentar<input name="idadeAlvo" type="number" min="19" max="100" value="65" required></label>
+<label>Ano de ingresso no vínculo atual<input name="ingresso" type="number" min="1950" max="2026" value="2016" required></label>
+<label>Tempo total de contribuição (anos)<input name="tempo" type="number" min="0" max="70" step=".5" value="15" required></label>
+<label>Remuneração mensal bruta (R$)<input name="salario" type="number" min="0" step=".01" value="5000" required></label>
+<label>Renda mensal desejada na aposentadoria (R$)<input name="renda" type="number" min="1" step=".01" value="4000" required></label>
+<label>Benefício previdenciário estimado por fonte oficial (R$)<input name="beneficio" type="number" min="0" step=".01" placeholder="Opcional"></label>
+<label>Reserva já acumulada (R$)<input name="reserva" type="number" min="0" step=".01" value="0" required></label>
+</div>
+<button type="submit">Calcular planejamento</button>
+</form>
+<div class="retirement-output" id="retirement-result" role="status" aria-live="polite" hidden></div>
+<p class="retirement-note">Ferramenta educativa. O ingresso e o regime ajudam a contextualizar as regras, mas não permitem determinar, sozinhos, o direito ou o valor de aposentadoria. A simulação usa hipóteses financeiras, não substitui o Meu INSS nem o órgão gestor do regime próprio. Não armazenamos os dados preenchidos.</p>
+</section>
+</main><footer><div class="wrap">Renda em Frente</div></footer><script>const retirementForm=document.getElementById('retirement-form');
+retirementForm.addEventListener('submit',event=>{
+ event.preventDefault();
+ const d=new FormData(retirementForm);
+ const n=k=>Number(d.get(k));
+ const idade=n('idade'),alvo=n('idadeAlvo'),anos=alvo-idade;
+ const output=document.getElementById('retirement-result');
+ if(anos<=0){output.hidden=false;output.textContent='A idade desejada precisa ser maior que a idade atual para esta projeção de acumulação.';return;}
+ const beneficioRaw=d.get('beneficio').trim();
+ const beneficio=beneficioRaw===''?null:n('beneficio');
+ const renda=n('renda'),reserva=n('reserva');
+ const lacuna=beneficio===null?null:Math.max(0,renda-beneficio);
+ const juros=0.03/12,meses=Math.round(anos*12);
+ const fator=((1+juros)**meses-1)/juros;
+ const capitalInicial=reserva*(1+juros)**meses;
+ const capitalAlvo=lacuna===null?null:lacuna*12/0.04;
+ const aporte=capitalAlvo===null?null:Math.max(0,(capitalAlvo-capitalInicial)/fator);
+ const fmt=v=>v.toLocaleString('pt-BR',{style:'currency',currency:'BRL',maximumFractionDigits:2});
+ const regimes={inss:'INSS',federal:'servidor federal',mg:'servidor estadual de Minas Gerais'};
+ const p=document.createElement('p');p.textContent='Vínculo informado: '+regimes[d.get('regime')]+'. Ingresso: '+n('ingresso')+'. Tempo informado: '+n('tempo')+' anos. Esses dados precisam ser avaliados conforme as regras legais e eventuais transições.';
+ const title=document.createElement('h3');title.textContent='Seu planejamento complementar';
+ output.replaceChildren(title,p);
+ const add=t=>{const el=document.createElement('p');el.textContent=t;output.append(el)};
+ if(beneficio===null){add('Para calcular a diferença entre sua renda desejada e o benefício público, informe uma estimativa obtida no Meu INSS ou no órgão previdenciário responsável. O salário atual, sozinho, não permite calcular esse benefício.');}
+ else{add('Diferença mensal a complementar: '+fmt(lacuna)+'.');add('Patrimônio-alvo ilustrativo: '+fmt(capitalAlvo)+'.');add('Aporte mensal ilustrativo durante '+anos+' anos: '+fmt(aporte)+'.');}
+ add('Hipóteses: retorno real constante de 3% ao ano (aproximado por 0,25% ao mês), retirada inicial de 4% do patrimônio por ano e valores em poder de compra de hoje. Não há garantia de retorno ou de sustentabilidade da retirada; taxas, impostos e riscos não estão modelados.');
+ add('A idade escolhida é apenas uma meta de planejamento e não representa confirmação de elegibilidade previdenciária.');
+ output.hidden=false;
+});
+
+</script></body></html>
