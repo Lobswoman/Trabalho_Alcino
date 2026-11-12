@@ -24,7 +24,7 @@ h3{font-size:1.15rem;line-height:1.3}
 .muted{color:var(--muted)}
 .panel,.plan{background:#fff;border:1px solid var(--line);border-radius:1rem}
 .panel{padding:clamp(1rem,3vw,1.8rem);margin-block:1.5rem 2rem}
-.fields{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:1rem;align-items:end;margin-top:1.2rem}
+.fields{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:1rem;align-items:end;margin-top:1.2rem}
 label{display:block;font-weight:650}
 input,select{display:block;width:100%;height:3.15rem;margin-top:.35rem;padding:.55rem .65rem;border:1px solid #718f9f;border-radius:.5rem;background:#fff;color:var(--ink);font:inherit}
 :focus-visible{outline:3px solid var(--accent);outline-offset:3px}
@@ -42,86 +42,71 @@ details{margin-block:1.2rem 1.8rem;padding:1rem;border:1px solid var(--line);bor
 details p{margin-top:.6rem}
 summary{cursor:pointer;font-weight:650}
 footer{border-top:1px solid var(--line);padding:1.1rem 0}
-@media(max-width:58rem){.fields,.plans{grid-template-columns:repeat(2,minmax(0,1fr))}}
-@media(max-width:36rem){.hero-inner,.plans{grid-template-columns:1fr}.hero img{height:10rem}}
-@media(max-width:25rem){.fields{grid-template-columns:1fr}}
+@media(max-width:58rem){.plans{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:36rem){.hero-inner,.plans,.fields{grid-template-columns:1fr}.hero img{height:10rem}}
 </style>
 </head>
 <body>
 <header><div class="wrap bar"><a class="brand" href="index.html">Renda em Frente</a><a href="index.html">Página inicial</a></div></header>
 <main>
 <div class="hero"><div class="wrap hero-inner">
-<div><h1>Previdência privada</h1><p>Veja quanto suas contribuições poderiam acumular ao longo dos anos.</p></div>
+<div><h1>Previdência privada</h1><p>Simule quanto guardar agora e quanto receber por mês no futuro.</p></div>
 <img src="images/previdencia.webp" alt="Pessoas idosas celebrando juntas">
 </div></div>
 <div class="wrap">
 <section class="panel" aria-labelledby="simulador">
-<div class="heading"><h2 id="simulador">Simule sua contribuição</h2><p class="muted">Comece pelo exemplo de R$ 200 por mês durante 10 anos.</p></div>
+<div class="heading"><h2 id="simulador">Simule sua contribuição</h2><p class="muted">Exemplo: contribua com R$ 200 por mês por 10 anos e receba a reserva ao longo de outros 10 anos.</p></div>
 <div class="fields" id="campos">
 <label for="aporte">Valor por mês (R$)<input id="aporte" type="number" inputmode="decimal" value="200" min="0.01" max="1000000" step="0.01" required></label>
-<label for="prazo">Por quantos anos?<input id="prazo" type="number" inputmode="numeric" value="10" min="1" max="100" required></label>
-<label for="idade">Sua idade (opcional)<input id="idade" type="number" inputmode="numeric" min="18" max="119" placeholder="Ex.: 55"></label>
-<label for="trabalho">Trabalho (opcional)<select id="trabalho">
-<option value="">Selecione</option><option value="clt">Carteira assinada</option><option value="autonomo">Autônomo ou MEI</option><option value="publico">Servidor público</option><option value="aposentado">Aposentado</option><option value="outro">Outra situação</option>
-</select></label>
+<label for="prazo">Anos contribuindo<input id="prazo" type="number" inputmode="numeric" value="10" min="1" max="100" required></label>
+<label for="recebimento">Anos recebendo<input id="recebimento" type="number" inputmode="numeric" value="10" min="1" max="100" required></label>
 </div>
-<div class="result" role="status" aria-atomic="true"><p id="resultado"></p><p id="dica" class="muted" hidden></p></div>
+<div class="result" role="status" aria-atomic="true"><p id="resultado"></p></div>
 <noscript><p>Ative o JavaScript para calcular os saldos.</p></noscript>
 </section>
 <section aria-labelledby="comparar">
-<div class="heading"><h2 id="comparar">Quanto cada plano acumularia?</h2><p class="muted">Planos e taxas fictícios. Os saldos são estimativas brutas.</p></div>
+<div class="heading"><h2 id="comparar">Quanto você poderia receber por mês?</h2><p class="muted">Planos fictícios. A renda mensal é estimada para o prazo escolhido.</p></div>
 <div class="plans">
-<article class="plan" data-minimo="100" data-taxa="3"><h3>Renda Primeiro Passo</h3><p>Aporte inicial menor. <span class="minimum">Mínimo mensal de R$ 100.</span></p><div class="projection"><p>Saldo estimado</p><p class="balance">—</p><p class="rate">Taxa simulada de 3% ao ano</p></div><p class="status" hidden></p></article>
-<article class="plan" data-minimo="150" data-taxa="4"><h3>Renda Mês Flexível</h3><p>Permite reforçar os aportes. <span class="minimum">Mínimo mensal de R$ 150.</span></p><div class="projection"><p>Saldo estimado</p><p class="balance">—</p><p class="rate">Taxa simulada de 4% ao ano</p></div><p class="status" hidden></p></article>
-<article class="plan" data-minimo="250" data-taxa="5"><h3>Renda Reserva de Família</h3><p>Permite indicar beneficiários. <span class="minimum">Mínimo mensal de R$ 250.</span></p><div class="projection"><p>Saldo estimado</p><p class="balance">—</p><p class="rate">Taxa simulada de 5% ao ano</p></div><p class="status" hidden></p></article>
-<article class="plan" data-minimo="400" data-taxa="6"><h3>Renda Prazo Escolhido</h3><p>Permite receber em parcelas. <span class="minimum">Mínimo mensal de R$ 400.</span></p><div class="projection"><p>Saldo estimado</p><p class="balance">—</p><p class="rate">Taxa simulada de 6% ao ano</p></div><p class="status" hidden></p></article>
-<article class="plan" data-minimo="600" data-taxa="7"><h3>Renda Horizonte Aberto</h3><p>Permite resgatar de uma vez. <span class="minimum">Mínimo mensal de R$ 600.</span></p><div class="projection"><p>Saldo estimado</p><p class="balance">—</p><p class="rate">Taxa simulada de 7% ao ano</p></div><p class="status" hidden></p></article>
+<article class="plan" data-minimo="100" data-taxa="3"><h3>Renda Primeiro Passo</h3><p>Aporte inicial menor. <span class="minimum">Mínimo mensal de R$ 100.</span></p><div class="projection"><p>Renda mensal estimada</p><p class="balance">—</p><p class="reserve rate"></p><p class="rate">Taxa simulada de 3% ao ano</p></div><p class="status" hidden></p></article>
+<article class="plan" data-minimo="150" data-taxa="4"><h3>Renda Mês Flexível</h3><p>Permite reforçar os aportes. <span class="minimum">Mínimo mensal de R$ 150.</span></p><div class="projection"><p>Renda mensal estimada</p><p class="balance">—</p><p class="reserve rate"></p><p class="rate">Taxa simulada de 4% ao ano</p></div><p class="status" hidden></p></article>
+<article class="plan" data-minimo="250" data-taxa="5"><h3>Renda Reserva de Família</h3><p>Permite indicar beneficiários. <span class="minimum">Mínimo mensal de R$ 250.</span></p><div class="projection"><p>Renda mensal estimada</p><p class="balance">—</p><p class="reserve rate"></p><p class="rate">Taxa simulada de 5% ao ano</p></div><p class="status" hidden></p></article>
+<article class="plan" data-minimo="400" data-taxa="6"><h3>Renda Prazo Escolhido</h3><p>Permite receber em parcelas. <span class="minimum">Mínimo mensal de R$ 400.</span></p><div class="projection"><p>Renda mensal estimada</p><p class="balance">—</p><p class="reserve rate"></p><p class="rate">Taxa simulada de 6% ao ano</p></div><p class="status" hidden></p></article>
+<article class="plan" data-minimo="600" data-taxa="7"><h3>Renda Horizonte Aberto</h3><p>Ilustra a opção de resgate único. <span class="minimum">Mínimo mensal de R$ 600.</span></p><div class="projection"><p>Renda mensal estimada</p><p class="balance">—</p><p class="reserve rate"></p><p class="rate">Taxa simulada de 7% ao ano</p></div><p class="status" hidden></p></article>
 </div>
 </section>
-<details><summary>Como os valores são calculados?</summary><p>A simulação usa aportes no fim de cada mês e juros compostos com uma taxa fictícia constante por plano. Os saldos incluem os aportes e os rendimentos simulados, sem descontar taxas, impostos ou inflação. Quando o aporte fica abaixo do mínimo de um plano, a projeção aparece apenas para comparação.</p><p>O mínimo de R$ 100 foi inspirado em um exemplo divulgado pelo <a href="https://www.bb.com.br/previdencia">Banco do Brasil</a>. Consulte o <a href="https://www.gov.br/susep/pt-br/assuntos/meu-futuro-seguro/seguros-previdencia-e-capitalizacao/providencia-complementar-aberta/pgbl-vgbl">guia da Susep</a> para conhecer os planos reais.</p></details>
+<details><summary>Como os valores são calculados?</summary><p>A simulação usa aportes no fim de cada mês e juros compostos com uma taxa fictícia constante por plano. Na fase de recebimento, dividimos o saldo pelo número de meses escolhido, sem aplicar rendimentos nessa fase. Os valores são brutos e não descontam taxas, impostos ou inflação. A renda é por prazo definido e termina ao fim desse período. Quando o aporte fica abaixo do mínimo de um plano, a projeção aparece apenas para comparação.</p><p>O mínimo de R$ 100 foi inspirado em um exemplo divulgado pelo <a href="https://www.bb.com.br/previdencia">Banco do Brasil</a>. Planos reais podem prever renda por prazo definido, renda vitalícia ou pagamento único. Consulte o <a href="https://www.gov.br/susep/pt-br/assuntos/meu-futuro-seguro/seguros-previdencia-e-capitalizacao/providencia-complementar-aberta/pgbl-vgbl">guia da Susep</a> para conhecer os planos reais.</p></details>
 </div>
 </main>
 <footer><div class="wrap">Renda em Frente · Educação financeira</div></footer>
 <script>
 const aporte = document.querySelector('#aporte');
 const prazo = document.querySelector('#prazo');
-const idade = document.querySelector('#idade');
-const trabalho = document.querySelector('#trabalho');
+const recebimento = document.querySelector('#recebimento');
 const resultado = document.querySelector('#resultado');
-const dica = document.querySelector('#dica');
 const planos = [...document.querySelectorAll('.plan')];
 const moeda = new Intl.NumberFormat('pt-BR', {style: 'currency', currency: 'BRL'});
-const dicas = {
-  clt: 'Confira se sua empresa oferece contribuição para previdência.',
-  autonomo: 'Se a renda varia, teste um valor que caiba também nos meses mais apertados.',
-  publico: 'Confira se seu órgão oferece previdência complementar.',
-  aposentado: 'Use o prazo para testar por quanto tempo quer fazer novas contribuições.',
-  outro: 'Experimente outros valores para comparar o total acumulado.'
-};
 
 function atualizar() {
   const aporteValido = aporte.validity.valid;
   const prazoValido = prazo.validity.valid;
   const mensal = aporte.valueAsNumber;
   const meses = prazo.valueAsNumber * 12;
-  const podeCalcular = aporteValido && prazoValido;
+  const mesesRecebendo = recebimento.valueAsNumber * 12;
+  const podeCalcular = aporteValido && prazoValido && recebimento.validity.valid;
   for (const plano of planos) {
     const taxaAnual = Number(plano.dataset.taxa) / 100;
     const taxaMensal = (1 + taxaAnual) ** (1 / 12) - 1;
     const minimo = Number(plano.dataset.minimo);
     const saldo = mensal * ((1 + taxaMensal) ** meses - 1) / taxaMensal;
     const status = plano.querySelector('.status');
-    plano.querySelector('.balance').textContent = podeCalcular ? moeda.format(saldo) : '—';
+    plano.querySelector('.balance').textContent = podeCalcular ? `${moeda.format(saldo / mesesRecebendo)}/mês` : '—';
+    plano.querySelector('.reserve').textContent = podeCalcular ? `Saldo acumulado: ${moeda.format(saldo)}` : '';
     status.hidden = !aporteValido || mensal >= minimo;
     status.textContent = 'Abaixo do aporte mínimo. Projeção ilustrativa.';
   }
-  const idadeFinal = idade.value && idade.validity.valid && prazoValido
-    ? ` · Idade ao final: ${idade.valueAsNumber + prazo.valueAsNumber} anos` : '';
   resultado.textContent = podeCalcular
-    ? `Total que você contribui: ${moeda.format(mensal * meses)} em ${meses} meses${idadeFinal}.`
-    : 'Informe um valor mensal válido e um prazo de 1 a 100 anos.';
-  dica.textContent = dicas[trabalho.value] ?? '';
-  dica.hidden = !dica.textContent;
+    ? `Você contribui ${moeda.format(mensal * meses)} ao todo e simula ${mesesRecebendo} pagamentos mensais.`
+    : 'Informe um valor mensal válido e prazos de 1 a 100 anos.';
 }
 
 document.querySelector('#campos').addEventListener('input', atualizar);
