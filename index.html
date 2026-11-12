@@ -56,6 +56,21 @@ footer{background:#e9efe7;padding-block:1.25rem;font-weight:650}
 .header-panel label{display:grid;gap:.25rem;font-weight:650}
 .header-panel input,.header-panel textarea,.header-panel select{width:100%;padding:.6rem;border:1px solid #71877d;border-radius:.5rem;font:inherit;background:#fff;color:var(--ink)}
 .header-panel button{justify-self:start;padding:.55rem .8rem;border:0;border-radius:.5rem;background:var(--green);color:#fff;font:inherit;cursor:pointer}
+
+.retirement{margin-top:clamp(2.5rem,6vw,5rem);padding:clamp(1.3rem,4vw,2.8rem);border:1px solid var(--line);border-radius:1.5rem;background:#fff;box-shadow:0 10px 30px #203b3210}
+.retirement h2{font-size:clamp(1.8rem,4vw,3rem);margin:.5rem 0 1rem}
+.retirement .eyebrow{color:#136654;font-weight:800;text-transform:uppercase;letter-spacing:.08em;font-size:.8rem}
+.retirement .lead{max-width:65ch;color:var(--muted);margin-bottom:1.4rem}
+.retirement-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:1rem}
+.retirement label{display:grid;gap:.35rem;font-weight:700;font-size:.94rem}
+.retirement input,.retirement select{width:100%;min-width:0;padding:.75rem;border:1px solid #9caea4;border-radius:.7rem;font:inherit;color:var(--ink);background:#fff}
+.retirement button{border:0;border-radius:.8rem;background:var(--green);color:white;font:700 1rem "DM Sans",sans-serif;padding:.85rem 1.3rem;margin-top:1.2rem;cursor:pointer}
+.retirement-output{margin-top:1.3rem;padding:1.2rem;border-radius:1rem;background:#edf5ef}
+.retirement-output[hidden]{display:none}
+.retirement-output h3{margin:0 0 .5rem;font-size:1.2rem}
+.retirement-output p+p{margin-top:.55rem}
+.retirement-note{font-size:.9rem;color:var(--muted);margin-top:1rem}
+@media(max-width:52rem){.retirement-grid{grid-template-columns:1fr}}
 </style>
 </head>
 <body id="inicio">
@@ -89,6 +104,28 @@ footer{background:#e9efe7;padding-block:1.25rem;font-weight:650}
 <div class="card-copy"><h2>Investir na bolsa</h2><p>Acompanhe o mercado e entenda como começar.</p><div class="card-highlights"><span class="benefit">Possibilidade de valorização e dividendos</span></div><span class="card-action">Acompanhar a bolsa</span></div>
 </a>
 </div>
+
+<section class="retirement wrap" id="simulador-aposentadoria" aria-labelledby="retirement-title">
+<p class="eyebrow">Planejamento para o futuro</p>
+<h2 id="retirement-title">Simulador de aposentadoria</h2>
+<p class="lead">Comece a planejar sua aposentadoria. Informe seu vínculo e sua trajetória profissional para estimar quanto precisaria acumular para complementar a renda desejada.</p>
+<form id="retirement-form">
+<div class="retirement-grid">
+<label>Vínculo previdenciário<select name="regime" required><option value="inss">INSS / iniciativa privada</option><option value="federal">Servidor público federal</option><option value="mg">Servidor público estadual de Minas Gerais</option></select></label>
+<label>Idade atual<input name="idade" type="number" min="18" max="100" value="40" required></label>
+<label>Idade desejada para se aposentar<input name="idadeAlvo" type="number" min="19" max="100" value="65" required></label>
+<label>Ano de ingresso no vínculo atual<input name="ingresso" type="number" min="1950" max="2026" value="2016" required></label>
+<label>Tempo total de contribuição (anos)<input name="tempo" type="number" min="0" max="70" step=".5" value="15" required></label>
+<label>Remuneração mensal bruta (R$)<input name="salario" type="number" min="0" step=".01" value="5000" required></label>
+<label>Renda mensal desejada na aposentadoria (R$)<input name="renda" type="number" min="1" step=".01" value="4000" required></label>
+<label>Benefício previdenciário estimado por fonte oficial (R$)<input name="beneficio" type="number" min="0" step=".01" placeholder="Opcional"></label>
+<label>Reserva já acumulada (R$)<input name="reserva" type="number" min="0" step=".01" value="0" required></label>
+</div>
+<button type="submit">Calcular planejamento</button>
+</form>
+<div class="retirement-output" id="retirement-result" role="status" aria-live="polite" hidden></div>
+<p class="retirement-note">Ferramenta educativa. O ingresso e o regime ajudam a contextualizar as regras, mas não permitem determinar, sozinhos, o direito ou o valor de aposentadoria. A simulação usa hipóteses financeiras, não substitui o Meu INSS nem o órgão gestor do regime próprio. Não armazenamos os dados preenchidos.</p>
+</section>
 <section class="header-panel wrap" id="acesso" aria-labelledby="titulo-acesso">
 <h2 id="titulo-acesso">Login / Registre-se</h2>
 <p>Área demonstrativa. O site ainda não possui contas de usuário.</p>
@@ -102,6 +139,37 @@ footer{background:#e9efe7;padding-block:1.25rem;font-weight:650}
 </main>
 <footer><div class="wrap">Renda em Frente</div></footer>
 <script>
+
+const retirementForm=document.getElementById('retirement-form');
+retirementForm.addEventListener('submit',event=>{
+ event.preventDefault();
+ const d=new FormData(retirementForm);
+ const n=k=>Number(d.get(k));
+ const idade=n('idade'),alvo=n('idadeAlvo'),anos=alvo-idade;
+ const output=document.getElementById('retirement-result');
+ if(anos<=0){output.hidden=false;output.textContent='A idade desejada precisa ser maior que a idade atual para esta projeção de acumulação.';return;}
+ const beneficioRaw=d.get('beneficio').trim();
+ const beneficio=beneficioRaw===''?null:n('beneficio');
+ const renda=n('renda'),reserva=n('reserva');
+ const lacuna=beneficio===null?null:Math.max(0,renda-beneficio);
+ const juros=0.03/12,meses=Math.round(anos*12);
+ const fator=((1+juros)**meses-1)/juros;
+ const capitalInicial=reserva*(1+juros)**meses;
+ const capitalAlvo=lacuna===null?null:lacuna*12/0.04;
+ const aporte=capitalAlvo===null?null:Math.max(0,(capitalAlvo-capitalInicial)/fator);
+ const fmt=v=>v.toLocaleString('pt-BR',{style:'currency',currency:'BRL',maximumFractionDigits:2});
+ const regimes={inss:'INSS',federal:'servidor federal',mg:'servidor estadual de Minas Gerais'};
+ const p=document.createElement('p');p.textContent='Vínculo informado: '+regimes[d.get('regime')]+'. Ingresso: '+n('ingresso')+'. Tempo informado: '+n('tempo')+' anos. Esses dados precisam ser avaliados conforme as regras legais e eventuais transições.';
+ const title=document.createElement('h3');title.textContent='Seu planejamento complementar';
+ output.replaceChildren(title,p);
+ const add=t=>{const el=document.createElement('p');el.textContent=t;output.append(el)};
+ if(beneficio===null){add('Para calcular a diferença entre sua renda desejada e o benefício público, informe uma estimativa obtida no Meu INSS ou no órgão previdenciário responsável. O salário atual, sozinho, não permite calcular esse benefício.');}
+ else{add('Diferença mensal a complementar: '+fmt(lacuna)+'.');add('Patrimônio-alvo ilustrativo: '+fmt(capitalAlvo)+'.');add('Aporte mensal ilustrativo durante '+anos+' anos: '+fmt(aporte)+'.');}
+ add('Hipóteses: retorno real constante de 3% ao ano (aproximado por 0,25% ao mês), retirada inicial de 4% do patrimônio por ano e valores em poder de compra de hoje. Não há garantia de retorno ou de sustentabilidade da retirada; taxas, impostos e riscos não estão modelados.');
+ add('A idade escolhida é apenas uma meta de planejamento e não representa confirmação de elegibilidade previdenciária.');
+ output.hidden=false;
+});
+
 for (const form of document.querySelectorAll('form[data-demo]')) {
   form.addEventListener('submit', event => {
     event.preventDefault();
