@@ -32,7 +32,9 @@ p+p,h2+p{margin-top:.55rem}
 .guides{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:1rem}
 .market-note{margin:.55rem 0 1rem;color:var(--muted)}
 a{color:var(--accent);text-underline-offset:.2em}
-.tradingview-widget-container{height:clamp(25rem,65vw,34rem)}
+.asset-picker{max-width:26rem;margin-bottom:1rem}
+.asset-picker select{width:100%;min-height:3.15rem;padding:.6rem .75rem;border:1px solid #718f9f;border-radius:.65rem;background:#fff;color:var(--ink);font:inherit}
+.tradingview-widget-container{height:clamp(33rem,70vh,47rem);min-width:0}
 .tradingview-widget-container__widget{height:calc(100% - 2rem)}
 .tradingview-widget-copyright{font-size:.88rem;padding-top:.3rem}
 .chart-help{margin-top:.85rem}
@@ -48,7 +50,7 @@ textarea{min-height:5.5rem;resize:vertical}
 button{justify-self:start;padding:.65rem .95rem;border:0;border-radius:.65rem;background:var(--accent);color:#fff;font:inherit;font-weight:700;cursor:pointer}
 #contact-status{margin-top:.7rem}
 footer{padding:1rem 0;border-top:1px solid var(--line)}
-@media(max-width:38rem){.guides{grid-template-columns:1fr}}
+@media(max-width:38rem){.guides{grid-template-columns:1fr}.market{padding-inline:.65rem}.tradingview-widget-container{height:34rem}}
 </style>
 </head>
 <body>
@@ -60,17 +62,23 @@ footer{padding:1rem 0;border-top:1px solid var(--line)}
 <section class="market panel" aria-labelledby="mercado">
 <h2 id="mercado">Como está a bolsa hoje?</h2>
 <p class="market-note"><strong>Cotações da B3 com 15 minutos de atraso.</strong> Durante o pregão, o painel é atualizado pelo TradingView. O horário exibido no gráfico se refere à cotação, no horário de Brasília.</p>
-<div class="tradingview-widget-container">
-<div class="tradingview-widget-container__widget"></div>
-<div class="tradingview-widget-copyright"><a href="https://br.tradingview.com/symbols/BMFBOVESPA-IBOV/">Ibovespa no TradingView</a></div>
-<script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-advanced-chart.js" async>
-{"autosize":true,"symbol":"BMFBOVESPA:IBOV","interval":"5","timezone":"America/Sao_Paulo","theme":"light","style":"2","locale":"br","allow_symbol_change":true,"hide_top_toolbar":false,"hide_side_toolbar":true,"hide_legend":false,"hotlist":true,"calendar":false,"support_host":"https://www.tradingview.com"}
-</script>
-</div>
+<label class="asset-picker" for="market-asset">Escolha o ativo no gráfico
+<select id="market-asset">
+<option value="IBOV">Ibovespa (IBOV)</option>
+<option value="PETR4">Petrobras (PETR4)</option>
+<option value="PETR3">Petrobras (PETR3)</option>
+<option value="VALE3">Vale (VALE3)</option>
+<option value="ITUB4">Itaú (ITUB4)</option>
+<option value="BBDC4">Bradesco (BBDC4)</option>
+<option value="BBAS3">Banco do Brasil (BBAS3)</option>
+<option value="WEGE3">WEG (WEGE3)</option>
+</select></label>
+<div id="market-chart"></div>
+<p><a id="market-source" href="https://br.tradingview.com/symbols/BMFBOVESPA-IBOV/">Ver Ibovespa (IBOV) no TradingView</a></p>
 <p><a href="https://www.b3.com.br/pt_br/market-data-e-indices/servicos-de-dados/market-data/cotacoes/">Consultar cotações e movimentações na B3</a></p>
 <details class="chart-help"><summary>Como ler o gráfico e comparar ações?</summary>
 <p>O Ibovespa acompanha uma carteira de ações da bolsa brasileira. O gráfico mostra como o índice mudou ao longo do tempo. A variação do índice pode ser diferente da variação de uma ação específica.</p>
-<p>No gráfico, procure pelo código de uma ação, como PETR4 ou VALE3, e use a ferramenta de comparação. Use o mesmo período para os dois papéis e observe a variação percentual.</p>
+<p>Use o seletor acima do gráfico para trocar de ativo. Para outros códigos e para comparar ações, use as ferramentas do gráfico. Use o mesmo período para os dois papéis e observe a variação percentual.</p>
 </details>
 </section>
 <div class="guides">
@@ -94,6 +102,52 @@ footer{padding:1rem 0;border-top:1px solid var(--line)}
 </main>
 <footer><div class="wrap">Renda em Frente · Educação financeira</div></footer>
 <script>
+const asset = document.querySelector('#market-asset');
+const chart = document.querySelector('#market-chart');
+const source = document.querySelector('#market-source');
+
+function showMarketChart() {
+  const code = asset.value;
+  const name = asset.selectedOptions[0].textContent;
+  const container = document.createElement('div');
+  container.className = 'tradingview-widget-container';
+  const widget = document.createElement('div');
+  widget.className = 'tradingview-widget-container__widget';
+  const copyright = document.createElement('div');
+  copyright.className = 'tradingview-widget-copyright';
+  const attribution = document.createElement('a');
+  attribution.href = 'https://br.tradingview.com/';
+  attribution.textContent = 'Dados e gráfico por TradingView';
+  copyright.append(attribution);
+  const script = document.createElement('script');
+  script.src = 'https://s3.tradingview.com/external-embedding/embed-widget-advanced-chart.js';
+  script.async = true;
+  script.textContent = JSON.stringify({
+    autosize: true,
+    symbol: `BMFBOVESPA:${code}`,
+    interval: '5',
+    timezone: 'America/Sao_Paulo',
+    theme: 'light',
+    style: '2',
+    locale: 'br',
+    allow_symbol_change: true,
+    hide_top_toolbar: false,
+    hide_side_toolbar: true,
+    hide_legend: false,
+    hotlist: !window.matchMedia('(max-width: 56rem)').matches,
+    calendar: false,
+    support_host: 'https://www.tradingview.com'
+  });
+  container.append(widget, copyright);
+  chart.replaceChildren(container);
+  container.append(script);
+  source.href = `https://br.tradingview.com/symbols/BMFBOVESPA-${code}/`;
+  source.textContent = `Ver ${name} no TradingView`;
+}
+
+asset.addEventListener('change', showMarketChart);
+showMarketChart();
+
 const form = document.querySelector('#expert-form');
 form.addEventListener('submit', event => {
   event.preventDefault();
