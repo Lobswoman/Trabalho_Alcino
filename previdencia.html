@@ -1,0 +1,138 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Previdência privada | Renda em Frente</title>
+<style>
+:root{color-scheme:light;--paper:#f7fbfc;--ink:#19364a;--muted:#385464;--line:#bed2dd;--accent:#195b70}
+*{box-sizing:border-box}
+body{margin:0;background:var(--paper);color:var(--ink);font:1.125rem/1.6 "Atkinson Hyperlegible","Segoe UI",system-ui,sans-serif}
+.wrap{width:min(70rem,92%);margin-inline:auto}
+header{background:white;border-bottom:1px solid var(--line)}
+.bar{display:flex;justify-content:space-between;align-items:center;gap:1rem;padding-block:1rem;flex-wrap:wrap}
+a{color:var(--accent);text-underline-offset:.2em}
+a:focus-visible,input:focus-visible,select:focus-visible{outline:3px solid var(--accent);outline-offset:3px}
+.brand{font-weight:750;font-size:1.25rem}
+.hero{background:#e7f3f7;padding-block:clamp(1.5rem,5vw,3rem)}
+h1,h2,h3,p{margin:0 0 .55em}
+h1{font-size:clamp(2rem,5vw,3.4rem);line-height:1.1}
+h2{font-size:clamp(1.5rem,3vw,2rem);line-height:1.2}
+h3{font-size:1.24rem;line-height:1.25}
+.hero p{max-width:62ch}
+.note{color:var(--muted)}
+.panel,.plan{background:#fff;border:1px solid var(--line);border-radius:1rem;padding:clamp(1rem,3vw,1.6rem)}
+section{margin-block:1.6rem}
+.fields,.plans{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,15rem),1fr));gap:1rem}
+label{display:block;font-weight:650}
+input,select{display:block;width:100%;margin-top:.3rem;padding:.6rem .7rem;min-height:3rem;border:1px solid #718f9f;border-radius:.5rem;background:white;color:var(--ink);font:inherit}
+.result{margin:1rem 0 0;padding:1rem;background:#eef7fa;border-radius:.7rem}
+.result p:last-child,.plan p:last-child{margin-bottom:0}
+.price{font-weight:750;color:var(--accent)}
+.status{border-top:1px solid var(--line);padding-top:.65rem;font-size:1rem}
+footer{border-top:1px solid var(--line);padding:1.2rem 0}
+</style>
+</head>
+<body>
+<header><div class="wrap bar"><a class="brand" href="index.html">Renda em Frente</a><a href="index.html">Página inicial</a></div></header>
+<main>
+<div class="hero"><div class="wrap">
+<h1>Previdência privada</h1>
+<p>Faça contribuições ao longo do tempo para formar uma reserva que pode complementar sua renda na aposentadoria.</p>
+<p class="note"><strong>Simulação educativa.</strong> Os cinco planos, seus valores e condições são fictícios.</p>
+</div></div>
+<div class="wrap">
+<section class="panel" aria-labelledby="simulador">
+<h2 id="simulador">Simule sua contribuição</h2>
+<p>Edite o exemplo abaixo. Os resultados mudam conforme você preenche.</p>
+<div class="fields" id="campos">
+<label for="idade">Sua idade<input id="idade" type="number" value="40" min="18" max="119" required></label>
+<label for="meta">Idade até a qual pretende contribuir<input id="meta" type="number" value="65" min="19" max="120" required></label>
+<label for="trabalho">Situação de trabalho<select id="trabalho">
+<option value="">Selecione se quiser</option>
+<option value="clt">Trabalho com carteira assinada</option>
+<option value="autonomo">Autônomo ou MEI</option>
+<option value="publico">Servidor público</option>
+<option value="aposentado">Aposentado</option>
+<option value="outro">Outra situação</option>
+</select></label>
+<label for="aporte">Quanto pode contribuir por mês (R$)<input id="aporte" type="number" inputmode="decimal" value="200" min="0" max="1000000" step="0.01" required></label>
+</div>
+<div class="result" role="status" aria-atomic="true">
+<p id="resultado"></p>
+<p id="dica"></p>
+</div>
+<p class="note">O cálculo soma as contribuições mensais até a idade escolhida, sem rendimentos, taxas, impostos ou inflação. Os dados ficam nesta página.</p>
+<noscript><p>Ative o JavaScript para usar o simulador.</p></noscript>
+</section>
+<section aria-labelledby="comparar">
+<h2 id="comparar">Compare cinco planos fictícios</h2>
+<p>O valor mensal é a contribuição mínima de cada exemplo. Confira quais cabem no orçamento informado.</p>
+<div class="plans">
+<article class="plan" data-minimo="100"><h3>Renda Primeiro Passo</h3><p class="price">A partir de R$ 100 por mês</p><p>Comece com um valor menor e experimente o hábito de contribuir todo mês.</p><p class="status" hidden></p></article>
+<article class="plan" data-minimo="150"><h3>Renda Mês Flexível</h3><p class="price">A partir de R$ 150 por mês</p><p>Neste exemplo, você pode aumentar o aporte nos meses em que sobrar dinheiro.</p><p class="status" hidden></p></article>
+<article class="plan" data-minimo="250"><h3>Renda Reserva de Família</h3><p class="price">A partir de R$ 250 por mês</p><p>Ilustra como a indicação de beneficiários pode fazer parte do planejamento familiar.</p><p class="status" hidden></p></article>
+<article class="plan" data-minimo="400"><h3>Renda Prazo Escolhido</h3><p class="price">A partir de R$ 400 por mês</p><p>Ilustra o recebimento da reserva em parcelas mensais por um período definido.</p><p class="status" hidden></p></article>
+<article class="plan" data-minimo="600"><h3>Renda Horizonte Aberto</h3><p class="price">A partir de R$ 600 por mês</p><p>Ilustra a possibilidade de retirar a reserva de uma só vez, conforme as regras do plano.</p><p class="status" hidden></p></article>
+</div>
+</section>
+<section aria-labelledby="referencias">
+<h2 id="referencias">O que comparar em um plano real</h2>
+<p>Confira as taxas, o prazo para resgate e as regras de recebimento. PGBL e VGBL têm regras diferentes de Imposto de Renda. Consulte o <a href="https://www.gov.br/susep/pt-br/assuntos/meu-futuro-seguro/seguros-previdencia-e-capitalizacao/providencia-complementar-aberta/pgbl-vgbl">guia da Susep</a>.</p>
+<p class="note">Os valores foram escolhidos para o exercício. A <a href="https://www.bb.com.br/previdencia">Brasilprev no Banco do Brasil</a> divulga exemplos de contribuição a partir de R$ 100 por mês, e o <a href="https://www.gov.br/previdencia/pt-br/assuntos/previdencia-complementar/mais-informacoes/perguntas-frequentes-de-previdencia-complementar">Ministério da Previdência Social</a> explica que o mínimo varia conforme a entidade.</p>
+</section>
+</div>
+</main>
+<footer><div class="wrap">Renda em Frente · Educação financeira</div></footer>
+<script>
+const idade = document.querySelector('#idade');
+const meta = document.querySelector('#meta');
+const trabalho = document.querySelector('#trabalho');
+const aporte = document.querySelector('#aporte');
+const resultado = document.querySelector('#resultado');
+const dica = document.querySelector('#dica');
+const planos = [...document.querySelectorAll('.plan')];
+const moeda = new Intl.NumberFormat('pt-BR', {style: 'currency', currency: 'BRL'});
+const dicas = {
+  clt: 'Se sua empresa oferece um plano, confira se ela também contribui.',
+  autonomo: 'Se a renda varia, experimente um valor que caiba também em um mês mais apertado.',
+  publico: 'Confira se o seu órgão oferece um plano e quais são as condições.',
+  aposentado: 'Use a idade final para testar por quanto tempo você pretende fazer novas contribuições.',
+  outro: 'Experimente valores diferentes para ver como a contribuição muda o total acumulado.'
+};
+
+function atualizar() {
+  const anos = meta.valueAsNumber - idade.valueAsNumber;
+  const mensal = aporte.valueAsNumber;
+  const aporteValido = aporte.validity.valid;
+  const prazoValido = idade.validity.valid && meta.validity.valid && anos > 0;
+  let compativeis = 0;
+  for (const plano of planos) {
+    const status = plano.querySelector('.status');
+    const diferenca = Math.round((Number(plano.dataset.minimo) - mensal) * 100) / 100;
+    status.hidden = !aporteValido;
+    status.textContent = diferenca > 0
+      ? `${moeda.format(diferenca)} por mês acima do seu orçamento`
+      : 'Cabe no orçamento informado';
+    compativeis += Number(aporteValido && diferenca <= 0);
+  }
+
+  const comparacao = aporteValido ? ` Planos dentro do orçamento: ${compativeis} de ${planos.length}.` : '';
+  if (!prazoValido) {
+    resultado.textContent = 'Informe idades válidas. A idade final precisa ser maior que a idade atual.' + comparacao;
+  } else if (!aporteValido) {
+    resultado.textContent = 'Informe um aporte mensal válido em reais.';
+  } else {
+    const meses = anos * 12;
+    const total = moeda.format(mensal * meses);
+    resultado.textContent = `Em ${anos} ${anos === 1 ? 'ano' : 'anos'}, com ${meses} contribuições, você teria aportado ${total}.` + comparacao;
+  }
+  dica.textContent = dicas[trabalho.value] ?? '';
+  dica.hidden = !dica.textContent;
+}
+
+document.querySelector('#campos').addEventListener('input', atualizar);
+atualizar();
+</script>
+</body>
+</html>
