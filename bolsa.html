@@ -34,8 +34,10 @@ p+p,h2+p{margin-top:.55rem}
 a{color:var(--accent);text-underline-offset:.2em}
 .asset-picker{max-width:26rem;margin-bottom:1rem}
 .asset-picker select{width:100%;min-height:3.15rem;padding:.6rem .75rem;border:1px solid #718f9f;border-radius:.65rem;background:#fff;color:var(--ink);font:inherit}
-.tradingview-widget-container{height:clamp(44rem,90vh,60rem);min-width:0}
-.tradingview-widget-container__widget{height:calc(100% - 2rem)}
+#market-chart{--chart-height:clamp(44rem,90vh,60rem);min-width:0}
+#market-chart .tradingview-widget-container{width:100%;height:auto!important;min-width:0}
+#market-chart .tradingview-widget-container__widget{height:var(--chart-height)!important;min-height:var(--chart-height)}
+#market-chart iframe{display:block;width:100%!important;height:var(--chart-height)!important;max-height:none!important}
 .tradingview-widget-copyright{font-size:.88rem;padding-top:.3rem}
 .chart-help{margin-top:.85rem}
 summary{cursor:pointer;color:var(--accent);font-weight:700}
@@ -50,7 +52,7 @@ textarea{min-height:5.5rem;resize:vertical}
 button{justify-self:start;padding:.65rem .95rem;border:0;border-radius:.65rem;background:var(--accent);color:#fff;font:inherit;font-weight:700;cursor:pointer}
 #contact-status{margin-top:.7rem}
 footer{padding:1rem 0;border-top:1px solid var(--line)}
-@media(max-width:38rem){.guides{grid-template-columns:1fr}.market{padding-inline:.65rem}.tradingview-widget-container{height:43rem}}
+@media(max-width:38rem){.guides{grid-template-columns:1fr}.market{padding-inline:.65rem}#market-chart{--chart-height:43rem}}
 </style>
 </head>
 <body>
@@ -122,8 +124,12 @@ function showMarketChart() {
   const script = document.createElement('script');
   script.src = 'https://s3.tradingview.com/external-embedding/embed-widget-advanced-chart.js';
   script.async = true;
+  container.append(widget, copyright);
+  chart.replaceChildren(container);
   script.textContent = JSON.stringify({
-    autosize: true,
+    autosize: false,
+    width: '100%',
+    height: widget.clientHeight,
     symbol: `BMFBOVESPA:${code}`,
     interval: '5',
     timezone: 'America/Sao_Paulo',
@@ -138,8 +144,6 @@ function showMarketChart() {
     calendar: false,
     support_host: 'https://www.tradingview.com'
   });
-  container.append(widget, copyright);
-  chart.replaceChildren(container);
   container.append(script);
   source.href = `https://br.tradingview.com/symbols/BMFBOVESPA-${code}/`;
   source.textContent = `Ver ${name} no TradingView`;
