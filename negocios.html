@@ -1,0 +1,126 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Montar meu negócio | Renda em Frente</title>
+<style>
+:root{color-scheme:light;--paper:#f4f8f8;--ink:#19364a;--muted:#415965;--line:#cfdee2;--accent:#195b70}
+*{box-sizing:border-box}
+body{margin:0;background:var(--paper);color:var(--ink);font:1.0625rem/1.55 "Atkinson Hyperlegible","Segoe UI",system-ui,sans-serif}
+.wrap{width:min(69rem,calc(100% - 2rem));margin-inline:auto}
+header,footer{background:#fff}
+header{border-bottom:1px solid var(--line)}
+.bar{display:flex;justify-content:space-between;align-items:center;gap:.75rem;flex-wrap:wrap;min-height:4.7rem;padding-block:.6rem}
+.brand{display:inline-flex;align-items:center;gap:.65rem;color:#173f36;text-decoration:none;font-size:clamp(1.12rem,2.6vw,1.4rem);font-weight:800}
+.brand img{width:2.85rem;height:auto;flex:none}
+.home-link{color:var(--accent);text-decoration:none;border:1px solid var(--line);border-radius:100vmax;padding:.55rem .8rem;font-weight:650;font-size:.95rem}
+.home-link:hover{background:#eaf3f5}
+:focus-visible{outline:3px solid var(--accent);outline-offset:3px}
+.skip{position:absolute;top:.5rem;left:.5rem;background:#fff;padding:.6rem;transform:translateY(-160%);z-index:2}
+.skip:focus{transform:none}
+.hero{margin-block:clamp(1rem,3vw,2rem) clamp(2rem,5vw,3rem);display:grid;grid-template-columns:1fr 1fr;overflow:hidden;border-radius:1.35rem;background:linear-gradient(135deg,#e0efed,#f1f5e9);border:1px solid var(--line)}
+.hero-copy{align-self:center;padding:clamp(1.45rem,5vw,3.75rem)}
+.hero img{display:block;width:100%;height:100%;min-height:16rem;object-fit:cover;object-position:center}
+h1,h2,h3,p,dl,dd{margin:0}
+h1{font-size:clamp(2.25rem,5vw,4.2rem);line-height:1.04;letter-spacing:-.04em}
+h2{font-size:clamp(1.5rem,3vw,2rem);line-height:1.2}
+h3{font-size:1.26rem;line-height:1.3}
+.hero p,.section-heading p{margin-top:.55rem;color:var(--muted)}
+.section-heading{margin-bottom:1.25rem}
+.projects{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));align-items:start;gap:clamp(1.25rem,3vw,2rem)}
+.project{padding:clamp(1.15rem,3vw,1.65rem);display:grid;gap:.65rem;background:#fff;border:1px solid var(--line);border-radius:1.25rem;box-shadow:0 10px 32px #19364a0b}
+.place{color:var(--accent);font-weight:700;font-size:.95rem}
+details{margin-top:.35rem;border-top:1px solid var(--line)}
+summary{cursor:pointer;padding:.7rem 0 .15rem;color:var(--accent);font-weight:700}
+details>dl{display:none}
+details[open]>dl{display:block;padding-top:.6rem}
+dt{font-weight:700;margin-top:.7rem}
+dd{color:var(--muted)}
+footer{border-top:1px solid var(--line);margin-top:3rem;padding:1.35rem 0;color:var(--muted)}
+.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip-path:inset(50%);white-space:nowrap}
+@media(max-width:38rem){.hero,.projects{grid-template-columns:1fr}.hero img{min-height:0;height:clamp(11rem,48vw,16rem)}}
+</style>
+</head>
+<body>
+<a class="skip" href="#conteudo">Ir para o conteúdo</a>
+<header><div class="wrap bar"><a class="brand" href="index.html"><img src="data:image/png;base64,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" width="85" height="104" alt=""><span>Renda em Frente</span></a><a class="home-link" href="index.html">Página inicial</a></div></header>
+<main id="conteudo" class="wrap">
+<div class="hero">
+<div class="hero-copy"><h1>Montar meu negócio</h1><p>Conheça ideias de negócio e veja o que cada projeto procura em um sócio.</p></div>
+<img src="images/negocio.webp" alt="Pessoas planejando um pequeno negócio">
+</div>
+<section aria-labelledby="titulo-projetos">
+<div class="section-heading"><h2 id="titulo-projetos">Projetos que buscam sócios</h2><p>Ideias, pessoas e participações fictícias para fins didáticos.</p></div>
+<div class="projects">
+<article class="project">
+<p class="place">Montes Claros · MG</p>
+<h3>Carlos quer abrir uma padaria de bairro</h3>
+<p>Pães frescos e café da manhã para moradores do bairro.</p>
+<details>
+<summary>Ver detalhes<span class="sr-only"> do projeto de Carlos</span></summary>
+<dl>
+<dt>O que Carlos já tem</dt><dd>Receitas testadas, um forno e experiência com produção de pães.</dd>
+<dt>O que Carlos precisa</dt><dd>Um sócio para ajudar com a reforma do ponto e cuidar do atendimento.</dd>
+<dt>Participação proposta para sócios</dt><dd><strong>25% do negócio</strong></dd>
+</dl>
+</details>
+</article>
+<article class="project">
+<p class="place">Bocaiuva · MG</p>
+<h3>Renata quer montar uma locadora de ferramentas</h3>
+<p>Aluguel de ferramentas para reformas e pequenos serviços.</p>
+<details>
+<summary>Ver detalhes<span class="sr-only"> do projeto de Renata</span></summary>
+<dl>
+<dt>O que Renata já tem</dt><dd>Uma garagem para guardar os equipamentos e um conjunto inicial de ferramentas.</dd>
+<dt>O que Renata precisa</dt><dd>Um sócio para ampliar o estoque e organizar as entregas e devoluções.</dd>
+<dt>Participação proposta para sócios</dt><dd><strong>30% do negócio</strong></dd>
+</dl>
+</details>
+</article>
+<article class="project">
+<p class="place">Janaúba · MG</p>
+<h3>Mariana quer abrir uma loja de marmitas</h3>
+<p>Marmitas caseiras para quem precisa almoçar perto do trabalho.</p>
+<details>
+<summary>Ver detalhes<span class="sr-only"> do projeto de Mariana</span></summary>
+<dl>
+<dt>O que Mariana já tem</dt><dd>Cardápio testado, fornecedores mapeados e experiência em cozinha.</dd>
+<dt>O que Mariana precisa</dt><dd>Um sócio para ajudar a equipar a cozinha e organizar pedidos e entregas.</dd>
+<dt>Participação proposta para sócios</dt><dd><strong>20% do negócio</strong></dd>
+</dl>
+</details>
+</article>
+<article class="project">
+<p class="place">Montes Claros · MG</p>
+<h3>Diego quer criar um ateliê de impressão 3D</h3>
+<p>Peças personalizadas e protótipos para comércios locais.</p>
+<details>
+<summary>Ver detalhes<span class="sr-only"> do projeto de Diego</span></summary>
+<dl>
+<dt>O que Diego já tem</dt><dd>Uma impressora, modelos próprios e um portfólio de peças.</dd>
+<dt>O que Diego precisa</dt><dd>Um sócio para prospectar clientes e ajudar a comprar uma segunda máquina.</dd>
+<dt>Participação proposta para sócios</dt><dd><strong>25% do negócio</strong></dd>
+</dl>
+</details>
+</article>
+<article class="project">
+<p class="place">Pirapora · MG</p>
+<h3>Lúcia quer montar um viveiro de mudas</h3>
+<p>Mudas de hortaliças e temperos para quintais e pequenos produtores.</p>
+<details>
+<summary>Ver detalhes<span class="sr-only"> do projeto de Lúcia</span></summary>
+<dl>
+<dt>O que Lúcia já tem</dt><dd>Um terreno, experiência com cultivo e contatos em feiras locais.</dd>
+<dt>O que Lúcia precisa</dt><dd>Um sócio para montar a irrigação e organizar as vendas.</dd>
+<dt>Participação proposta para sócios</dt><dd><strong>35% do negócio</strong></dd>
+</dl>
+</details>
+</article>
+</div>
+</section>
+</main>
+<footer><div class="wrap">Renda em Frente · Educação financeira</div></footer>
+</body>
+</html>
