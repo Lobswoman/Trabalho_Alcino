@@ -41,8 +41,8 @@ h1 span{color:#ffd17a}
 .card h2{font-size:clamp(1.45rem,2.5vw,2rem);font-weight:750}
 .card p{color:var(--muted)}
 .card-highlights{display:grid;justify-items:start;gap:.35rem;margin-top:auto}
-.benefit{color:var(--tone);font-size:.95rem;font-weight:750}
-.risk{display:inline-block;padding:.35rem .7rem;border-radius:1rem;background:var(--tint);color:var(--tone);font-size:.9rem;font-weight:750}
+.benefit{display:inline-block;padding:.35rem .7rem;border-radius:1rem;background:var(--tint);color:var(--tone);font-size:.95rem;font-weight:750}
+.consideration{font-size:.93rem;color:var(--muted)}
 .card-action{color:var(--tone);font-weight:750;text-decoration:underline;text-underline-offset:.2em}
 .risk-guide{margin-block:1.45rem 2.5rem;padding:.8rem 0;border-bottom:1px solid var(--line)}
 summary{cursor:pointer;font-weight:700;padding:.4rem 0}
@@ -75,19 +75,19 @@ footer{background:#e9efe7;padding-block:1.25rem;font-weight:650}
 <div class="cards wrap" aria-label="Áreas do site">
 <a class="card" href="previdencia.html">
 <img src="images/previdencia.webp" alt="" width="640" height="255">
-<div class="card-copy"><h2>Previdência privada</h2><p>Compare planos e simule uma renda para o futuro.</p><div class="card-highlights"><span class="benefit">Renda extra na aposentadoria</span><span class="risk">O saldo pode cair conforme o fundo</span></div><span class="card-action">Simular contribuição</span></div>
+<div class="card-copy"><h2>Previdência privada</h2><p>Compare planos e simule uma renda para o futuro.</p><div class="card-highlights"><span class="benefit">Renda extra na aposentadoria</span><span class="consideration">O saldo pode cair se o fundo tiver perdas.</span></div><span class="card-action">Simular contribuição</span></div>
 </a>
 <a class="card card--business" href="negocios.html">
 <img src="images/negocio.webp" alt="" width="640" height="255">
-<div class="card-copy"><h2>Montar meu negócio</h2><p>Conheça projetos que buscam sócios e veja como colaborar.</p><div class="card-highlights"><span class="benefit">Possibilidade de lucro e crescimento</span><span class="risk">As vendas podem ficar abaixo do esperado</span></div><span class="card-action">Ver projetos</span></div>
+<div class="card-copy"><h2>Montar meu negócio</h2><p>Conheça projetos que buscam sócios e veja como colaborar.</p><div class="card-highlights"><span class="benefit">Possibilidade de lucro e crescimento</span><span class="consideration">As vendas podem ficar abaixo do esperado.</span></div><span class="card-action">Ver projetos</span></div>
 </a>
 <a class="card card--stocks" href="bolsa.html">
 <img src="images/bolsa.webp" alt="" width="640" height="255">
-<div class="card-copy"><h2>Investir na bolsa</h2><p>Acompanhe o mercado e entenda como começar.</p><div class="card-highlights"><span class="benefit">Possibilidade de valorização e dividendos</span><span class="risk">As ações podem perder valor</span></div><span class="card-action">Acompanhar a bolsa</span></div>
+<div class="card-copy"><h2>Investir na bolsa</h2><p>Acompanhe o mercado e entenda como começar.</p><div class="card-highlights"><span class="benefit">Possibilidade de valorização e dividendos</span><span class="consideration">As ações podem perder valor.</span></div><span class="card-action">Acompanhar a bolsa</span></div>
 </a>
 </div>
 <details class="risk-guide wrap">
-<summary>O que muda no risco de cada opção?</summary>
+<summary>O que considerar antes de escolher?</summary>
 <ul>
 <li><strong>Previdência privada:</strong> planos como PGBL e VGBL acompanham o desempenho dos fundos. Se o fundo tiver perdas, o saldo pode cair, e o rendimento pode ficar abaixo do esperado. <a href="https://www.gov.br/susep/pt-br/assuntos/meu-futuro-seguro/seguros-previdencia-e-capitalizacao/providencia-complementar-aberta/duvidas-frequentes">Entenda com a Susep</a>.</li>
 <li><strong>Negócio próprio:</strong> vendas menores ou custos maiores que o esperado podem comprometer o caixa e o dinheiro investido.</li>
