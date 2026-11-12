@@ -80,6 +80,11 @@ details[open] .revenue dl{display:grid;grid-template-columns:repeat(auto-fit,min
 @media(max-width:27rem){.filter-fields{grid-template-columns:1fr}}
 .risk-note{margin:1rem 0 1.25rem;padding:.7rem .9rem;border-inline-start:3px solid var(--line);border-radius:0 .45rem .45rem 0;background:#eef4f4;color:var(--muted);font-size:.94rem}
 .risk-note strong{color:var(--ink);margin-inline-end:.3rem}
+#publish-project{margin-bottom:1rem}
+#publish-form{display:grid;gap:.75rem;margin-top:1rem}
+#publish-form label{display:grid;gap:.25rem;font-weight:650}
+#publish-form input,#publish-form select,#publish-form textarea{width:100%;padding:.55rem .65rem;border:1px solid #718f9f;border-radius:.55rem;font:inherit;background:#fff;color:var(--ink)}
+#publish-status:not(:empty){margin-bottom:1rem}
 </style>
 </head>
 <body>
@@ -102,6 +107,8 @@ details[open] .revenue dl{display:grid;grid-template-columns:repeat(auto-fit,min
 </div>
 <p id="filter-count" role="status">5 projetos encontrados.</p>
 </form>
+<button id="publish-project" class="contact" type="button" aria-haspopup="dialog">Publicar meu projeto</button>
+<p id="publish-status" role="status"></p>
 <p id="filter-empty" hidden>Nenhum projeto combina com esses filtros.</p>
 <div class="projects">
 <article class="project" data-city="montes-claros" data-stage="local" data-size="pequeno">
@@ -233,6 +240,22 @@ details[open] .revenue dl{display:grid;grid-template-columns:repeat(auto-fit,min
 </section>
 </main>
 <footer><div class="wrap">Renda em Frente · Educação financeira</div></footer>
+<dialog id="publish-dialog" aria-labelledby="publish-title">
+<div class="dialog-head"><h2 id="publish-title">Publicar meu projeto</h2><button type="button" class="close">Fechar</button></div>
+<p>Versão demonstrativa. O projeto fica disponível neste navegador.</p>
+<form id="publish-form" method="dialog">
+<label>Nome do projeto<input name="title" required maxlength="100"></label>
+<label>Cidade<input name="city" required maxlength="80"></label>
+<label>Etapa<select name="stage" required><option value="inicio">Em estruturação</option><option value="local">Local definido</option></select></label>
+<label>Porte previsto<select name="size" required><option value="pequeno">Pequeno porte</option><option value="medio">Médio porte</option><option value="grande">Grande porte</option></select></label>
+<label>Resumo e o que você procura em um sócio<textarea name="description" rows="4" required maxlength="1000"></textarea></label>
+<button type="submit" class="send">Publicar neste navegador</button>
+<p id="publish-error" role="status"></p>
+</form>
+</dialog>
+<template id="local-project">
+<article class="project"><div class="project-meta"><p class="place"></p><span class="size-tag"></span></div><h3></h3><p></p><details><summary>Ver detalhes</summary><dl><dt>Etapa do negócio</dt><dd></dd></dl></details></article>
+</template>
 <dialog id="contact-dialog" aria-labelledby="contact-title">
 <div class="dialog-head"><h2 id="contact-title">Entrar em contato</h2><button type="button" class="close">Fechar</button></div>
 <p id="contact-project"></p>
@@ -270,14 +293,76 @@ function filterProjects() {
 filters.addEventListener('change', filterProjects);
 filters.addEventListener('reset', () => queueMicrotask(filterProjects));
 filters.addEventListener('submit', event => event.preventDefault());
+const publishDialog = document.querySelector('#publish-dialog');
+const publishForm = document.querySelector('#publish-form');
+const publishError = document.querySelector('#publish-error');
+const publishStatus = document.querySelector('#publish-status');
+const storageKey = 'renda-em-frente-projetos';
+let localProjects = [];
+try {
+  const saved = JSON.parse(localStorage.getItem(storageKey) || '[]');
+  if (Array.isArray(saved)) localProjects = saved;
+} catch {
+  // The page still works when storage is unavailable.
+}
+function addLocalProject(entry) {
+  const card = document.querySelector('#local-project').content.firstElementChild.cloneNode(true);
+  const cityKey = entry.city.normalize('NFD').replace(/\p{Diacritic}/gu, '').toLowerCase().replace(/\s+/g, '-');
+  Object.assign(card.dataset, {city: cityKey, stage: entry.stage, size: entry.size});
+  card.querySelector('.place').textContent = entry.city;
+  card.querySelector('.size-tag').textContent = entry.sizeLabel;
+  card.querySelector('h3').textContent = entry.title;
+  card.querySelector('h3 + p').textContent = entry.description;
+  card.querySelector('dd').textContent = entry.stageLabel;
+  if (![...city.options].some(option => option.value === cityKey)) {
+    city.add(new Option(entry.city, cityKey));
+  }
+  document.querySelector('.projects').prepend(card);
+  cards.push(card);
+}
+for (const entry of localProjects) {
+  if (entry && typeof entry.city === 'string') addLocalProject(entry);
+}
 filterProjects();
+
+document.querySelector('#publish-project').addEventListener('click', () => publishDialog.showModal());
+publishDialog.querySelector('.close').addEventListener('click', () => publishDialog.close());
+publishDialog.addEventListener('close', () => {
+  publishForm.reset();
+  publishError.textContent = '';
+});
+publishForm.addEventListener('submit', event => {
+  event.preventDefault();
+  const fields = publishForm.elements;
+  const entry = {
+    title: fields.title.value.trim(), city: fields.city.value.trim(),
+    description: fields.description.value.trim(), stage: fields.stage.value,
+    size: fields.size.value, stageLabel: fields.stage.selectedOptions[0].textContent,
+    sizeLabel: fields.size.selectedOptions[0].textContent
+  };
+  if (!entry.title || !entry.city || !entry.description) {
+    publishError.textContent = 'Preencha o nome, a cidade e o resumo do projeto.';
+    return;
+  }
+  localProjects.push(entry);
+  let message = 'Seu projeto foi adicionado à lista neste navegador.';
+  try {
+    localStorage.setItem(storageKey, JSON.stringify(localProjects));
+  } catch {
+    message = 'Seu projeto foi adicionado à lista e ficará disponível até recarregar a página.';
+  }
+  addLocalProject(entry);
+  filters.reset();
+  publishDialog.close();
+  publishStatus.textContent = message;
+});
 
 const dialog = document.querySelector('#contact-dialog');
 const form = document.querySelector('#contact-form');
 const project = document.querySelector('#contact-project');
 const result = document.querySelector('#form-result');
 
-for (const button of document.querySelectorAll('.contact')) {
+for (const button of document.querySelectorAll('.project .contact')) {
   button.addEventListener('click', () => {
     project.textContent = button.closest('.project').querySelector('h3').textContent;
     dialog.showModal();
