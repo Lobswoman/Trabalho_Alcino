@@ -5,128 +5,121 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Previdência privada | Renda em Frente</title>
 <style>
-:root{color-scheme:light;--paper:#f7fbfc;--ink:#19364a;--muted:#385464;--line:#bed2dd;--accent:#195b70}
+:root{color-scheme:light;--paper:#f5f9fa;--ink:#19364a;--muted:#415965;--line:#c7d9df;--accent:#195b70}
 *{box-sizing:border-box}
-body{margin:0;background:var(--paper);color:var(--ink);font:1.125rem/1.6 "Atkinson Hyperlegible","Segoe UI",system-ui,sans-serif}
-.wrap{width:min(70rem,92%);margin-inline:auto}
-header{background:white;border-bottom:1px solid var(--line)}
-.bar{display:flex;justify-content:space-between;align-items:center;gap:1rem;padding-block:1rem;flex-wrap:wrap}
+body{margin:0;background:var(--paper);color:var(--ink);font:1.0625rem/1.55 "Atkinson Hyperlegible","Segoe UI",system-ui,sans-serif}
+.wrap{width:min(69rem,calc(100% - 2rem));margin-inline:auto}
+header{background:#fff;border-bottom:1px solid var(--line)}
+.bar{display:flex;align-items:center;justify-content:space-between;gap:1rem;flex-wrap:wrap;padding-block:.9rem}
 a{color:var(--accent);text-underline-offset:.2em}
-a:focus-visible,input:focus-visible,select:focus-visible{outline:3px solid var(--accent);outline-offset:3px}
-.brand{font-weight:750;font-size:1.25rem}
-.hero{background:#e7f3f7;padding-block:clamp(1.5rem,5vw,3rem)}
-h1,h2,h3,p{margin:0 0 .55em}
-h1{font-size:clamp(2rem,5vw,3.4rem);line-height:1.1}
-h2{font-size:clamp(1.5rem,3vw,2rem);line-height:1.2}
-h3{font-size:1.24rem;line-height:1.25}
-.hero p{max-width:62ch}
-.note{color:var(--muted)}
-.panel,.plan{background:#fff;border:1px solid var(--line);border-radius:1rem;padding:clamp(1rem,3vw,1.6rem)}
-section{margin-block:1.6rem}
-.fields,.plans{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,15rem),1fr));gap:1rem}
+.brand{font-size:1.22rem;font-weight:750;text-decoration:none}
+.hero{background:#e7f2f4;padding-block:clamp(1.5rem,4vw,3rem)}
+.hero-inner{display:grid;grid-template-columns:1.25fr 1fr;align-items:center;gap:clamp(1rem,4vw,3.5rem)}
+.hero img{display:block;width:100%;height:clamp(9rem,20vw,15rem);object-fit:cover;object-position:center 38%;border-radius:1rem}
+h1,h2,h3,p{margin:0}
+h1{font-size:clamp(2rem,5vw,3.35rem);line-height:1.1;letter-spacing:-.025em}
+h2{font-size:clamp(1.45rem,3vw,1.9rem);line-height:1.2}
+h3{font-size:1.15rem;line-height:1.3}
+.hero p,.heading p{margin-top:.45rem}
+.muted{color:var(--muted)}
+.panel,.plan{background:#fff;border:1px solid var(--line);border-radius:1rem}
+.panel{padding:clamp(1rem,3vw,1.8rem);margin-block:1.5rem 2rem}
+.fields{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:1rem;align-items:end;margin-top:1.2rem}
 label{display:block;font-weight:650}
-input,select{display:block;width:100%;margin-top:.3rem;padding:.6rem .7rem;min-height:3rem;border:1px solid #718f9f;border-radius:.5rem;background:white;color:var(--ink);font:inherit}
-.result{margin:1rem 0 0;padding:1rem;background:#eef7fa;border-radius:.7rem}
-.result p:last-child,.plan p:last-child{margin-bottom:0}
-.price{font-weight:750;color:var(--accent)}
-.status{border-top:1px solid var(--line);padding-top:.65rem;font-size:1rem}
-footer{border-top:1px solid var(--line);padding:1.2rem 0}
+input,select{display:block;width:100%;height:3.15rem;margin-top:.35rem;padding:.55rem .65rem;border:1px solid #718f9f;border-radius:.5rem;background:#fff;color:var(--ink);font:inherit}
+:focus-visible{outline:3px solid var(--accent);outline-offset:3px}
+.result{margin-top:1.2rem;padding:.85rem 1rem;background:#edf6f8;border-radius:.65rem}
+.result p+p{margin-top:.35rem}
+.heading{margin-bottom:1rem}
+.plans{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:1rem}
+.plan{padding:1.15rem;display:grid;grid-template-rows:auto 1fr auto auto;gap:.55rem}
+.minimum,.rate{font-size:.95rem;color:var(--muted)}
+.projection{background:#edf6f8;border-radius:.55rem;padding:.6rem .75rem}
+.projection p:first-child{font-size:.94rem}
+.balance{font-size:1.45rem;line-height:1.25;font-weight:750;color:var(--accent);overflow-wrap:anywhere}
+.status{font-size:.94rem;color:var(--muted)}
+details{margin-block:1.2rem 1.8rem;padding:1rem;border:1px solid var(--line);border-radius:.65rem;background:#fff}
+details p{margin-top:.6rem}
+summary{cursor:pointer;font-weight:650}
+footer{border-top:1px solid var(--line);padding:1.1rem 0}
+@media(max-width:58rem){.fields,.plans{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:36rem){.hero-inner,.plans{grid-template-columns:1fr}.hero img{height:10rem}}
+@media(max-width:25rem){.fields{grid-template-columns:1fr}}
 </style>
 </head>
 <body>
 <header><div class="wrap bar"><a class="brand" href="index.html">Renda em Frente</a><a href="index.html">Página inicial</a></div></header>
 <main>
-<div class="hero"><div class="wrap">
-<h1>Previdência privada</h1>
-<p>Faça contribuições ao longo do tempo para formar uma reserva que pode complementar sua renda na aposentadoria.</p>
-<p class="note"><strong>Simulação educativa.</strong> Os cinco planos, seus valores e condições são fictícios.</p>
+<div class="hero"><div class="wrap hero-inner">
+<div><h1>Previdência privada</h1><p>Veja quanto suas contribuições poderiam acumular ao longo dos anos.</p></div>
+<img src="images/previdencia.webp" alt="Pessoas idosas celebrando juntas">
 </div></div>
 <div class="wrap">
 <section class="panel" aria-labelledby="simulador">
-<h2 id="simulador">Simule sua contribuição</h2>
-<p>Edite o exemplo abaixo. Os resultados mudam conforme você preenche.</p>
+<div class="heading"><h2 id="simulador">Simule sua contribuição</h2><p class="muted">Comece pelo exemplo de R$ 200 por mês durante 10 anos.</p></div>
 <div class="fields" id="campos">
-<label for="idade">Sua idade<input id="idade" type="number" value="40" min="18" max="119" required></label>
-<label for="meta">Idade até a qual pretende contribuir<input id="meta" type="number" value="65" min="19" max="120" required></label>
-<label for="trabalho">Situação de trabalho<select id="trabalho">
-<option value="">Selecione se quiser</option>
-<option value="clt">Trabalho com carteira assinada</option>
-<option value="autonomo">Autônomo ou MEI</option>
-<option value="publico">Servidor público</option>
-<option value="aposentado">Aposentado</option>
-<option value="outro">Outra situação</option>
+<label for="aporte">Valor por mês (R$)<input id="aporte" type="number" inputmode="decimal" value="200" min="0.01" max="1000000" step="0.01" required></label>
+<label for="prazo">Por quantos anos?<input id="prazo" type="number" inputmode="numeric" value="10" min="1" max="100" required></label>
+<label for="idade">Sua idade (opcional)<input id="idade" type="number" inputmode="numeric" min="18" max="119" placeholder="Ex.: 55"></label>
+<label for="trabalho">Trabalho (opcional)<select id="trabalho">
+<option value="">Selecione</option><option value="clt">Carteira assinada</option><option value="autonomo">Autônomo ou MEI</option><option value="publico">Servidor público</option><option value="aposentado">Aposentado</option><option value="outro">Outra situação</option>
 </select></label>
-<label for="aporte">Quanto pode contribuir por mês (R$)<input id="aporte" type="number" inputmode="decimal" value="200" min="0" max="1000000" step="0.01" required></label>
 </div>
-<div class="result" role="status" aria-atomic="true">
-<p id="resultado"></p>
-<p id="dica"></p>
-</div>
-<p class="note">O cálculo soma as contribuições mensais até a idade escolhida, sem rendimentos, taxas, impostos ou inflação. Os dados ficam nesta página.</p>
-<noscript><p>Ative o JavaScript para usar o simulador.</p></noscript>
+<div class="result" role="status" aria-atomic="true"><p id="resultado"></p><p id="dica" class="muted" hidden></p></div>
+<noscript><p>Ative o JavaScript para calcular os saldos.</p></noscript>
 </section>
 <section aria-labelledby="comparar">
-<h2 id="comparar">Compare cinco planos fictícios</h2>
-<p>O valor mensal é a contribuição mínima de cada exemplo. Confira quais cabem no orçamento informado.</p>
+<div class="heading"><h2 id="comparar">Quanto cada plano acumularia?</h2><p class="muted">Planos e taxas fictícios. Os saldos são estimativas brutas.</p></div>
 <div class="plans">
-<article class="plan" data-minimo="100"><h3>Renda Primeiro Passo</h3><p class="price">A partir de R$ 100 por mês</p><p>Comece com um valor menor e experimente o hábito de contribuir todo mês.</p><p class="status" hidden></p></article>
-<article class="plan" data-minimo="150"><h3>Renda Mês Flexível</h3><p class="price">A partir de R$ 150 por mês</p><p>Neste exemplo, você pode aumentar o aporte nos meses em que sobrar dinheiro.</p><p class="status" hidden></p></article>
-<article class="plan" data-minimo="250"><h3>Renda Reserva de Família</h3><p class="price">A partir de R$ 250 por mês</p><p>Ilustra como a indicação de beneficiários pode fazer parte do planejamento familiar.</p><p class="status" hidden></p></article>
-<article class="plan" data-minimo="400"><h3>Renda Prazo Escolhido</h3><p class="price">A partir de R$ 400 por mês</p><p>Ilustra o recebimento da reserva em parcelas mensais por um período definido.</p><p class="status" hidden></p></article>
-<article class="plan" data-minimo="600"><h3>Renda Horizonte Aberto</h3><p class="price">A partir de R$ 600 por mês</p><p>Ilustra a possibilidade de retirar a reserva de uma só vez, conforme as regras do plano.</p><p class="status" hidden></p></article>
+<article class="plan" data-minimo="100" data-taxa="3"><h3>Renda Primeiro Passo</h3><p>Aporte inicial menor. <span class="minimum">Mínimo mensal de R$ 100.</span></p><div class="projection"><p>Saldo estimado</p><p class="balance">—</p><p class="rate">Taxa simulada de 3% ao ano</p></div><p class="status" hidden></p></article>
+<article class="plan" data-minimo="150" data-taxa="4"><h3>Renda Mês Flexível</h3><p>Permite reforçar os aportes. <span class="minimum">Mínimo mensal de R$ 150.</span></p><div class="projection"><p>Saldo estimado</p><p class="balance">—</p><p class="rate">Taxa simulada de 4% ao ano</p></div><p class="status" hidden></p></article>
+<article class="plan" data-minimo="250" data-taxa="5"><h3>Renda Reserva de Família</h3><p>Permite indicar beneficiários. <span class="minimum">Mínimo mensal de R$ 250.</span></p><div class="projection"><p>Saldo estimado</p><p class="balance">—</p><p class="rate">Taxa simulada de 5% ao ano</p></div><p class="status" hidden></p></article>
+<article class="plan" data-minimo="400" data-taxa="6"><h3>Renda Prazo Escolhido</h3><p>Permite receber em parcelas. <span class="minimum">Mínimo mensal de R$ 400.</span></p><div class="projection"><p>Saldo estimado</p><p class="balance">—</p><p class="rate">Taxa simulada de 6% ao ano</p></div><p class="status" hidden></p></article>
+<article class="plan" data-minimo="600" data-taxa="7"><h3>Renda Horizonte Aberto</h3><p>Permite resgatar de uma vez. <span class="minimum">Mínimo mensal de R$ 600.</span></p><div class="projection"><p>Saldo estimado</p><p class="balance">—</p><p class="rate">Taxa simulada de 7% ao ano</p></div><p class="status" hidden></p></article>
 </div>
 </section>
-<section aria-labelledby="referencias">
-<h2 id="referencias">O que comparar em um plano real</h2>
-<p>Confira as taxas, o prazo para resgate e as regras de recebimento. PGBL e VGBL têm regras diferentes de Imposto de Renda. Consulte o <a href="https://www.gov.br/susep/pt-br/assuntos/meu-futuro-seguro/seguros-previdencia-e-capitalizacao/providencia-complementar-aberta/pgbl-vgbl">guia da Susep</a>.</p>
-<p class="note">Os valores foram escolhidos para o exercício. A <a href="https://www.bb.com.br/previdencia">Brasilprev no Banco do Brasil</a> divulga exemplos de contribuição a partir de R$ 100 por mês, e o <a href="https://www.gov.br/previdencia/pt-br/assuntos/previdencia-complementar/mais-informacoes/perguntas-frequentes-de-previdencia-complementar">Ministério da Previdência Social</a> explica que o mínimo varia conforme a entidade.</p>
-</section>
+<details><summary>Como os valores são calculados?</summary><p>A simulação usa aportes no fim de cada mês e juros compostos com uma taxa fictícia constante por plano. Os saldos incluem os aportes e os rendimentos simulados, sem descontar taxas, impostos ou inflação. Quando o aporte fica abaixo do mínimo de um plano, a projeção aparece apenas para comparação.</p><p>O mínimo de R$ 100 foi inspirado em um exemplo divulgado pelo <a href="https://www.bb.com.br/previdencia">Banco do Brasil</a>. Consulte o <a href="https://www.gov.br/susep/pt-br/assuntos/meu-futuro-seguro/seguros-previdencia-e-capitalizacao/providencia-complementar-aberta/pgbl-vgbl">guia da Susep</a> para conhecer os planos reais.</p></details>
 </div>
 </main>
 <footer><div class="wrap">Renda em Frente · Educação financeira</div></footer>
 <script>
-const idade = document.querySelector('#idade');
-const meta = document.querySelector('#meta');
-const trabalho = document.querySelector('#trabalho');
 const aporte = document.querySelector('#aporte');
+const prazo = document.querySelector('#prazo');
+const idade = document.querySelector('#idade');
+const trabalho = document.querySelector('#trabalho');
 const resultado = document.querySelector('#resultado');
 const dica = document.querySelector('#dica');
 const planos = [...document.querySelectorAll('.plan')];
 const moeda = new Intl.NumberFormat('pt-BR', {style: 'currency', currency: 'BRL'});
 const dicas = {
-  clt: 'Se sua empresa oferece um plano, confira se ela também contribui.',
-  autonomo: 'Se a renda varia, experimente um valor que caiba também em um mês mais apertado.',
-  publico: 'Confira se o seu órgão oferece um plano e quais são as condições.',
-  aposentado: 'Use a idade final para testar por quanto tempo você pretende fazer novas contribuições.',
-  outro: 'Experimente valores diferentes para ver como a contribuição muda o total acumulado.'
+  clt: 'Confira se sua empresa oferece contribuição para previdência.',
+  autonomo: 'Se a renda varia, teste um valor que caiba também nos meses mais apertados.',
+  publico: 'Confira se seu órgão oferece previdência complementar.',
+  aposentado: 'Use o prazo para testar por quanto tempo quer fazer novas contribuições.',
+  outro: 'Experimente outros valores para comparar o total acumulado.'
 };
 
 function atualizar() {
-  const anos = meta.valueAsNumber - idade.valueAsNumber;
-  const mensal = aporte.valueAsNumber;
   const aporteValido = aporte.validity.valid;
-  const prazoValido = idade.validity.valid && meta.validity.valid && anos > 0;
-  let compativeis = 0;
+  const prazoValido = prazo.validity.valid;
+  const mensal = aporte.valueAsNumber;
+  const meses = prazo.valueAsNumber * 12;
+  const podeCalcular = aporteValido && prazoValido;
   for (const plano of planos) {
+    const taxaAnual = Number(plano.dataset.taxa) / 100;
+    const taxaMensal = (1 + taxaAnual) ** (1 / 12) - 1;
+    const minimo = Number(plano.dataset.minimo);
+    const saldo = mensal * ((1 + taxaMensal) ** meses - 1) / taxaMensal;
     const status = plano.querySelector('.status');
-    const diferenca = Math.round((Number(plano.dataset.minimo) - mensal) * 100) / 100;
-    status.hidden = !aporteValido;
-    status.textContent = diferenca > 0
-      ? `${moeda.format(diferenca)} por mês acima do seu orçamento`
-      : 'Cabe no orçamento informado';
-    compativeis += Number(aporteValido && diferenca <= 0);
+    plano.querySelector('.balance').textContent = podeCalcular ? moeda.format(saldo) : '—';
+    status.hidden = !aporteValido || mensal >= minimo;
+    status.textContent = 'Abaixo do aporte mínimo. Projeção ilustrativa.';
   }
-
-  const comparacao = aporteValido ? ` Planos dentro do orçamento: ${compativeis} de ${planos.length}.` : '';
-  if (!prazoValido) {
-    resultado.textContent = 'Informe idades válidas. A idade final precisa ser maior que a idade atual.' + comparacao;
-  } else if (!aporteValido) {
-    resultado.textContent = 'Informe um aporte mensal válido em reais.';
-  } else {
-    const meses = anos * 12;
-    const total = moeda.format(mensal * meses);
-    resultado.textContent = `Em ${anos} ${anos === 1 ? 'ano' : 'anos'}, com ${meses} contribuições, você teria aportado ${total}.` + comparacao;
-  }
+  const idadeFinal = idade.value && idade.validity.valid && prazoValido
+    ? ` · Idade ao final: ${idade.valueAsNumber + prazo.valueAsNumber} anos` : '';
+  resultado.textContent = podeCalcular
+    ? `Total que você contribui: ${moeda.format(mensal * meses)} em ${meses} meses${idadeFinal}.`
+    : 'Informe um valor mensal válido e um prazo de 1 a 100 anos.';
   dica.textContent = dicas[trabalho.value] ?? '';
   dica.hidden = !dica.textContent;
 }
