@@ -40,6 +40,22 @@ dd{color:var(--muted)}
 footer{border-top:1px solid var(--line);margin-top:3rem;padding:1.35rem 0;color:var(--muted)}
 .sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip-path:inset(50%);white-space:nowrap}
 @media(max-width:38rem){.hero,.projects{grid-template-columns:1fr}.hero img{min-height:0;height:clamp(11rem,48vw,16rem)}}
+
+.project-photo{display:block;width:100%;height:auto;aspect-ratio:2/1;object-fit:cover;border-radius:.8rem;margin-bottom:.35rem}
+button{font:inherit;cursor:pointer}
+.contact,.send{justify-self:start;border:0;border-radius:.65rem;background:var(--accent);color:white;padding:.65rem .95rem;font-weight:700}
+.contact:hover,.send:hover{background:#124659}
+.contact{margin-top:.45rem}
+dialog{width:min(34rem,calc(100% - 2rem));max-height:calc(100dvh - 2rem);overflow:auto;padding:clamp(1rem,4vw,1.6rem);border:1px solid var(--line);border-radius:1rem;color:var(--ink)}
+dialog::backdrop{background:#142e3db3}
+.dialog-head{display:flex;align-items:start;justify-content:space-between;gap:.75rem}
+.close{background:#edf5f6;border:0;color:var(--accent);border-radius:.5rem;padding:.35rem .65rem}
+#contact-project,#form-note{margin-top:.45rem;color:var(--muted)}
+#contact-form{display:grid;gap:.75rem;margin-top:1rem}
+#contact-form label{display:grid;gap:.25rem;font-weight:650}
+#contact-form input,#contact-form textarea{width:100%;min-height:2.85rem;padding:.55rem .65rem;border:1px solid #718f9f;border-radius:.55rem;font:inherit;color:var(--ink);background:#fff}
+#contact-form textarea{min-height:6rem;resize:vertical}
+#form-result{margin-top:1rem}
 </style>
 </head>
 <body>
@@ -54,6 +70,7 @@ footer{border-top:1px solid var(--line);margin-top:3rem;padding:1.35rem 0;color:
 <div class="section-heading"><h2 id="titulo-projetos">Projetos que buscam sócios</h2><p>Ideias, pessoas e participações fictícias para fins didáticos.</p></div>
 <div class="projects">
 <article class="project">
+<img class="project-photo" src="images/projeto-padaria.webp" alt="Pães expostos em uma padaria" width="600" height="300" loading="lazy">
 <p class="place">Montes Claros · MG</p>
 <h3>Carlos quer abrir uma padaria de bairro</h3>
 <p>Pães frescos e café da manhã para moradores do bairro.</p>
@@ -65,8 +82,10 @@ footer{border-top:1px solid var(--line);margin-top:3rem;padding:1.35rem 0;color:
 <dt>Participação proposta para sócios</dt><dd><strong>25% do negócio</strong></dd>
 </dl>
 </details>
+<button class="contact" type="button">Entrar em contato</button>
 </article>
 <article class="project">
+<img class="project-photo" src="images/projeto-ferramentas.webp" alt="Ferramentas em uma oficina" width="600" height="300" loading="lazy">
 <p class="place">Bocaiuva · MG</p>
 <h3>Renata quer montar uma locadora de ferramentas</h3>
 <p>Aluguel de ferramentas para reformas e pequenos serviços.</p>
@@ -78,8 +97,10 @@ footer{border-top:1px solid var(--line);margin-top:3rem;padding:1.35rem 0;color:
 <dt>Participação proposta para sócios</dt><dd><strong>30% do negócio</strong></dd>
 </dl>
 </details>
+<button class="contact" type="button">Entrar em contato</button>
 </article>
 <article class="project">
+<img class="project-photo" src="images/projeto-marmitas.webp" alt="Refeições prontas para levar" width="600" height="300" loading="lazy">
 <p class="place">Janaúba · MG</p>
 <h3>Mariana quer abrir uma loja de marmitas</h3>
 <p>Marmitas caseiras para quem precisa almoçar perto do trabalho.</p>
@@ -91,8 +112,10 @@ footer{border-top:1px solid var(--line);margin-top:3rem;padding:1.35rem 0;color:
 <dt>Participação proposta para sócios</dt><dd><strong>20% do negócio</strong></dd>
 </dl>
 </details>
+<button class="contact" type="button">Entrar em contato</button>
 </article>
 <article class="project">
+<img class="project-photo" src="images/projeto-impressao.webp" alt="Impressora 3D em funcionamento" width="600" height="300" loading="lazy">
 <p class="place">Montes Claros · MG</p>
 <h3>Diego quer criar um ateliê de impressão 3D</h3>
 <p>Peças personalizadas e protótipos para comércios locais.</p>
@@ -104,8 +127,10 @@ footer{border-top:1px solid var(--line);margin-top:3rem;padding:1.35rem 0;color:
 <dt>Participação proposta para sócios</dt><dd><strong>25% do negócio</strong></dd>
 </dl>
 </details>
+<button class="contact" type="button">Entrar em contato</button>
 </article>
 <article class="project">
+<img class="project-photo" src="images/projeto-mudas.webp" alt="Mudas cultivadas em vasos" width="600" height="300" loading="lazy">
 <p class="place">Pirapora · MG</p>
 <h3>Lúcia quer montar um viveiro de mudas</h3>
 <p>Mudas de hortaliças e temperos para quintais e pequenos produtores.</p>
@@ -117,10 +142,47 @@ footer{border-top:1px solid var(--line);margin-top:3rem;padding:1.35rem 0;color:
 <dt>Participação proposta para sócios</dt><dd><strong>35% do negócio</strong></dd>
 </dl>
 </details>
+<button class="contact" type="button">Entrar em contato</button>
 </article>
 </div>
 </section>
 </main>
 <footer><div class="wrap">Renda em Frente · Educação financeira</div></footer>
+<dialog id="contact-dialog" aria-labelledby="contact-title">
+<div class="dialog-head"><h2 id="contact-title">Entrar em contato</h2><button type="button" class="close">Fechar</button></div>
+<p id="contact-project"></p>
+<p id="form-note">Projeto fictício. Seus dados ficam no navegador e a proposta não é enviada.</p>
+<form id="contact-form" method="dialog" aria-describedby="form-note">
+<label>Nome completo<input name="nome" autocomplete="name" maxlength="120" required></label>
+<label>E-mail<input name="email" type="email" autocomplete="email" maxlength="254" required></label>
+<label>Telefone<input name="telefone" type="tel" autocomplete="tel" maxlength="30" required></label>
+<label>Qual a sua proposta mediante a esta demanda?<textarea name="proposta" maxlength="2000" required></textarea></label>
+<button class="send" type="submit">Simular envio</button>
+</form>
+<p id="form-result" role="status"></p>
+</dialog>
+<script>
+const dialog = document.querySelector('#contact-dialog');
+const form = document.querySelector('#contact-form');
+const project = document.querySelector('#contact-project');
+const result = document.querySelector('#form-result');
+
+for (const button of document.querySelectorAll('.contact')) {
+  button.addEventListener('click', () => {
+    project.textContent = button.closest('.project').querySelector('h3').textContent;
+    dialog.showModal();
+  });
+}
+dialog.querySelector('.close').addEventListener('click', () => dialog.close());
+dialog.addEventListener('close', () => {
+  form.reset();
+  result.textContent = '';
+});
+form.addEventListener('submit', (event) => {
+  event.preventDefault();
+  form.reset();
+  result.textContent = 'Simulação concluída. Nenhuma mensagem foi enviada.';
+});
+</script>
 </body>
 </html>
