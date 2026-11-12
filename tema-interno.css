@@ -38,7 +38,7 @@ h1 { font-weight: 800; }
   border-radius: 0 0 clamp(1rem, 3vw, 1.65rem) clamp(1rem, 3vw, 1.65rem);
 }
 
-.intro h1 { color: #fffdf5; }
+.intro h1 { color: #fffdf5; font-size: clamp(2rem, 5vw, 3.6rem); line-height: 1.1; }
 .intro h1 span { color: var(--gold); }
 .intro p { margin-top: .55rem; color: #fffdf5; max-width: 46ch; }
 
