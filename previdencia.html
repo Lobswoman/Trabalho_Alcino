@@ -32,7 +32,12 @@ input,select{display:block;width:100%;height:3.15rem;margin-top:.35rem;padding:.
 .result p+p{margin-top:.35rem}
 .heading{margin-bottom:1rem}
 .plans{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:1rem}
-.plan{padding:1.15rem;display:grid;grid-template-rows:auto 1fr auto auto;gap:.55rem}
+.plan{padding:1.15rem;display:grid;grid-template-rows:auto auto 1fr auto auto;gap:.55rem}
+.provider{display:grid;gap:.35rem;padding-bottom:.8rem;margin-bottom:.25rem;border-bottom:1px solid var(--line)}
+.provider-logo{width:3rem;height:3rem;border-radius:.8rem;background:var(--logo-bg);color:var(--logo-ink);padding:.6rem}
+.provider h3{font-size:1.22rem;line-height:1.2}
+.provider-meta{font-size:.88rem;line-height:1.4;color:var(--muted)}
+.plan-name{font-size:1.04rem;line-height:1.3}
 .minimum,.rate{font-size:.95rem;color:var(--muted)}
 .projection{background:#edf6f8;border-radius:.55rem;padding:.6rem .75rem}
 .projection p:first-child{font-size:.94rem}
@@ -65,13 +70,33 @@ footer{border-top:1px solid var(--line);padding:1.1rem 0}
 <noscript><p>Ative o JavaScript para calcular os saldos.</p></noscript>
 </section>
 <section aria-labelledby="comparar">
-<div class="heading"><h2 id="comparar">Quanto você poderia receber por mês?</h2><p class="muted">Planos fictícios. A renda mensal é estimada para o prazo escolhido.</p></div>
+<div class="heading"><h2 id="comparar">Quanto você poderia receber por mês?</h2><p class="muted">Empresas e planos fictícios. A renda mensal é estimada para o prazo escolhido.</p></div>
 <div class="plans">
-<article class="plan" data-minimo="100" data-taxa="3"><h3>Renda Primeiro Passo</h3><p>Aporte inicial menor. <span class="minimum">Mínimo mensal de R$ 100.</span></p><div class="projection"><p>Renda mensal estimada</p><p class="balance">—</p><p class="reserve rate"></p><p class="rate">Taxa simulada de 3% ao ano</p></div><p class="status" hidden></p></article>
-<article class="plan" data-minimo="150" data-taxa="4"><h3>Renda Mês Flexível</h3><p>Permite reforçar os aportes. <span class="minimum">Mínimo mensal de R$ 150.</span></p><div class="projection"><p>Renda mensal estimada</p><p class="balance">—</p><p class="reserve rate"></p><p class="rate">Taxa simulada de 4% ao ano</p></div><p class="status" hidden></p></article>
-<article class="plan" data-minimo="250" data-taxa="5"><h3>Renda Reserva de Família</h3><p>Permite indicar beneficiários. <span class="minimum">Mínimo mensal de R$ 250.</span></p><div class="projection"><p>Renda mensal estimada</p><p class="balance">—</p><p class="reserve rate"></p><p class="rate">Taxa simulada de 5% ao ano</p></div><p class="status" hidden></p></article>
-<article class="plan" data-minimo="400" data-taxa="6"><h3>Renda Prazo Escolhido</h3><p>Permite receber em parcelas. <span class="minimum">Mínimo mensal de R$ 400.</span></p><div class="projection"><p>Renda mensal estimada</p><p class="balance">—</p><p class="reserve rate"></p><p class="rate">Taxa simulada de 6% ao ano</p></div><p class="status" hidden></p></article>
-<article class="plan" data-minimo="600" data-taxa="7"><h3>Renda Horizonte Aberto</h3><p>Ilustra a opção de resgate único. <span class="minimum">Mínimo mensal de R$ 600.</span></p><div class="projection"><p>Renda mensal estimada</p><p class="balance">—</p><p class="reserve rate"></p><p class="rate">Taxa simulada de 7% ao ano</p></div><p class="status" hidden></p></article>
+<article class="plan" data-minimo="100" data-taxa="3"><div class="provider" style="--logo-bg:#e4f1eb;--logo-ink:#245a46">
+<svg class="provider-logo" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M3 18h18M6 14a6 6 0 0 1 12 0M12 3v3M4 7l2 2m14-2-2 2"/></svg>
+<h3>Alvoré Previdência</h3>
+<p class="provider-meta">Razão social: Alvoré Previdência S.A.<br>CNPJ fictício: 00.000.001/0001-00</p>
+</div><h4 class="plan-name" style="margin:0">Renda Primeiro Passo</h4><p>Aporte inicial menor. <span class="minimum">Mínimo mensal de R$ 100.</span></p><div class="projection"><p>Renda mensal estimada</p><p class="balance">—</p><p class="reserve rate"></p><p class="rate">Taxa simulada de 3% ao ano</p></div><p class="status" hidden></p></article>
+<article class="plan" data-minimo="150" data-taxa="4"><div class="provider" style="--logo-bg:#e4eff8;--logo-ink:#285778">
+<svg class="provider-logo" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M3 8h13a2.5 2.5 0 1 0-2.5-2.5M3 12h16a2 2 0 1 1-2 2M3 16h8a2.5 2.5 0 1 1-2.5 2.5"/></svg>
+<h3>Vento Sereno Previdência</h3>
+<p class="provider-meta">Razão social: Vento Sereno Previdência S.A.<br>CNPJ fictício: 00.000.002/0001-00</p>
+</div><h4 class="plan-name" style="margin:0">Renda Mês Flexível</h4><p>Permite reforçar os aportes. <span class="minimum">Mínimo mensal de R$ 150.</span></p><div class="projection"><p>Renda mensal estimada</p><p class="balance">—</p><p class="reserve rate"></p><p class="rate">Taxa simulada de 4% ao ano</p></div><p class="status" hidden></p></article>
+<article class="plan" data-minimo="250" data-taxa="5"><div class="provider" style="--logo-bg:#f7ede3;--logo-ink:#85472e">
+<svg class="provider-logo" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M3 12c2.5 5 5.5 7 9 7s6.5-2 9-7M4 16h16M7 19h10"/><ellipse cx="12" cy="9" rx="2.6" ry="3.3"/></svg>
+<h3>Ninho do Vale Previdência</h3>
+<p class="provider-meta">Razão social: Ninho do Vale Previdência S.A.<br>CNPJ fictício: 00.000.003/0001-00</p>
+</div><h4 class="plan-name" style="margin:0">Renda Reserva de Família</h4><p>Permite indicar beneficiários. <span class="minimum">Mínimo mensal de R$ 250.</span></p><div class="projection"><p>Renda mensal estimada</p><p class="balance">—</p><p class="reserve rate"></p><p class="rate">Taxa simulada de 5% ao ano</p></div><p class="status" hidden></p></article>
+<article class="plan" data-minimo="400" data-taxa="6"><div class="provider" style="--logo-bg:#eceafa;--logo-ink:#4f447c">
+<svg class="provider-logo" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M3 18h18M5 18v-4m14 4v-4M5 14c3-7 11-7 14 0M9 18v-6m6 6v-6"/></svg>
+<h3>Ponte Clara Previdência</h3>
+<p class="provider-meta">Razão social: Ponte Clara Previdência S.A.<br>CNPJ fictício: 00.000.004/0001-00</p>
+</div><h4 class="plan-name" style="margin:0">Renda Prazo Escolhido</h4><p>Permite receber em parcelas. <span class="minimum">Mínimo mensal de R$ 400.</span></p><div class="projection"><p>Renda mensal estimada</p><p class="balance">—</p><p class="reserve rate"></p><p class="rate">Taxa simulada de 6% ao ano</p></div><p class="status" hidden></p></article>
+<article class="plan" data-minimo="600" data-taxa="7"><div class="provider" style="--logo-bg:#f6f1db;--logo-ink:#725922">
+<svg class="provider-logo" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M5 20h14M8 20l2-10h4l2 10M9 10V7l3-3 3 3v3M4 7l2 1m14-1-2 1M10 15h4"/></svg>
+<h3>Farol do Campo Previdência</h3>
+<p class="provider-meta">Razão social: Farol do Campo Previdência S.A.<br>CNPJ fictício: 00.000.005/0001-00</p>
+</div><h4 class="plan-name" style="margin:0">Renda Horizonte Aberto</h4><p>Ilustra a opção de resgate único. <span class="minimum">Mínimo mensal de R$ 600.</span></p><div class="projection"><p>Renda mensal estimada</p><p class="balance">—</p><p class="reserve rate"></p><p class="rate">Taxa simulada de 7% ao ano</p></div><p class="status" hidden></p></article>
 </div>
 </section>
 <details><summary>Como os valores são calculados?</summary><p>A simulação usa aportes no fim de cada mês e juros compostos com uma taxa fictícia constante por plano. Na fase de recebimento, dividimos o saldo pelo número de meses escolhido, sem aplicar rendimentos nessa fase. Os valores são brutos e não descontam taxas, impostos ou inflação. A renda é por prazo definido e termina ao fim desse período. Quando o aporte fica abaixo do mínimo de um plano, a projeção aparece apenas para comparação.</p><p>O mínimo de R$ 100 foi inspirado em um exemplo divulgado pelo <a href="https://www.bb.com.br/previdencia">Banco do Brasil</a>. Planos reais podem prever renda por prazo definido, renda vitalícia ou pagamento único. Consulte o <a href="https://www.gov.br/susep/pt-br/assuntos/meu-futuro-seguro/seguros-previdencia-e-capitalizacao/providencia-complementar-aberta/pgbl-vgbl">guia da Susep</a> para conhecer os planos reais.</p></details>
