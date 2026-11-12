@@ -63,6 +63,21 @@ details[open] .revenue dl{display:grid;grid-template-columns:repeat(auto-fit,min
 .revenue dt{margin:0;font-size:.9rem;font-weight:600}
 .revenue dd{color:var(--ink);font-weight:750}
 .revenue-note{margin-top:.6rem;font-size:.9rem;color:var(--muted)}
+
+.filters{background:#fff;border:1px solid var(--line);border-radius:1rem;padding:clamp(1rem,3vw,1.4rem);margin-bottom:1.4rem}
+.filter-fields{display:grid;grid-template-columns:repeat(3,minmax(0,1fr)) auto;align-items:end;gap:.85rem}
+.filter-fields label{display:grid;gap:.3rem;font-weight:650}
+.filter-fields select,.filter-fields button{min-height:2.8rem;padding:.5rem .65rem;border:1px solid #718f9f;border-radius:.55rem;background:#fff;color:var(--ink);font:inherit}
+.filter-fields select{width:100%}
+.filter-fields button{color:var(--accent);font-weight:650}
+.filter-fields button:hover{background:#eaf3f5}
+#filter-count{margin-top:.75rem;color:var(--muted)}
+.project[hidden],#filter-empty[hidden]{display:none}
+.project-meta{display:flex;align-items:center;gap:.5rem;flex-wrap:wrap}
+.size-tag{padding:.2rem .65rem;border-radius:100vmax;background:#dcefeb;color:#17483e;font-size:.88rem;font-weight:750}
+#filter-empty{padding:1rem;background:#fff;border:1px solid var(--line);border-radius:.75rem}
+@media(max-width:46rem){.filter-fields{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:27rem){.filter-fields{grid-template-columns:1fr}}
 </style>
 </head>
 <body>
@@ -75,16 +90,27 @@ details[open] .revenue dl{display:grid;grid-template-columns:repeat(auto-fit,min
 </div>
 <section aria-labelledby="titulo-projetos">
 <div class="section-heading"><h2 id="titulo-projetos">Projetos que buscam sócios</h2><p>Ideias, pessoas e participações fictícias para fins didáticos.</p></div>
+<form class="filters" id="project-filters" aria-label="Filtrar projetos">
+<div class="filter-fields">
+<label>Cidade<select id="filter-city"><option value="">Todas</option><option value="bocaiuva">Bocaiuva</option><option value="janauba">Janaúba</option><option value="montes-claros">Montes Claros</option><option value="pirapora">Pirapora</option></select></label>
+<label>Etapa do negócio<select id="filter-stage"><option value="">Todas</option><option value="local">Local definido</option><option value="inicio">Em estruturação</option></select></label>
+<label>Porte previsto<select id="filter-size"><option value="">Todos</option><option value="pequeno">Pequeno porte</option><option value="medio">Médio porte</option><option value="grande">Grande porte</option></select></label>
+<button type="reset">Limpar filtros</button>
+</div>
+<p id="filter-count" role="status">5 projetos encontrados.</p>
+</form>
+<p id="filter-empty" hidden>Nenhum projeto combina com esses filtros.</p>
 <div class="projects">
-<article class="project">
+<article class="project" data-city="montes-claros" data-stage="local" data-size="pequeno">
 <img class="project-photo" src="images/projeto-padaria.webp" alt="Pães expostos em uma padaria" width="600" height="300" loading="lazy">
-<p class="place">Montes Claros · MG</p>
+<div class="project-meta"><p class="place">Montes Claros · MG</p><span class="size-tag">Pequeno porte</span></div>
 <h3>Carlos quer abrir uma padaria de bairro</h3>
 <p>Pães frescos e café da manhã para moradores do bairro.</p>
 <details>
 <summary>Ver detalhes<span class="sr-only"> do projeto de Carlos</span></summary>
 <dl>
-<dt>O que Carlos já tem</dt><dd>Receitas testadas, um forno e experiência com produção de pães.</dd>
+<dt>Etapa do negócio</dt><dd>Local definido</dd>
+<dt>O que Carlos já tem</dt><dd>Um ponto comercial, um forno, receitas testadas e experiência com produção de pães.</dd>
 <dt>O que Carlos precisa</dt><dd>Um sócio para ajudar com a reforma do ponto e cuidar do atendimento.</dd>
 <dt>Participação proposta para sócios</dt><dd><strong>25% do negócio</strong></dd>
 </dl>
@@ -100,14 +126,15 @@ details[open] .revenue dl{display:grid;grid-template-columns:repeat(auto-fit,min
 </details>
 <button class="contact" type="button">Entrar em contato</button>
 </article>
-<article class="project">
+<article class="project" data-city="bocaiuva" data-stage="local" data-size="pequeno">
 <img class="project-photo" src="images/projeto-ferramentas.webp" alt="Ferramentas em uma oficina" width="600" height="300" loading="lazy">
-<p class="place">Bocaiuva · MG</p>
+<div class="project-meta"><p class="place">Bocaiuva · MG</p><span class="size-tag">Pequeno porte</span></div>
 <h3>Renata quer montar uma locadora de ferramentas</h3>
 <p>Aluguel de ferramentas para reformas e pequenos serviços.</p>
 <details>
 <summary>Ver detalhes<span class="sr-only"> do projeto de Renata</span></summary>
 <dl>
+<dt>Etapa do negócio</dt><dd>Local definido</dd>
 <dt>O que Renata já tem</dt><dd>Uma garagem para guardar os equipamentos e um conjunto inicial de ferramentas.</dd>
 <dt>O que Renata precisa</dt><dd>Um sócio para ampliar o estoque e organizar as entregas e devoluções.</dd>
 <dt>Participação proposta para sócios</dt><dd><strong>30% do negócio</strong></dd>
@@ -124,14 +151,15 @@ details[open] .revenue dl{display:grid;grid-template-columns:repeat(auto-fit,min
 </details>
 <button class="contact" type="button">Entrar em contato</button>
 </article>
-<article class="project">
+<article class="project" data-city="janauba" data-stage="inicio" data-size="pequeno">
 <img class="project-photo" src="images/projeto-marmitas.webp" alt="Refeições prontas para levar" width="600" height="300" loading="lazy">
-<p class="place">Janaúba · MG</p>
+<div class="project-meta"><p class="place">Janaúba · MG</p><span class="size-tag">Pequeno porte</span></div>
 <h3>Mariana quer abrir uma loja de marmitas</h3>
 <p>Marmitas caseiras para quem precisa almoçar perto do trabalho.</p>
 <details>
 <summary>Ver detalhes<span class="sr-only"> do projeto de Mariana</span></summary>
 <dl>
+<dt>Etapa do negócio</dt><dd>Em estruturação</dd>
 <dt>O que Mariana já tem</dt><dd>Cardápio testado, fornecedores mapeados e experiência em cozinha.</dd>
 <dt>O que Mariana precisa</dt><dd>Um sócio para ajudar a equipar a cozinha e organizar pedidos e entregas.</dd>
 <dt>Participação proposta para sócios</dt><dd><strong>20% do negócio</strong></dd>
@@ -148,14 +176,15 @@ details[open] .revenue dl{display:grid;grid-template-columns:repeat(auto-fit,min
 </details>
 <button class="contact" type="button">Entrar em contato</button>
 </article>
-<article class="project">
+<article class="project" data-city="montes-claros" data-stage="inicio" data-size="pequeno">
 <img class="project-photo" src="images/projeto-impressao.webp" alt="Impressora 3D em funcionamento" width="600" height="300" loading="lazy">
-<p class="place">Montes Claros · MG</p>
+<div class="project-meta"><p class="place">Montes Claros · MG</p><span class="size-tag">Pequeno porte</span></div>
 <h3>Diego quer criar um ateliê de impressão 3D</h3>
 <p>Peças personalizadas e protótipos para comércios locais.</p>
 <details>
 <summary>Ver detalhes<span class="sr-only"> do projeto de Diego</span></summary>
 <dl>
+<dt>Etapa do negócio</dt><dd>Em estruturação</dd>
 <dt>O que Diego já tem</dt><dd>Uma impressora, modelos próprios e um portfólio de peças.</dd>
 <dt>O que Diego precisa</dt><dd>Um sócio para prospectar clientes e ajudar a comprar uma segunda máquina.</dd>
 <dt>Participação proposta para sócios</dt><dd><strong>25% do negócio</strong></dd>
@@ -172,14 +201,15 @@ details[open] .revenue dl{display:grid;grid-template-columns:repeat(auto-fit,min
 </details>
 <button class="contact" type="button">Entrar em contato</button>
 </article>
-<article class="project">
+<article class="project" data-city="pirapora" data-stage="local" data-size="medio">
 <img class="project-photo" src="images/projeto-mudas.webp" alt="Mudas cultivadas em vasos" width="600" height="300" loading="lazy">
-<p class="place">Pirapora · MG</p>
+<div class="project-meta"><p class="place">Pirapora · MG</p><span class="size-tag">Médio porte</span></div>
 <h3>Lúcia quer montar um viveiro de mudas</h3>
 <p>Mudas de hortaliças e temperos para quintais e pequenos produtores.</p>
 <details>
 <summary>Ver detalhes<span class="sr-only"> do projeto de Lúcia</span></summary>
 <dl>
+<dt>Etapa do negócio</dt><dd>Local definido</dd>
 <dt>O que Lúcia já tem</dt><dd>Um terreno, experiência com cultivo e contatos em feiras locais.</dd>
 <dt>O que Lúcia precisa</dt><dd>Um sócio para montar a irrigação e organizar as vendas.</dd>
 <dt>Participação proposta para sócios</dt><dd><strong>35% do negócio</strong></dd>
@@ -214,6 +244,31 @@ details[open] .revenue dl{display:grid;grid-template-columns:repeat(auto-fit,min
 <p id="form-result" role="status"></p>
 </dialog>
 <script>
+const filters = document.querySelector('#project-filters');
+const city = document.querySelector('#filter-city');
+const stage = document.querySelector('#filter-stage');
+const size = document.querySelector('#filter-size');
+const cards = [...document.querySelectorAll('.project')];
+const count = document.querySelector('#filter-count');
+const empty = document.querySelector('#filter-empty');
+
+function filterProjects() {
+  let visible = 0;
+  for (const card of cards) {
+    const matches = (!city.value || card.dataset.city === city.value)
+      && (!stage.value || card.dataset.stage === stage.value)
+      && (!size.value || card.dataset.size === size.value);
+    card.hidden = !matches;
+    if (matches) visible += 1;
+  }
+  count.textContent = visible === 1 ? '1 projeto encontrado.' : `${visible} projetos encontrados.`;
+  empty.hidden = visible > 0;
+}
+filters.addEventListener('change', filterProjects);
+filters.addEventListener('reset', () => queueMicrotask(filterProjects));
+filters.addEventListener('submit', event => event.preventDefault());
+filterProjects();
+
 const dialog = document.querySelector('#contact-dialog');
 const form = document.querySelector('#contact-form');
 const project = document.querySelector('#contact-project');
