@@ -61,6 +61,8 @@ summary{cursor:pointer;font-weight:650}
 .details-body p{margin:.25rem 0 0}
 footer{border-top:1px solid var(--line);background:#fff;padding:1.35rem 0;color:var(--muted)}
 @media(max-width:36rem){.hero-inner,.plans,.fields{grid-template-columns:1fr}.hero img{min-height:0;height:clamp(11rem,46vw,15rem)}}
+.risk-note{margin:1rem 0 1.25rem;padding:.7rem .9rem;border-inline-start:3px solid var(--line);border-radius:0 .45rem .45rem 0;background:#eef4f4;color:var(--muted);font-size:.94rem}
+.risk-note strong{color:var(--ink);margin-inline-end:.3rem}
 </style>
 </head>
 <body>
@@ -72,6 +74,7 @@ footer{border-top:1px solid var(--line);background:#fff;padding:1.35rem 0;color:
 <img src="images/previdencia.webp" alt="Pessoas idosas celebrando juntas">
 </div></div>
 <div class="wrap">
+<aside class="risk-note" aria-label="Riscos"><strong>Riscos</strong> O saldo pode cair se o fundo tiver perdas. A renda simulada é uma estimativa.</aside>
 <section class="panel" aria-labelledby="simulador">
 <div class="heading"><h2 id="simulador">Simule sua contribuição</h2><p class="muted">Exemplo: contribua com R$ 200 por mês por 10 anos e receba a reserva ao longo de outros 10 anos.</p></div>
 <div class="fields" id="campos">

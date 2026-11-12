@@ -78,6 +78,8 @@ details[open] .revenue dl{display:grid;grid-template-columns:repeat(auto-fit,min
 #filter-empty{padding:1rem;background:#fff;border:1px solid var(--line);border-radius:.75rem}
 @media(max-width:46rem){.filter-fields{grid-template-columns:repeat(2,minmax(0,1fr))}}
 @media(max-width:27rem){.filter-fields{grid-template-columns:1fr}}
+.risk-note{margin:1rem 0 1.25rem;padding:.7rem .9rem;border-inline-start:3px solid var(--line);border-radius:0 .45rem .45rem 0;background:#eef4f4;color:var(--muted);font-size:.94rem}
+.risk-note strong{color:var(--ink);margin-inline-end:.3rem}
 </style>
 </head>
 <body>
@@ -90,6 +92,7 @@ details[open] .revenue dl{display:grid;grid-template-columns:repeat(auto-fit,min
 </div>
 <section aria-labelledby="titulo-projetos">
 <div class="section-heading"><h2 id="titulo-projetos">Projetos que buscam sócios</h2><p>Ideias, pessoas e participações fictícias para fins didáticos.</p></div>
+<aside class="risk-note" aria-label="Riscos"><strong>Riscos</strong> As vendas podem ficar abaixo do previsto e os custos podem aumentar. Você pode perder parte ou todo o dinheiro investido.</aside>
 <form class="filters" id="project-filters" aria-label="Filtrar projetos">
 <div class="filter-fields">
 <label>Cidade<select id="filter-city"><option value="">Todas</option><option value="bocaiuva">Bocaiuva</option><option value="janauba">Janaúba</option><option value="montes-claros">Montes Claros</option><option value="pirapora">Pirapora</option></select></label>
