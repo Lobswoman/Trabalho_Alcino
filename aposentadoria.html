@@ -64,10 +64,12 @@ footer{background:#e9efe7;padding-block:1.25rem;font-weight:650}
 
 .card--retirement{--tone:#73522b;--tint:#f7eddb}
 @media(min-width:52.01rem){.cards{grid-template-columns:repeat(4,minmax(0,1fr))}.card h2{font-size:clamp(1.25rem,2vw,1.75rem)}}
+.cnis-import{background:#f0f6f0;border:1px solid #c9ddd0;border-radius:1.1rem;padding:1.3rem;margin:0 0 1.5rem}.cnis-import h3{margin:0 0 .5rem;font-size:1.25rem}.cnis-import p{margin:.5rem 0;color:var(--muted)}.cnis-import input{margin:.5rem 0}.cnis-import label{font-weight:750;display:block;margin-top:1rem}.cnis-import button{margin-top:.7rem}#cnis-details{white-space:pre-line;font-weight:650;margin-top:.8rem}
 </style></head><body><header><div class="bar wrap"><a href="index.html" style="font-weight:800;text-decoration:none">← Renda em Frente</a></div></header><main><section class="retirement wrap" id="simulador-aposentadoria" aria-labelledby="retirement-title">
 <p class="eyebrow">Planejamento para o futuro</p>
 <h2 id="retirement-title">Simulador de aposentadoria</h2>
 <p class="lead">Comece a planejar sua aposentadoria. Informe seu vínculo e sua trajetória profissional para estimar quanto precisaria acumular para complementar a renda desejada.</p>
+<div class="cnis-import"><h3>Preenchimento automático pelo CNIS</h3><p>Baixe seu <strong>Extrato de Contribuição (CNIS)</strong> no <a href="https://meu.inss.gov.br/" target="_blank" rel="noopener noreferrer">Meu INSS</a> e selecione o PDF abaixo. A leitura acontece somente neste navegador, sem enviar o arquivo ao site.</p><label for="cnis-file">Selecionar extrato CNIS em PDF</label><input id="cnis-file" type="file" accept=".pdf,application/pdf" aria-describedby="cnis-status"><p id="cnis-status" role="status" aria-live="polite">Nenhum documento selecionado.</p><div id="cnis-review" hidden><p><strong>Confira os dados extraídos antes de calcular.</strong> O CNIS pode conter vínculos simultâneos, lacunas, indicadores e contribuições pendentes de validação.</p><div id="cnis-details"></div><button type="button" id="cnis-apply">Usar dados identificados</button></div></div>
 <form id="retirement-form">
 <div class="retirement-grid">
 <label>Vínculo previdenciário<select name="regime" required><option value="inss">INSS / iniciativa privada</option><option value="federal">Servidor público federal</option><option value="mg">Servidor público estadual de Minas Gerais</option></select></label>
@@ -85,7 +87,62 @@ footer{background:#e9efe7;padding-block:1.25rem;font-weight:650}
 <div class="retirement-output" id="retirement-result" role="status" aria-live="polite" hidden></div>
 <p class="retirement-note">Ferramenta educativa. O ingresso e o regime ajudam a contextualizar as regras, mas não permitem determinar, sozinhos, o direito ou o valor de aposentadoria. A simulação usa hipóteses financeiras, não substitui o Meu INSS nem o órgão gestor do regime próprio. Não armazenamos os dados preenchidos.</p>
 </section>
-</main><footer><div class="wrap">Renda em Frente</div></footer><script>const retirementForm=document.getElementById('retirement-form');
+</main><footer><div class="wrap">Renda em Frente</div></footer><script>
+// O documento é interpretado localmente. Dados ambíguos nunca são preenchidos automaticamente.
+const cnisFile=document.getElementById('cnis-file'),cnisStatus=document.getElementById('cnis-status'),cnisReview=document.getElementById('cnis-review'),cnisDetails=document.getElementById('cnis-details');
+let cnisCandidate=null;
+cnisFile.addEventListener('change',async()=>{
+ cnisCandidate=null;cnisReview.hidden=true;const file=cnisFile.files[0];if(!file)return;
+ if(file.size>12*1024*1024||!(/\\.pdf$/i.test(file.name))){cnisStatus.textContent='Escolha um PDF de até 12 MB.';return;}
+ cnisStatus.textContent='Lendo PDF localmente...';
+ try{
+  const pdfjs=await import('https://cdnjs.cloudflare.com/ajax/libs/pdf.js/4.10.38/pdf.min.mjs');
+  pdfjs.GlobalWorkerOptions.workerSrc='https://cdnjs.cloudflare.com/ajax/libs/pdf.js/4.10.38/pdf.worker.min.mjs';
+  const pdf=await pdfjs.getDocument({data:new Uint8Array(await file.arrayBuffer())}).promise;
+  if(pdf.numPages>80)throw Error('Documento muito longo para esta ferramenta.');
+  const lines=[];
+  for(let i=1;i<=pdf.numPages;i++){
+   const page=await pdf.getPage(i),items=(await page.getTextContent()).items;
+   const groups=new Map();
+   for(const item of items){if(!item.str?.trim())continue;const y=Math.round(item.transform[5]/3)*3;const a=groups.get(y)||[];a.push({x:item.transform[4],text:item.str});groups.set(y,a);}
+   for(const y of [...groups.keys()].sort((a,b)=>b-a))lines.push(groups.get(y).sort((a,b)=>a.x-b.x).map(t=>t.text).join(' '));
+  }
+  const raw=lines.join('\\n');
+  if(!/CNIS|Cadastro Nacional de Informações Sociais|Extrato Previdenciário/i.test(raw))throw Error('Não foi possível confirmar que o arquivo é um extrato CNIS.');
+  // A data de nascimento é usada apenas quando explicitamente rotulada no documento.
+  const birth=raw.match(/Data\\s+de\\s+Nascimento\\s*:?\\s*(\\d{2}\\/\\d{2}\\/\\d{4})/i);
+  const toDate=t=>{const [d,m,y]=t.split('/').map(Number);const v=new Date(y,m-1,d);return v.getFullYear()===y&&v.getMonth()===m-1&&v.getDate()===d?v:null};
+  const dob=birth?toDate(birth[1]):null;
+  const today=new Date();const age=dob?today.getFullYear()-dob.getFullYear()-(today.getMonth()<dob.getMonth()||(today.getMonth()===dob.getMonth()&&today.getDate()<dob.getDate())?1:0):null;
+  // Identifica somente intervalos de vínculo claramente rotulados. Não soma períodos simultâneos.
+  const intervals=[];
+  for(const line of lines){
+   const dates=[...line.matchAll(/\\b(\\d{2}\\/\\d{2}\\/\\d{4})\\b/g)].map(m=>m[1]);
+   if(!/in[ií]cio|fim|v[ií]nculo|admiss[aã]o|desligamento/i.test(line)||dates.length<2)continue;
+   const a=toDate(dates[0]),b=toDate(dates[1]);if(a&&b&&a<=b&&b<=today)intervals.push([a,b]);
+  }
+  intervals.sort((a,b)=>a[0]-b[0]);const merged=[];
+  for(const [a,b] of intervals){const last=merged[merged.length-1];if(last&&a<=new Date(last[1].getTime()+86400000)){if(b>last[1])last[1]=b;}else merged.push([a,b]);}
+  const days=merged.reduce((sum,[a,b])=>sum+Math.round((b-a)/86400000)+1,0);
+  const years=days/365.2425;
+  cnisCandidate={age,years:merged.length?years:null,first:merged.length?merged[0][0].getFullYear():null};
+  const msgs=[];if(age!==null&&age>=18&&age<=100)msgs.push('Idade identificada: '+age+' anos.');
+  if(merged.length)msgs.push('Períodos identificados: '+merged.length+'; duração aproximada sem sobreposição: '+years.toFixed(1)+' anos (sujeita a conferência).');
+  if(!msgs.length)msgs.push('Não foi possível extrair idade ou períodos com confiança. Você pode continuar manualmente.');
+  msgs.push('Não é possível obter o valor oficial da aposentadoria somente a partir deste arquivo.');
+  cnisDetails.textContent=msgs.join('\\n');cnisReview.hidden=false;cnisStatus.textContent='Leitura concluída. Revise as informações antes de aplicá-las.';
+ }catch(e){cnisStatus.textContent='Não foi possível ler o documento: '+e.message+' Use um PDF com texto selecionável ou preencha manualmente.';}
+});
+document.getElementById('cnis-apply').addEventListener('click',()=>{
+ if(!cnisCandidate)return;
+ const form=document.getElementById('retirement-form');
+ if(cnisCandidate.age!==null&&cnisCandidate.age>=18&&cnisCandidate.age<=100)form.elements.idade.value=cnisCandidate.age;
+ if(cnisCandidate.years!==null)form.elements.tempo.value=cnisCandidate.years.toFixed(1);
+ // Ano de ingresso no vínculo atual não equivale ao primeiro vínculo do CNIS.
+ cnisStatus.textContent='Dados identificados aplicados. Confira os campos e complete os que faltam.';
+ form.scrollIntoView({behavior:'smooth',block:'start'});
+});
+const retirementForm=document.getElementById('retirement-form');
 retirementForm.addEventListener('submit',event=>{
  event.preventDefault();
  const d=new FormData(retirementForm);
