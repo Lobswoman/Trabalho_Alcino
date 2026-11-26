@@ -254,16 +254,17 @@ footer{padding-bottom:5.5rem}
 <dialog id="project-dialog" aria-labelledby="project-heading">
 <div class="dialog-head"><h2 id="project-heading"></h2><button type="button" class="close" autofocus>Fechar</button></div>
 <div class="project-layout"><div id="project-body"></div>
-<aside class="project-actions"><strong>Quer avaliar este projeto?</strong><p>Converse sobre custos, demanda ou participação como sócio.</p><button id="project-consult" class="send" type="button">Falar com um consultor</button><small>Consultoria paga e opcional.</small><button id="project-contact" type="button" class="send">Falar com o responsável</button></aside></div>
+<aside class="project-actions"><strong>Quer avaliar este projeto?</strong><p>Avalie se o projeto cabe no seu orçamento e compare alternativas com um consultor.</p><button id="project-consult" class="send" type="button">Falar com um consultor</button><small>Consultoria paga e opcional.</small><button id="project-contact" type="button" class="send">Falar com o responsável</button></aside></div>
 </dialog>
 <dialog id="consult-dialog" aria-labelledby="consult-heading">
 <div class="dialog-head"><h2 id="consult-heading">Consultoria para projetos</h2><button class="close" type="button">Fechar</button></div>
-<p>O consultor pode ajudar você a avaliar uma ideia antes de abrir um negócio ou entrar como sócio.</p>
+<p>Quanto você pode investir e o que espera do negócio? Na consultoria paga, você receberia uma comparação dos projetos que combinam com seu objetivo, sua renda e seu investimento inicial. Para cada opção, o consultor indicaria os custos a confirmar, os riscos e as perguntas que vale fazer ao responsável.</p>
 <form id="consult-form">
-<label>Projeto<select name="project" required></select></label>
-<label>O que você quer entender?<select name="topic" required><option value="">Escolha um assunto</option><option data-help="Entender quem compraria o produto e quais concorrentes já atendem esse público.">Demanda na região</option><option data-help="Comparar a receita prevista com aluguel, equipamentos e outros gastos.">Custos e faturamento</option><option data-help="Avaliar a participação proposta e o que cada sócio faria no negócio.">Entrada de um sócio</option><option data-help="Descreva o que gostaria de conversar com o consultor.">Outra dúvida</option></select></label>
-<p class="topic-help" aria-live="polite"></p>
-<label>Sua dúvida (opcional)<textarea maxlength="1500" rows="2" placeholder="Ex.: O faturamento previsto cobriria os custos da padaria?"></textarea></label>
+<label>Quais projetos quer avaliar?<select name="project"></select></label>
+<label>Seu objetivo<select name="goal" required><option value="">Escolha seu objetivo</option><option>Complementar minha renda</option><option>Ter um negócio como principal fonte de renda</option><option>Entrar como sócio em um projeto</option><option>Avaliar meu próprio projeto</option><option>Explorar possibilidades</option></select></label>
+<label>Qual é a sua renda mensal aproximada? (opcional)<select name="income"><option value="">Prefiro não informar</option><option>Até R$ 2.000</option><option>Acima de R$ 2.000 até R$ 5.000</option><option>Acima de R$ 5.000 até R$ 10.000</option><option>Acima de R$ 10.000</option></select></label>
+<label>Quanto pretende investir para começar? (R$, opcional)<input name="capital" type="number" inputmode="decimal" min="0" step="0.01" placeholder="Ex.: 5000"></label>
+<label>Quais questões o consultor deve avaliar? (opcional)<textarea name="questions" maxlength="1500" rows="3" placeholder="Ex.: Tenho R$ 5 mil e só posso trabalhar aos sábados. A padaria do Carlos faria sentido para mim? Que outros projetos caberiam nesse orçamento?"></textarea></label>
 <label>Seu nome<input name="name" autocomplete="name" maxlength="120" required></label>
 <label>E-mail para retorno<input name="email" type="email" autocomplete="email" maxlength="254" required></label>
 <p class="consult-terms">A consultoria é paga. A proposta indicaria por e-mail o valor e o que seria analisado. Você decidiria se quer contratar. Neste protótipo, o pedido é simulado, sem envio ou cobrança.</p>
@@ -395,17 +396,11 @@ publishForm.addEventListener('submit', event => {
 const consultDialog = document.querySelector('#consult-dialog');
 const consultForm = document.querySelector('#consult-form');
 const consultResult = document.querySelector('#consult-result');
-const topic = consultForm.elements.topic;
-const hint = consultForm.querySelector('.topic-help');
-topic.addEventListener('change', () => {
-  hint.textContent = topic.selectedOptions[0].dataset.help || '';
-});
-consultForm.addEventListener('reset', () => { hint.textContent = ''; });
 function openConsult(title) {
   consultForm.reset();
   consultResult.textContent = '';
   const select = consultForm.elements.project;
-  select.replaceChildren(new Option('Selecione o projeto', ''));
+  select.replaceChildren(new Option('Comparar os projetos disponíveis', ''));
   for (const card of cards) {
     const name = card.querySelector('h3').textContent;
     select.add(new Option(name, name));
@@ -419,7 +414,7 @@ document.querySelector('#consult-open').addEventListener('click', () => {
 consultDialog.querySelector('.close').addEventListener('click', () => consultDialog.close());
 consultForm.addEventListener('submit', event => {
   event.preventDefault();
-  consultResult.textContent = 'Simulação concluída. Nenhum e-mail foi enviado.';
+  consultResult.textContent = 'Pedido de análise simulado. Nenhum e-mail foi enviado.';
 });
 
 const dialog = document.querySelector('#contact-dialog');
