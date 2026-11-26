@@ -118,6 +118,7 @@ footer{padding-bottom:5.5rem}
 .consult-deliverables p{margin:.55rem 0}
 .consult-fields{display:grid;gap:1rem;border-top:1px solid var(--line);padding:1.15rem 0 .4rem}
 #consult-form .consult-price{display:grid;gap:.75rem}
+#author-request{margin:0;padding:1rem;border:1px solid var(--line);border-radius:.7rem;min-width:0}#author-request:not([hidden]){display:grid;gap:.75rem}#author-request legend{font-weight:700;padding:0 .35rem}
 </style>
 <link rel="stylesheet" href="tema-interno.css?v=3">
 </head>
@@ -303,8 +304,12 @@ footer{padding-bottom:5.5rem}
 <label>Etapa<select name="stage" required><option value="inicio">Em estruturação</option><option value="local">Local definido</option></select></label>
 <label>Porte previsto<select name="size" required><option value="pequeno">Pequeno porte</option><option value="medio">Médio porte</option><option value="grande">Grande porte</option></select></label>
 <label>Resumo e o que você procura em um sócio<textarea name="description" rows="4" required maxlength="1000"></textarea></label>
-<label class="consult-choice"><input type="checkbox" name="consult" aria-describedby="publish-fee">Quero conversar com um consultor sobre meu projeto</label>
-<small class="fee-note" id="publish-fee">Consultoria paga e opcional. Ao publicar, você poderá preencher o formulário demonstrativo.</small>
+<label class="consult-choice"><input type="checkbox" name="consult" aria-describedby="publish-fee">Quero uma reunião para avaliar e melhorar meu projeto</label>
+<small class="fee-note" id="publish-fee">Atendimento opcional. Você receberia um convite personalizado por e-mail para conversar sobre o projeto. Depois da reunião, o consultor enviaria uma proposta com as melhorias, o trabalho previsto e o valor para sua aprovação.</small>
+<fieldset id="author-request" hidden disabled><legend>Preparar a reunião</legend>
+<label>E-mail para o convite<input name="authorEmail" type="email" autocomplete="email" required maxlength="254"></label>
+<label>O que gostaria de discutir? (opcional)<textarea name="authorFocus" rows="2" maxlength="800" placeholder="Ex.: Como testar a procura no bairro antes de alugar o ponto?"></textarea></label>
+<small>Simulação: nenhum convite será enviado e não haverá cobrança.</small></fieldset>
 <button type="submit" class="send">Publicar neste navegador</button>
 <p id="publish-error" role="status"></p>
 </form>
@@ -381,10 +386,18 @@ for (const entry of localProjects) {
 }
 filterProjects();
 
+const authorRequest = document.querySelector('#author-request');
+function syncAuthorRequest() {
+  const enabled = publishForm.elements.consult.checked;
+  authorRequest.hidden = !enabled;
+  authorRequest.disabled = !enabled;
+}
+publishForm.elements.consult.addEventListener('change', syncAuthorRequest);
 document.querySelector('#publish-project').addEventListener('click', () => publishDialog.showModal());
 publishDialog.querySelector('.close').addEventListener('click', () => publishDialog.close());
 publishDialog.addEventListener('close', () => {
   publishForm.reset();
+  syncAuthorRequest();
   publishError.textContent = '';
 });
 publishForm.addEventListener('submit', event => {
@@ -412,7 +425,7 @@ publishForm.addEventListener('submit', event => {
   const wantsConsult = fields.consult.checked;
   publishDialog.close();
   publishStatus.textContent = message;
-  if (wantsConsult) openConsult(entry.title);
+  if (wantsConsult) publishStatus.textContent += ' Solicitação de reunião simulada para o projeto “' + entry.title + '”. Nenhum convite foi enviado.';
 });
 
 const consultDialog = document.querySelector('#consult-dialog');
