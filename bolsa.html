@@ -98,21 +98,17 @@ footer{padding-bottom:5.5rem}
 <section class="panel"><h2>Onde investir</h2><p>Compare bancos e corretoras pelo custo das operações, facilidade de uso e qualidade do atendimento.</p><p><a href="https://sistemaswebb3-listados.b3.com.br/participantsPage/">Buscar corretoras na B3</a></p><p><a href="https://www.gov.br/cvm/pt-br/acesso-a-informacao-cvm/perguntas-frequentes-da-cvm/como-escolher-a-corretora-ou">Como conferir a autorização na CVM</a></p></section>
 </div>
 <section class="help panel">
-<h2>Quer ajuda de um especialista?</h2>
-<p><strong>Serviço pago.</strong> Um especialista pode ajudar você a entender o mercado e decidir com mais clareza como investir seu dinheiro.</p>
-<ul>
-<li>Entenda como funciona a compra de ações e quais custos estão envolvidos.</li>
-<li>Avalie os riscos antes de investir e compare opções de acordo com seus objetivos e seu prazo.</li>
-<li>Tire dúvidas sobre o que observar antes de confirmar uma compra.</li>
-</ul>
-<p>As ações podem subir ou cair. Mesmo com orientação profissional, você pode perder dinheiro.</p>
-<details id="expert-details"><summary>Falar com um especialista</summary>
-<p>O consultor pode ajudar você a entender um ativo e os riscos envolvidos antes de tomar uma decisão.</p>
+<h2>Quais alternativas da bolsa fazem sentido para você?</h2>
+<p>Na consultoria paga, um profissional avaliaria o mercado na data da análise e compararia alternativas considerando quanto você pretende investir, por quanto tempo e quais perdas conseguiria suportar.</p>
+<details id="expert-details"><summary>Falar com um consultor</summary>
+<h3>O que você receberia</h3>
+<p>Um relatório com data e fontes, explicando quais setores merecem atenção naquele momento e por quê. Um quadro comparativo mostraria as alternativas avaliadas, seus custos, os principais riscos e como cada uma se encaixa no seu objetivo. A análise também indicaria o que poderia mudar essa avaliação.</p>
 <form id="expert-form">
-<label>Ativo de interesse<select id="consult-asset"><option value="">Dúvidas gerais sobre a bolsa</option></select></label>
-<label>O que você quer entender?<select name="topic" required><option value="">Escolha um assunto</option><option data-help="Entender como funciona uma ordem de compra e quais custos observar.">Primeiros passos</option><option data-help="Conversar sobre oscilações de preço, prazo e possibilidade de perda.">Riscos do investimento</option><option data-help="Interpretar o histórico de preços e comparar períodos.">Leitura do gráfico</option><option data-help="Descreva o que gostaria de conversar com o consultor.">Outra dúvida</option></select></label>
-<p class="topic-help" aria-live="polite"></p>
-<label>Sua dúvida (opcional)<textarea maxlength="1500" rows="2" placeholder="Ex.: O que significa a variação do preço no gráfico?"></textarea></label>
+<label>Qual é o seu objetivo?<input name="goal" required maxlength="200" placeholder="Ex.: complementar minha renda no futuro"></label>
+<label>Quanto pretende investir inicialmente? (R$)<input name="capital" required type="number" min="0.01" step="0.01" inputmode="decimal"></label>
+<label>Quando imagina precisar desse dinheiro?<select name="horizon" required><option value="">Selecione</option><option>Em até 1 ano</option><option>Entre 1 e 5 anos</option><option>Depois de 5 anos</option><option>Ainda não sei</option></select></label>
+<label>Como uma queda no valor investido afetaria seus planos?<textarea name="risk" required maxlength="600" rows="2" placeholder="Ex.: eu poderia esperar ou precisaria resgatar o dinheiro mesmo com perda?"></textarea></label>
+<label>Setores, ativos ou dúvidas para incluir (opcional)<textarea name="interests" maxlength="1500" rows="2" placeholder="Ex.: gostaria de comparar bancos e energia com um fundo de índice."></textarea></label>
 <label>Seu nome<input name="name" autocomplete="name" maxlength="120" required></label>
 <label>E-mail para retorno<input name="email" type="email" autocomplete="email" maxlength="254" required></label>
 <p class="consult-terms">A consultoria é paga. A proposta indicaria por e-mail o valor e o que seria analisado. Você decidiria se quer contratar. Neste protótipo, o pedido é simulado, sem envio ou cobrança.</p>
@@ -175,18 +171,9 @@ asset.addEventListener('change', showMarketChart);
 showMarketChart();
 
 const form = document.querySelector('#expert-form');
-const topic = form.elements.topic;
-const hint = form.querySelector('.topic-help');
-topic.addEventListener('change', () => {
-  hint.textContent = topic.selectedOptions[0].dataset.help || '';
-});
-form.addEventListener('reset', () => { hint.textContent = ''; });
 const expertDetails = document.querySelector('#expert-details');
-const consultAsset = document.querySelector('#consult-asset');
-for (const option of asset.options) consultAsset.add(option.cloneNode(true));
 document.querySelector('#consult-shortcut').addEventListener('click', () => {
   expertDetails.open = true;
-  consultAsset.value = asset.value;
   expertDetails.querySelector('summary').focus({preventScroll: true});
   expertDetails.scrollIntoView({block: 'start'});
 });
