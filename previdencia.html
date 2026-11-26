@@ -50,11 +50,17 @@ input{display:block;width:100%;height:3.15rem;margin-top:.35rem;padding:.55rem .
 details{margin-block:1.2rem 1.8rem;padding:1rem;border:1px solid var(--line);border-radius:.65rem;background:#fff}
 details p{margin-top:.6rem}
 summary{cursor:pointer;font-weight:650}
-.plan-details{margin:0;padding:0;border:0;border-top:1px solid var(--line);border-radius:0}
-.plan-details summary{color:var(--accent);padding-block:.65rem .15rem}
-.plan-details[open] summary{margin-bottom:.75rem}
-.plan-details > .details-body{display:none}
-.plan-details[open] > .details-body{display:grid;gap:.85rem}
+.plan{position:relative}
+.open-plan,.sheet-close{font:inherit;font-weight:700;color:var(--accent);cursor:pointer}
+.open-plan{justify-self:start;border:0;background:transparent;padding:.5rem 0}
+.open-plan::after{content:"";position:absolute;inset:0;border-radius:1rem}
+.plan:has(.open-plan:focus-visible){outline:3px solid var(--accent)}
+.plan-sheet{box-sizing:border-box;width:min(34rem,calc(100% - 2rem));max-height:85dvh;overflow:auto;padding:1.4rem;border:1px solid var(--line);border-radius:1rem;color:inherit}
+.plan-sheet::backdrop{background:#142e3da8}
+.sheet-head{display:flex;justify-content:space-between;align-items:start;gap:.8rem}
+.sheet-head h2{margin:0}.sheet-close{border:0;border-radius:.5rem;padding:.45rem .7rem}
+.sheet-summary{margin-block:1rem}.sheet-status:empty{display:none}
+.plan-sheet .details-body{display:grid;gap:.85rem}
 .details-body p{margin:.25rem 0 0}
 footer{border-top:1px solid var(--line);background:#fff;padding:1.35rem 0;color:var(--muted)}
 @media(max-width:36rem){.plans,.fields{grid-template-columns:1fr}}
@@ -90,13 +96,14 @@ footer{border-top:1px solid var(--line);background:#fff;padding:1.35rem 0;color:
 <div class="plan-data"><h4 class="plan-name" style="margin:0">Renda Primeiro Passo</h4><p class="minimum">Mínimo mensal de R$ 100.</p></div>
 <div class="projection"><p>Renda mensal estimada</p><p class="balance">—</p></div>
 <p class="status" hidden></p>
-<details class="plan-details">
-<summary>Ver detalhes</summary>
+<button type="button" class="open-plan" aria-haspopup="dialog" aria-label="Abrir ficha do plano Renda Primeiro Passo">Abrir ficha do plano</button>
+<dialog class="plan-sheet" aria-labelledby="plan-title-1"><div class="sheet-head"><h2 id="plan-title-1">Renda Primeiro Passo</h2><button class="sheet-close" type="button" autofocus>Fechar</button></div>
+<p class="sheet-summary"></p><p class="sheet-status"></p>
 <div class="details-body">
 <div><strong>Sobre o plano</strong><p>Aporte inicial menor.</p><p class="reserve rate"></p><p class="rate">Taxa simulada de 3% ao ano</p></div>
 <div><strong>Dados da empresa</strong><p class="provider-meta">Razão social: Alvoré Previdência S.A.<br>CNPJ fictício: 00.000.001/0001-00</p></div>
 </div>
-</details></article>
+</dialog></article>
 <article class="plan" data-minimo="150" data-taxa="4"><div class="provider" style="--logo-bg:#e4eff8;--logo-ink:#285778">
 <svg class="provider-logo" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M3 8h13a2.5 2.5 0 1 0-2.5-2.5M3 12h16a2 2 0 1 1-2 2M3 16h8a2.5 2.5 0 1 1-2.5 2.5"/></svg>
 <h3>Vento Sereno Previdência</h3>
@@ -104,13 +111,14 @@ footer{border-top:1px solid var(--line);background:#fff;padding:1.35rem 0;color:
 <div class="plan-data"><h4 class="plan-name" style="margin:0">Renda Mês Flexível</h4><p class="minimum">Mínimo mensal de R$ 150.</p></div>
 <div class="projection"><p>Renda mensal estimada</p><p class="balance">—</p></div>
 <p class="status" hidden></p>
-<details class="plan-details">
-<summary>Ver detalhes</summary>
+<button type="button" class="open-plan" aria-haspopup="dialog" aria-label="Abrir ficha do plano Renda Mês Flexível">Abrir ficha do plano</button>
+<dialog class="plan-sheet" aria-labelledby="plan-title-2"><div class="sheet-head"><h2 id="plan-title-2">Renda Mês Flexível</h2><button class="sheet-close" type="button" autofocus>Fechar</button></div>
+<p class="sheet-summary"></p><p class="sheet-status"></p>
 <div class="details-body">
 <div><strong>Sobre o plano</strong><p>Permite reforçar os aportes.</p><p class="reserve rate"></p><p class="rate">Taxa simulada de 4% ao ano</p></div>
 <div><strong>Dados da empresa</strong><p class="provider-meta">Razão social: Vento Sereno Previdência S.A.<br>CNPJ fictício: 00.000.002/0001-00</p></div>
 </div>
-</details></article>
+</dialog></article>
 <article class="plan" data-minimo="250" data-taxa="5"><div class="provider" style="--logo-bg:#f7ede3;--logo-ink:#85472e">
 <svg class="provider-logo" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M3 12c2.5 5 5.5 7 9 7s6.5-2 9-7M4 16h16M7 19h10"/><ellipse cx="12" cy="9" rx="2.6" ry="3.3"/></svg>
 <h3>Ninho do Vale Previdência</h3>
@@ -118,13 +126,14 @@ footer{border-top:1px solid var(--line);background:#fff;padding:1.35rem 0;color:
 <div class="plan-data"><h4 class="plan-name" style="margin:0">Renda Reserva de Família</h4><p class="minimum">Mínimo mensal de R$ 250.</p></div>
 <div class="projection"><p>Renda mensal estimada</p><p class="balance">—</p></div>
 <p class="status" hidden></p>
-<details class="plan-details">
-<summary>Ver detalhes</summary>
+<button type="button" class="open-plan" aria-haspopup="dialog" aria-label="Abrir ficha do plano Renda Reserva de Família">Abrir ficha do plano</button>
+<dialog class="plan-sheet" aria-labelledby="plan-title-3"><div class="sheet-head"><h2 id="plan-title-3">Renda Reserva de Família</h2><button class="sheet-close" type="button" autofocus>Fechar</button></div>
+<p class="sheet-summary"></p><p class="sheet-status"></p>
 <div class="details-body">
 <div><strong>Sobre o plano</strong><p>Permite indicar beneficiários.</p><p class="reserve rate"></p><p class="rate">Taxa simulada de 5% ao ano</p></div>
 <div><strong>Dados da empresa</strong><p class="provider-meta">Razão social: Ninho do Vale Previdência S.A.<br>CNPJ fictício: 00.000.003/0001-00</p></div>
 </div>
-</details></article>
+</dialog></article>
 <article class="plan" data-minimo="400" data-taxa="6"><div class="provider" style="--logo-bg:#eceafa;--logo-ink:#4f447c">
 <svg class="provider-logo" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M3 18h18M5 18v-4m14 4v-4M5 14c3-7 11-7 14 0M9 18v-6m6 6v-6"/></svg>
 <h3>Ponte Clara Previdência</h3>
@@ -132,13 +141,14 @@ footer{border-top:1px solid var(--line);background:#fff;padding:1.35rem 0;color:
 <div class="plan-data"><h4 class="plan-name" style="margin:0">Renda Prazo Escolhido</h4><p class="minimum">Mínimo mensal de R$ 400.</p></div>
 <div class="projection"><p>Renda mensal estimada</p><p class="balance">—</p></div>
 <p class="status" hidden></p>
-<details class="plan-details">
-<summary>Ver detalhes</summary>
+<button type="button" class="open-plan" aria-haspopup="dialog" aria-label="Abrir ficha do plano Renda Prazo Escolhido">Abrir ficha do plano</button>
+<dialog class="plan-sheet" aria-labelledby="plan-title-4"><div class="sheet-head"><h2 id="plan-title-4">Renda Prazo Escolhido</h2><button class="sheet-close" type="button" autofocus>Fechar</button></div>
+<p class="sheet-summary"></p><p class="sheet-status"></p>
 <div class="details-body">
 <div><strong>Sobre o plano</strong><p>Permite receber em parcelas.</p><p class="reserve rate"></p><p class="rate">Taxa simulada de 6% ao ano</p></div>
 <div><strong>Dados da empresa</strong><p class="provider-meta">Razão social: Ponte Clara Previdência S.A.<br>CNPJ fictício: 00.000.004/0001-00</p></div>
 </div>
-</details></article>
+</dialog></article>
 <article class="plan" data-minimo="600" data-taxa="7"><div class="provider" style="--logo-bg:#f6f1db;--logo-ink:#725922">
 <svg class="provider-logo" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M5 20h14M8 20l2-10h4l2 10M9 10V7l3-3 3 3v3M4 7l2 1m14-1-2 1M10 15h4"/></svg>
 <h3>Farol do Campo Previdência</h3>
@@ -146,13 +156,14 @@ footer{border-top:1px solid var(--line);background:#fff;padding:1.35rem 0;color:
 <div class="plan-data"><h4 class="plan-name" style="margin:0">Renda Horizonte Aberto</h4><p class="minimum">Mínimo mensal de R$ 600.</p></div>
 <div class="projection"><p>Renda mensal estimada</p><p class="balance">—</p></div>
 <p class="status" hidden></p>
-<details class="plan-details">
-<summary>Ver detalhes</summary>
+<button type="button" class="open-plan" aria-haspopup="dialog" aria-label="Abrir ficha do plano Renda Horizonte Aberto">Abrir ficha do plano</button>
+<dialog class="plan-sheet" aria-labelledby="plan-title-5"><div class="sheet-head"><h2 id="plan-title-5">Renda Horizonte Aberto</h2><button class="sheet-close" type="button" autofocus>Fechar</button></div>
+<p class="sheet-summary"></p><p class="sheet-status"></p>
 <div class="details-body">
 <div><strong>Sobre o plano</strong><p>Ilustra a opção de resgate único.</p><p class="reserve rate"></p><p class="rate">Taxa simulada de 7% ao ano</p></div>
 <div><strong>Dados da empresa</strong><p class="provider-meta">Razão social: Farol do Campo Previdência S.A.<br>CNPJ fictício: 00.000.005/0001-00</p></div>
 </div>
-</details></article>
+</dialog></article>
 </div>
 </section>
 <details><summary>Como os valores são calculados?</summary><p>A simulação usa aportes no fim de cada mês e juros compostos com uma taxa fictícia constante por plano. Na fase de recebimento, dividimos o saldo pelo número de meses escolhido, sem aplicar rendimentos nessa fase. Os valores são brutos e não descontam taxas, impostos ou inflação. A renda é por prazo definido e termina ao fim desse período. Quando o aporte fica abaixo do mínimo de um plano, a projeção aparece apenas para comparação.</p><p>O mínimo de R$ 100 foi inspirado em um exemplo divulgado pelo <a href="https://www.bb.com.br/previdencia">Banco do Brasil</a>. Planos reais podem prever renda por prazo definido, renda vitalícia ou pagamento único. Consulte o <a href="https://www.gov.br/susep/pt-br/assuntos/meu-futuro-seguro/seguros-previdencia-e-capitalizacao/providencia-complementar-aberta/pgbl-vgbl">guia da Susep</a> para conhecer os planos reais.</p></details>
@@ -190,6 +201,19 @@ function atualizar() {
     : 'Informe um valor mensal válido e prazos de 1 a 100 anos.';
 }
 
+for (const plano of planos) {
+  const ficha = plano.querySelector('.plan-sheet');
+  plano.querySelector('.open-plan').addEventListener('click', () => {
+    const empresa = plano.querySelector('.provider h3').textContent;
+    const minimo = plano.querySelector('.minimum').textContent;
+    const renda = plano.querySelector('.balance').textContent;
+    ficha.querySelector('.sheet-summary').textContent = empresa + ' · ' + minimo + ' Renda mensal estimada: ' + renda;
+    const status = plano.querySelector('.status');
+    ficha.querySelector('.sheet-status').textContent = status.hidden ? '' : status.textContent;
+    ficha.showModal();
+  });
+  ficha.querySelector('.sheet-close').addEventListener('click', () => ficha.close());
+}
 document.querySelector('#campos').addEventListener('input', atualizar);
 atualizar();
 </script>
