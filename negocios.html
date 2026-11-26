@@ -263,7 +263,8 @@ footer{padding-bottom:5.5rem}
 <ul><li>Uma <strong>planilha comparativa</strong> com o investimento inicial estimado, os principais custos e os riscos de cada projeto na região, como demanda incerta ou concorrência local.</li>
 <li>Uma <strong>ficha personalizada</strong> indicando quais projetos melhor atendem às suas preferências e ao seu orçamento, os motivos da escolha e o que verificar antes de investir.</li></ul>
 <form id="consult-form">
-<label>Quais projetos quer avaliar?<select name="project"></select></label>
+<p id="consult-reference" hidden></p>
+<label>Em qual ramo você gostaria de empreender?<input name="sector" maxlength="160" placeholder="Ex.: alimentação, comércio, serviços ou ainda estou decidindo"></label>
 <label>Seu objetivo<select name="goal" required><option value="">Escolha seu objetivo</option><option>Complementar minha renda</option><option>Ter um negócio como principal fonte de renda</option><option>Entrar como sócio em um projeto</option><option>Avaliar meu próprio projeto</option><option>Explorar possibilidades</option></select></label>
 <label>Qual é a sua renda mensal aproximada? (opcional)<select name="income"><option value="">Prefiro não informar</option><option>Até R$ 2.000</option><option>Acima de R$ 2.000 até R$ 5.000</option><option>Acima de R$ 5.000 até R$ 10.000</option><option>Acima de R$ 10.000</option></select></label>
 <label>Quanto pretende investir para começar? (R$, opcional)<input name="capital" type="number" inputmode="decimal" min="0" step="0.01" placeholder="Ex.: 5000"></label>
@@ -404,13 +405,9 @@ const consultResult = document.querySelector('#consult-result');
 function openConsult(title) {
   consultForm.reset();
   consultResult.textContent = '';
-  const select = consultForm.elements.project;
-  select.replaceChildren(new Option('Comparar os projetos disponíveis', ''));
-  for (const card of cards) {
-    const name = card.querySelector('h3').textContent;
-    select.add(new Option(name, name));
-  }
-  select.value = title || '';
+  const reference = document.querySelector('#consult-reference');
+  reference.hidden = !title;
+  reference.textContent = title ? 'Projeto de referência: ' + title : '';
   consultDialog.showModal();
 }
 document.querySelector('#consult-open').addEventListener('click', () => {
