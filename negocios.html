@@ -58,7 +58,7 @@ dialog::backdrop{background:#142e3db3}
 
 .revenue{margin-top:1rem;padding:.9rem;border-radius:.75rem;background:#edf6f8}
 .revenue h4{margin:0 0 .55rem;font-size:1.05rem}
-details[open] .revenue dl{display:grid;grid-template-columns:repeat(auto-fit,minmax(7.15rem,1fr));gap:.65rem;margin:0}
+.revenue dl{display:grid;grid-template-columns:repeat(auto-fit,minmax(7.15rem,1fr));gap:.65rem;margin:0}
 .revenue dt{margin:0;font-size:.9rem;font-weight:600}
 .revenue dd{color:var(--ink);font-weight:750}
 .revenue-note{margin-top:.6rem;font-size:.9rem;color:var(--muted)}
@@ -96,6 +96,16 @@ footer{padding-bottom:5.5rem}
 .topic-help:empty{display:none}
 .topic-help,.consult-terms{margin:.25rem 0;color:#40554e;font-size:.94rem}
 #consult-form textarea,#expert-form select{width:100%;font:inherit;padding:.6rem;border:1px solid #718f9f;border-radius:.55rem}
+.project{position:relative}
+.project-open{justify-self:start;padding:.45rem 0;background:none;border:0;color:var(--accent);font-weight:700}
+.project-open::after{content:"";position:absolute;inset:0;border-radius:1.25rem}
+.project:focus-within,.project:hover{outline:2px solid var(--accent)}
+#project-dialog{width:min(56rem,calc(100% - 1.5rem))}
+#project-dialog .dialog-head{gap:1rem}
+.project-layout{display:grid;grid-template-columns:minmax(0,1fr) minmax(13rem,.52fr);gap:1.25rem;margin-top:1rem}
+.project-actions{align-self:start;background:#edf6f8;border-radius:.85rem;padding:1rem;display:grid;gap:.65rem}
+.project-actions p{margin:0}
+@media(max-width:42rem){.project-layout{display:flex;flex-direction:column}.project-actions{width:100%;order:-1}}
 </style>
 <link rel="stylesheet" href="tema-interno.css?v=3">
 </head>
@@ -125,8 +135,7 @@ footer{padding-bottom:5.5rem}
 <div class="project-meta"><p class="place">Montes Claros · MG</p><span class="size-tag">Pequeno porte</span></div>
 <h3>Carlos quer abrir uma padaria de bairro</h3>
 <p>Pães frescos e café da manhã para moradores do bairro.</p>
-<details>
-<summary>Ver detalhes<span class="sr-only"> do projeto de Carlos</span></summary>
+<button class="project-open" type="button" aria-haspopup="dialog">Abrir projeto <span aria-hidden="true">↗</span></button><template class="project-data" data-contact>
 <dl>
 <dt>Etapa do negócio</dt><dd>Local definido</dd>
 <dt>O que Carlos já tem</dt><dd>Um ponto comercial, um forno, receitas testadas e experiência com produção de pães.</dd>
@@ -142,16 +151,14 @@ footer{padding-bottom:5.5rem}
 </dl>
 <p class="revenue-note">Projeção fictícia com 26 dias de atividade por mês. Valores antes de custos e impostos.</p>
 </div>
-</details>
-<button class="contact" type="button">Entrar em contato</button>
+</template>
 </article>
 <article class="project" data-city="bocaiuva" data-stage="local" data-size="pequeno">
 <img class="project-photo" src="images/projeto-ferramentas.webp" alt="Ferramentas em uma oficina" width="600" height="300" loading="lazy">
 <div class="project-meta"><p class="place">Bocaiuva · MG</p><span class="size-tag">Pequeno porte</span></div>
 <h3>Renata quer montar uma locadora de ferramentas</h3>
 <p>Aluguel de ferramentas para reformas e pequenos serviços.</p>
-<details>
-<summary>Ver detalhes<span class="sr-only"> do projeto de Renata</span></summary>
+<button class="project-open" type="button" aria-haspopup="dialog">Abrir projeto <span aria-hidden="true">↗</span></button><template class="project-data" data-contact>
 <dl>
 <dt>Etapa do negócio</dt><dd>Local definido</dd>
 <dt>O que Renata já tem</dt><dd>Uma garagem para guardar os equipamentos e um conjunto inicial de ferramentas.</dd>
@@ -167,16 +174,14 @@ footer{padding-bottom:5.5rem}
 </dl>
 <p class="revenue-note">Projeção fictícia com 24 dias de atividade por mês. Valores antes de custos e impostos.</p>
 </div>
-</details>
-<button class="contact" type="button">Entrar em contato</button>
+</template>
 </article>
 <article class="project" data-city="janauba" data-stage="inicio" data-size="pequeno">
 <img class="project-photo" src="images/projeto-marmitas.webp" alt="Refeições prontas para levar" width="600" height="300" loading="lazy">
 <div class="project-meta"><p class="place">Janaúba · MG</p><span class="size-tag">Pequeno porte</span></div>
 <h3>Mariana quer abrir uma loja de marmitas</h3>
 <p>Marmitas caseiras para quem precisa almoçar perto do trabalho.</p>
-<details>
-<summary>Ver detalhes<span class="sr-only"> do projeto de Mariana</span></summary>
+<button class="project-open" type="button" aria-haspopup="dialog">Abrir projeto <span aria-hidden="true">↗</span></button><template class="project-data" data-contact>
 <dl>
 <dt>Etapa do negócio</dt><dd>Em estruturação</dd>
 <dt>O que Mariana já tem</dt><dd>Cardápio testado, fornecedores mapeados e experiência em cozinha.</dd>
@@ -192,16 +197,14 @@ footer{padding-bottom:5.5rem}
 </dl>
 <p class="revenue-note">Projeção fictícia com 22 dias de atividade por mês. Valores antes de custos e impostos.</p>
 </div>
-</details>
-<button class="contact" type="button">Entrar em contato</button>
+</template>
 </article>
 <article class="project" data-city="montes-claros" data-stage="inicio" data-size="pequeno">
 <img class="project-photo" src="images/projeto-impressao.webp" alt="Impressora 3D em funcionamento" width="600" height="300" loading="lazy">
 <div class="project-meta"><p class="place">Montes Claros · MG</p><span class="size-tag">Pequeno porte</span></div>
 <h3>Diego quer criar um ateliê de impressão 3D</h3>
 <p>Peças personalizadas e protótipos para comércios locais.</p>
-<details>
-<summary>Ver detalhes<span class="sr-only"> do projeto de Diego</span></summary>
+<button class="project-open" type="button" aria-haspopup="dialog">Abrir projeto <span aria-hidden="true">↗</span></button><template class="project-data" data-contact>
 <dl>
 <dt>Etapa do negócio</dt><dd>Em estruturação</dd>
 <dt>O que Diego já tem</dt><dd>Uma impressora, modelos próprios e um portfólio de peças.</dd>
@@ -217,16 +220,14 @@ footer{padding-bottom:5.5rem}
 </dl>
 <p class="revenue-note">Projeção fictícia com 22 dias de atividade por mês. Valores antes de custos e impostos.</p>
 </div>
-</details>
-<button class="contact" type="button">Entrar em contato</button>
+</template>
 </article>
 <article class="project" data-city="pirapora" data-stage="local" data-size="medio">
 <img class="project-photo" src="images/projeto-mudas.webp" alt="Mudas cultivadas em vasos" width="600" height="300" loading="lazy">
 <div class="project-meta"><p class="place">Pirapora · MG</p><span class="size-tag">Médio porte</span></div>
 <h3>Lúcia quer montar um viveiro de mudas</h3>
 <p>Mudas de hortaliças e temperos para quintais e pequenos produtores.</p>
-<details>
-<summary>Ver detalhes<span class="sr-only"> do projeto de Lúcia</span></summary>
+<button class="project-open" type="button" aria-haspopup="dialog">Abrir projeto <span aria-hidden="true">↗</span></button><template class="project-data" data-contact>
 <dl>
 <dt>Etapa do negócio</dt><dd>Local definido</dd>
 <dt>O que Lúcia já tem</dt><dd>Um terreno, experiência com cultivo e contatos em feiras locais.</dd>
@@ -242,14 +243,18 @@ footer{padding-bottom:5.5rem}
 </dl>
 <p class="revenue-note">Projeção fictícia com 24 dias de atividade por mês. Valores antes de custos e impostos.</p>
 </div>
-</details>
-<button class="contact" type="button">Entrar em contato</button>
+</template>
 </article>
 </div>
 </section>
 </main>
 <footer><div class="wrap">Renda em Frente · Educação financeira</div></footer>
 <button class="send" id="consult-open" type="button" aria-haspopup="dialog">Falar com um consultor</button>
+<dialog id="project-dialog" aria-labelledby="project-heading">
+<div class="dialog-head"><h2 id="project-heading"></h2><button type="button" class="close" autofocus>Fechar</button></div>
+<div class="project-layout"><div id="project-body"></div>
+<aside class="project-actions"><strong>Quer avaliar este projeto?</strong><p>Converse sobre custos, demanda ou participação como sócio.</p><button id="project-consult" class="send" type="button">Falar com um consultor</button><small>Consultoria paga e opcional.</small><button id="project-contact" type="button" class="close">Falar com o responsável</button></aside></div>
+</dialog>
 <dialog id="consult-dialog" aria-labelledby="consult-heading">
 <div class="dialog-head"><h2 id="consult-heading">Consultoria para projetos</h2><button class="close" type="button">Fechar</button></div>
 <p>O consultor pode ajudar você a avaliar uma ideia antes de abrir um negócio ou entrar como sócio.</p>
@@ -281,7 +286,7 @@ footer{padding-bottom:5.5rem}
 </form>
 </dialog>
 <template id="local-project">
-<article class="project"><div class="project-meta"><p class="place"></p><span class="size-tag"></span></div><h3></h3><p></p><details><summary>Ver detalhes</summary><dl><dt>Etapa do negócio</dt><dd></dd></dl></details></article>
+<article class="project"><div class="project-meta"><p class="place"></p><span class="size-tag"></span></div><h3></h3><p></p><button class="project-open" type="button" aria-haspopup="dialog">Abrir projeto <span aria-hidden="true">↗</span></button><template class="project-data"><dl><dt>Etapa do negócio</dt><dd></dd></dl></template></article>
 </template>
 <dialog id="contact-dialog" aria-labelledby="contact-title">
 <div class="dialog-head"><h2 id="contact-title">Entrar em contato</h2><button type="button" class="close">Fechar</button></div>
@@ -340,7 +345,7 @@ function addLocalProject(entry) {
   card.querySelector('.size-tag').textContent = entry.sizeLabel;
   card.querySelector('h3').textContent = entry.title;
   card.querySelector('h3 + p').textContent = entry.description;
-  card.querySelector('dd').textContent = entry.stageLabel;
+  card.querySelector('.project-data').content.querySelector('dd').textContent = entry.stageLabel;
   if (![...city.options].some(option => option.value === cityKey)) {
     city.add(new Option(entry.city, cityKey));
   }
@@ -408,8 +413,7 @@ function openConsult(title) {
   consultDialog.showModal();
 }
 document.querySelector('#consult-open').addEventListener('click', () => {
-  const open = cards.filter(card => !card.hidden && card.querySelector('details').open);
-  openConsult(open.length === 1 ? open[0].querySelector('h3').textContent : '');
+  openConsult('');
 });
 consultDialog.querySelector('.close').addEventListener('click', () => consultDialog.close());
 consultForm.addEventListener('submit', event => {
@@ -422,12 +426,31 @@ const form = document.querySelector('#contact-form');
 const project = document.querySelector('#contact-project');
 const result = document.querySelector('#form-result');
 
-for (const button of document.querySelectorAll('.project .contact')) {
-  button.addEventListener('click', () => {
-    project.textContent = button.closest('.project').querySelector('h3').textContent;
-    dialog.showModal();
-  });
-}
+const projectDialog = document.querySelector('#project-dialog');
+const heading = document.querySelector('#project-heading');
+const body = document.querySelector('#project-body');
+const contactButton = document.querySelector('#project-contact');
+document.querySelector('.projects').addEventListener('click', event => {
+  const button = event.target.closest('.project-open');
+  if (!button) return;
+  const card = button.closest('.project');
+  const data = card.querySelector('.project-data');
+  heading.textContent = card.querySelector('h3').textContent;
+  body.replaceChildren();
+  for (const node of card.querySelectorAll('.project-photo, .project-meta, h3 + p')) {
+    body.append(node.cloneNode(true));
+  }
+  body.append(data.content.cloneNode(true));
+  contactButton.hidden = !data.hasAttribute('data-contact');
+  projectDialog.showModal();
+  projectDialog.scrollTop = 0;
+});
+projectDialog.querySelector('.dialog-head .close').addEventListener('click', () => projectDialog.close());
+document.querySelector('#project-consult').addEventListener('click', () => openConsult(heading.textContent));
+contactButton.addEventListener('click', () => {
+  project.textContent = heading.textContent;
+  dialog.showModal();
+});
 dialog.querySelector('.close').addEventListener('click', () => dialog.close());
 dialog.addEventListener('close', () => {
   form.reset();
