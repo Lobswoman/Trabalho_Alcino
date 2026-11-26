@@ -107,7 +107,8 @@ footer{padding-bottom:5.5rem}
 <label>Qual é o seu objetivo?<input name="goal" required maxlength="200" placeholder="Ex.: complementar minha renda no futuro"></label>
 <label>Quanto pretende investir inicialmente? (R$)<input name="capital" required type="number" min="0.01" step="0.01" inputmode="decimal"></label>
 <label>Quando imagina precisar desse dinheiro?<select name="horizon" required><option value="">Selecione</option><option>Em até 1 ano</option><option>Entre 1 e 5 anos</option><option>Depois de 5 anos</option><option>Ainda não sei</option></select></label>
-<label>Como uma queda no valor investido afetaria seus planos?<textarea name="risk" required maxlength="600" rows="2" placeholder="Ex.: eu poderia esperar ou precisaria resgatar o dinheiro mesmo com perda?"></textarea></label>
+<label>Qual nível de risco você se sente confortável em assumir?<select name="riskLevel" required><option value="">Selecione uma opção</option><option value="baixo">Baixo — prefiro pequenas oscilações</option><option value="moderado">Moderado — aceito oscilações intermediárias</option><option value="alto">Alto — aceito oscilações fortes e a possibilidade de perdas maiores</option><option value="indefinido">Ainda não sei e quero conversar sobre isso</option></select></label>
+<label>Como uma queda no valor investido afetaria seus planos? (opcional)<textarea name="risk" maxlength="600" rows="2" placeholder="Ex.: eu poderia esperar ou precisaria resgatar o dinheiro mesmo com perda?"></textarea></label>
 <label>Setores, ativos ou dúvidas para incluir (opcional)<textarea name="interests" maxlength="1500" rows="2" placeholder="Ex.: gostaria de comparar bancos e energia com um fundo de índice."></textarea></label>
 <label>Seu nome<input name="name" autocomplete="name" maxlength="120" required></label>
 <label>E-mail para retorno<input name="email" type="email" autocomplete="email" maxlength="254" required></label>
