@@ -104,6 +104,7 @@ footer{padding-bottom:5.5rem}
 #project-dialog .dialog-head{gap:1rem}
 .project-layout{display:grid;grid-template-columns:minmax(0,1fr) minmax(13rem,.52fr);gap:1.25rem;margin-top:1rem}
 .project-actions{align-self:start;background:#edf6f8;border-radius:.85rem;padding:1rem;display:grid;gap:.65rem}
+.project-actions .send{justify-self:stretch;width:100%;min-height:3.75rem;line-height:1.2}
 .project-actions p{margin:0}
 @media(max-width:42rem){.project-layout{display:flex;flex-direction:column}.project-actions{width:100%;order:-1}}
 </style>
@@ -253,7 +254,7 @@ footer{padding-bottom:5.5rem}
 <dialog id="project-dialog" aria-labelledby="project-heading">
 <div class="dialog-head"><h2 id="project-heading"></h2><button type="button" class="close" autofocus>Fechar</button></div>
 <div class="project-layout"><div id="project-body"></div>
-<aside class="project-actions"><strong>Quer avaliar este projeto?</strong><p>Converse sobre custos, demanda ou participação como sócio.</p><button id="project-consult" class="send" type="button">Falar com um consultor</button><small>Consultoria paga e opcional.</small><button id="project-contact" type="button" class="close">Falar com o responsável</button></aside></div>
+<aside class="project-actions"><strong>Quer avaliar este projeto?</strong><p>Converse sobre custos, demanda ou participação como sócio.</p><button id="project-consult" class="send" type="button">Falar com um consultor</button><small>Consultoria paga e opcional.</small><button id="project-contact" type="button" class="send">Falar com o responsável</button></aside></div>
 </dialog>
 <dialog id="consult-dialog" aria-labelledby="consult-heading">
 <div class="dialog-head"><h2 id="consult-heading">Consultoria para projetos</h2><button class="close" type="button">Fechar</button></div>
