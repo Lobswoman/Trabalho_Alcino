@@ -61,6 +61,11 @@ footer{padding-bottom:5.5rem}
 .topic-help:empty{display:none}
 .topic-help,.consult-terms{margin:.25rem 0;color:#40554e;font-size:.94rem}
 #consult-form textarea,#expert-form select{width:100%;font:inherit;padding:.6rem;border:1px solid #718f9f;border-radius:.55rem}
+#expert-details{width:min(36rem,calc(100% - 2rem));max-height:88dvh;overflow:auto;border:0;border-radius:1rem;padding:clamp(1rem,4vw,2rem);color:inherit}
+#expert-details::backdrop{background:#142e3db3}
+.expert-head{position:static;display:flex;align-items:start;justify-content:space-between;gap:1rem;padding-bottom:.8rem;border-bottom:1px solid #c8d8da}
+#expert-details form{max-width:none}
+.expert-price{padding:1rem;background:#edf6f8;border-radius:.75rem}.expert-price small{display:block;margin-top:.75rem}
 </style>
 <link rel="stylesheet" href="tema-interno.css?v=3">
 </head>
@@ -97,10 +102,9 @@ footer{padding-bottom:5.5rem}
 <section class="panel"><h2>Como começar</h2><ol><li>Defina por que está investindo e quando poderá precisar do dinheiro.</li><li>Entenda que ações oscilam e podem perder valor.</li><li>Abra conta em uma corretora autorizada e confira o código, a quantidade e o preço antes de confirmar uma ordem.</li></ol></section>
 <section class="panel"><h2>Onde investir</h2><p>Compare bancos e corretoras pelo custo das operações, facilidade de uso e qualidade do atendimento.</p><p><a href="https://sistemaswebb3-listados.b3.com.br/participantsPage/">Buscar corretoras na B3</a></p><p><a href="https://www.gov.br/cvm/pt-br/acesso-a-informacao-cvm/perguntas-frequentes-da-cvm/como-escolher-a-corretora-ou">Como conferir a autorização na CVM</a></p></section>
 </div>
-<section class="help panel">
-<h2>Quais alternativas da bolsa fazem sentido para você?</h2>
-<p>Na consultoria paga, um profissional avaliaria o mercado na data da análise e compararia alternativas considerando quanto você pretende investir, por quanto tempo e quais perdas conseguiria suportar.</p>
-<details id="expert-details"><summary>Falar com um consultor</summary>
+<section class="help panel"><h2>Consultoria de investimentos</h2><button type="button" aria-controls="expert-details" aria-haspopup="dialog">Falar com um consultor</button></section>
+<dialog id="expert-details" aria-labelledby="expert-title"><header class="expert-head"><h2 id="expert-title">Consultoria de investimentos</h2><button type="button" id="expert-close" autofocus>Fechar</button></header>
+<p>Esta consultoria é paga. Um profissional avaliaria o mercado, seu objetivo, seu prazo e sua tolerância ao risco.</p>
 <h3>O que você receberia</h3>
 <p>Um relatório com data e fontes, explicando quais setores merecem atenção naquele momento e por quê. Um quadro comparativo mostraria as alternativas avaliadas, seus custos, os principais riscos e como cada uma se encaixa no seu objetivo. A análise também indicaria o que poderia mudar essa avaliação.</p>
 <form id="expert-form">
@@ -112,15 +116,17 @@ footer{padding-bottom:5.5rem}
 <label>Setores, ativos ou dúvidas para incluir (opcional)<textarea name="interests" maxlength="1500" rows="2" placeholder="Ex.: gostaria de comparar bancos e energia com um fundo de índice."></textarea></label>
 <label>Seu nome<input name="name" autocomplete="name" maxlength="120" required></label>
 <label>E-mail para retorno<input name="email" type="email" autocomplete="email" maxlength="254" required></label>
-<p class="consult-terms">A consultoria é paga. A proposta indicaria por e-mail o valor e o que seria analisado. Você decidiria se quer contratar. Neste protótipo, o pedido é simulado, sem envio ou cobrança.</p>
-<button type="submit" class="send">Simular pedido de proposta</button>
+<section class="expert-price"><h3>Valor da consultoria</h3><p><strong>R$ 89,90</strong> pelo relatório de mercado e pelo quadro comparativo para o seu perfil.</p>
+<label>Formas de pagamento<select name="payment" required><option value="">Selecione uma opção</option><option>Pix</option><option>Cartão</option></select></label>
+<small>Pedido demonstrativo, sem cobrança ou envio de e-mail.</small></section>
+<button type="submit" class="send">Simular pedido de consultoria</button>
 </form>
 <p id="contact-status" role="status"></p>
 <p><a href="https://www.gov.br/cvm/pt-br/assuntos/regulados/consultas-por-participante/consultores-de-valores-mobiliarios">Consultar profissionais autorizados na CVM</a></p>
-</details></section>
+</dialog>
 </div>
 </main>
-<button type="button" id="consult-shortcut" aria-controls="expert-details">Falar com um consultor</button>
+<button type="button" id="consult-shortcut" aria-haspopup="dialog" aria-controls="expert-details">Falar com um consultor</button>
 <footer><div class="wrap">Renda em Frente · Educação financeira</div></footer>
 <script>
 const asset = document.querySelector('#market-asset');
@@ -173,11 +179,13 @@ showMarketChart();
 
 const form = document.querySelector('#expert-form');
 const expertDetails = document.querySelector('#expert-details');
-document.querySelector('#consult-shortcut').addEventListener('click', () => {
-  expertDetails.open = true;
-  expertDetails.querySelector('summary').focus({preventScroll: true});
-  expertDetails.scrollIntoView({block: 'start'});
-});
+for (const button of document.querySelectorAll('[aria-controls="expert-details"]')) {
+  button.addEventListener('click', () => {
+    expertDetails.showModal();
+    expertDetails.scrollTop = 0;
+  });
+}
+document.querySelector('#expert-close').addEventListener('click', () => expertDetails.close());
 form.addEventListener('submit', event => {
   event.preventDefault();
   form.reset();
