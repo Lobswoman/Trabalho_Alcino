@@ -107,6 +107,7 @@ footer{padding-bottom:5.5rem}
 .project-actions .send{justify-self:stretch;width:100%;min-height:3.75rem;line-height:1.2}
 .project-actions p{margin:0}
 @media(max-width:42rem){.project-layout{display:flex;flex-direction:column}.project-actions{width:100%;order:-1}}
+.consult-price{background:#edf6f8;padding:1rem;border-radius:.75rem}.consult-price strong{font-size:1.12rem}.consult-price p{margin:.35rem 0}
 </style>
 <link rel="stylesheet" href="tema-interno.css?v=3">
 </head>
@@ -254,7 +255,7 @@ footer{padding-bottom:5.5rem}
 <dialog id="project-dialog" aria-labelledby="project-heading">
 <div class="dialog-head"><h2 id="project-heading"></h2><button type="button" class="close" autofocus>Fechar</button></div>
 <div class="project-layout"><div id="project-body"></div>
-<aside class="project-actions"><strong>Quer avaliar este projeto?</strong><p>Avalie se o projeto cabe no seu orçamento e compare alternativas com um consultor.</p><button id="project-consult" class="send" type="button">Falar com um consultor</button><small>Consultoria paga e opcional.</small><button id="project-contact" type="button" class="send">Falar com o responsável</button></aside></div>
+<aside class="project-actions"><strong>Quer avaliar este projeto?</strong><p>Avalie se o projeto cabe no seu orçamento e compare alternativas com um consultor.</p><button id="project-consult" class="send" type="button">Falar com um consultor</button><small>Consultoria opcional · R$ 50,00.</small><button id="project-contact" type="button" class="send">Falar com o responsável</button></aside></div>
 </dialog>
 <dialog id="consult-dialog" aria-labelledby="consult-heading">
 <div class="dialog-head"><h2 id="consult-heading">Consultoria para projetos</h2><button class="close" type="button">Fechar</button></div>
@@ -267,14 +268,14 @@ footer{padding-bottom:5.5rem}
 <label>Em qual ramo você gostaria de empreender?<input name="sector" maxlength="160" placeholder="Ex.: alimentação, comércio, serviços ou ainda estou decidindo"></label>
 <label>Seu objetivo<select name="goal" required><option value="">Escolha seu objetivo</option><option>Complementar minha renda</option><option>Ter um negócio como principal fonte de renda</option><option>Entrar como sócio em um projeto</option><option>Avaliar meu próprio projeto</option><option>Explorar possibilidades</option></select></label>
 <label>Qual é a sua renda mensal aproximada? (opcional)<select name="income"><option value="">Prefiro não informar</option><option>Até R$ 2.000</option><option>Acima de R$ 2.000 até R$ 5.000</option><option>Acima de R$ 5.000 até R$ 10.000</option><option>Acima de R$ 10.000</option></select></label>
-<label>Quanto pretende investir para começar? (R$, opcional)<input name="capital" type="number" inputmode="decimal" min="0" step="0.01" placeholder="Ex.: 5000"></label>
+<label>Quanto pretende investir para começar? (R$, obrigatório)<input required name="capital" type="number" inputmode="decimal" min="0" step="0.01" placeholder="Ex.: 5000"></label>
 <label>Em qual cidade ou região pretende investir?<input name="region" maxlength="160" placeholder="Ex.: Montes Claros e cidades próximas"></label>
 <label>O que é importante para você no negócio? (opcional)<textarea name="preferences" maxlength="1000" rows="2" placeholder="Ex.: Prefiro alimentação e posso me dedicar aos sábados."></textarea></label>
 <label>Quais questões o consultor deve avaliar? (opcional)<textarea name="questions" maxlength="1500" rows="3" placeholder="Ex.: Tenho R$ 5 mil e só posso trabalhar aos sábados. A padaria do Carlos faria sentido para mim? Que outros projetos caberiam nesse orçamento?"></textarea></label>
 <label>Seu nome<input name="name" autocomplete="name" maxlength="120" required></label>
 <label>E-mail para retorno<input name="email" type="email" autocomplete="email" maxlength="254" required></label>
-<p class="consult-terms">A consultoria é paga. A proposta indicaria por e-mail o valor e o que seria analisado. Você decidiria se quer contratar. Neste protótipo, o pedido é simulado, sem envio ou cobrança.</p>
-<button type="submit" class="send">Simular pedido de proposta</button>
+<div class="consult-price"><strong>R$ 50,00 pela consultoria completa</strong><p>O valor inclui a planilha comparativa de custos e riscos e a ficha personalizada com os projetos indicados pelo consultor para o seu perfil e região.</p><small>Neste protótipo, o pedido é simulado, sem cobrança ou envio de e-mail.</small></div>
+<button type="submit" class="send">Simular pedido de consultoria</button>
 </form>
 <p id="consult-result" role="status"></p>
 </dialog>
@@ -288,7 +289,7 @@ footer{padding-bottom:5.5rem}
 <label>Porte previsto<select name="size" required><option value="pequeno">Pequeno porte</option><option value="medio">Médio porte</option><option value="grande">Grande porte</option></select></label>
 <label>Resumo e o que você procura em um sócio<textarea name="description" rows="4" required maxlength="1000"></textarea></label>
 <label class="consult-choice"><input type="checkbox" name="consult" aria-describedby="publish-fee">Quero conversar com um consultor sobre meu projeto</label>
-<small class="fee-note" id="publish-fee">Consultoria paga e opcional. Ao publicar, você poderá preencher o formulário demonstrativo.</small>
+<small class="fee-note" id="publish-fee">Consultoria opcional · R$ 50,00. Ao publicar, você poderá preencher o formulário demonstrativo.</small>
 <button type="submit" class="send">Publicar neste navegador</button>
 <p id="publish-error" role="status"></p>
 </form>
