@@ -58,6 +58,9 @@ footer{padding:1rem 0;border-top:1px solid var(--line)}
 .risk-note strong{color:var(--ink);margin-inline-end:.3rem}
 #consult-shortcut{position:fixed;right:1rem;bottom:max(1rem,env(safe-area-inset-bottom));z-index:2;border:0;border-radius:2rem;padding:.75rem 1rem;background:#124659;color:white;font:inherit;font-weight:700;cursor:pointer;box-shadow:0 3px 14px #14362f40}
 footer{padding-bottom:5.5rem}
+.topic-help:empty{display:none}
+.topic-help,.consult-terms{margin:.25rem 0;color:#40554e;font-size:.94rem}
+#consult-form textarea,#expert-form select{width:100%;font:inherit;padding:.6rem;border:1px solid #718f9f;border-radius:.55rem}
 </style>
 <link rel="stylesheet" href="tema-interno.css?v=3">
 </head>
@@ -104,14 +107,16 @@ footer{padding-bottom:5.5rem}
 </ul>
 <p>As ações podem subir ou cair. Mesmo com orientação profissional, você pode perder dinheiro.</p>
 <details id="expert-details"><summary>Falar com um especialista</summary>
-<p id="contact-note">Consultoria paga. Formulário demonstrativo. O pedido de retorno será simulado e os dados não serão enviados.</p>
-<form id="expert-form" aria-describedby="contact-note">
-<label>Nome completo<input autocomplete="name" maxlength="120" required></label>
-<label>Telefone<input type="tel" autocomplete="tel" maxlength="30" required></label>
-<label>E-mail<input type="email" autocomplete="email" maxlength="254" required></label>
-<label>Assunto<select id="consult-asset"><option value="">Dúvidas gerais sobre a bolsa</option></select></label>
-<label>Como podemos ajudar? (opcional)<textarea maxlength="2000"></textarea></label>
-<button type="submit">Simular pedido de retorno</button>
+<p>O consultor pode ajudar você a entender um ativo e os riscos envolvidos antes de tomar uma decisão.</p>
+<form id="expert-form">
+<label>Ativo de interesse<select id="consult-asset"><option value="">Dúvidas gerais sobre a bolsa</option></select></label>
+<label>O que você quer entender?<select name="topic" required><option value="">Escolha um assunto</option><option data-help="Entender como funciona uma ordem de compra e quais custos observar.">Primeiros passos</option><option data-help="Conversar sobre oscilações de preço, prazo e possibilidade de perda.">Riscos do investimento</option><option data-help="Interpretar o histórico de preços e comparar períodos.">Leitura do gráfico</option><option data-help="Descreva o que gostaria de conversar com o consultor.">Outra dúvida</option></select></label>
+<p class="topic-help" aria-live="polite"></p>
+<label>Sua dúvida (opcional)<textarea maxlength="1500" rows="2" placeholder="Ex.: O que significa a variação do preço no gráfico?"></textarea></label>
+<label>Seu nome<input name="name" autocomplete="name" maxlength="120" required></label>
+<label>E-mail para retorno<input name="email" type="email" autocomplete="email" maxlength="254" required></label>
+<p class="consult-terms">A consultoria é paga. A proposta indicaria por e-mail o valor e o que seria analisado. Você decidiria se quer contratar. Neste protótipo, o pedido é simulado, sem envio ou cobrança.</p>
+<button type="submit" class="send">Simular pedido de proposta</button>
 </form>
 <p id="contact-status" role="status"></p>
 <p><a href="https://www.gov.br/cvm/pt-br/assuntos/regulados/consultas-por-participante/consultores-de-valores-mobiliarios">Consultar profissionais autorizados na CVM</a></p>
@@ -170,6 +175,12 @@ asset.addEventListener('change', showMarketChart);
 showMarketChart();
 
 const form = document.querySelector('#expert-form');
+const topic = form.elements.topic;
+const hint = form.querySelector('.topic-help');
+topic.addEventListener('change', () => {
+  hint.textContent = topic.selectedOptions[0].dataset.help || '';
+});
+form.addEventListener('reset', () => { hint.textContent = ''; });
 const expertDetails = document.querySelector('#expert-details');
 const consultAsset = document.querySelector('#consult-asset');
 for (const option of asset.options) consultAsset.add(option.cloneNode(true));
