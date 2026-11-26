@@ -93,6 +93,9 @@ footer{padding-bottom:5.5rem}
 #publish-form .consult-choice{display:flex;align-items:center;gap:.6rem}
 #publish-form .consult-choice input{width:1.1rem;height:1.1rem;flex:none}
 .fee-note{font-size:.9rem;color:var(--muted)}
+.topic-help:empty{display:none}
+.topic-help,.consult-terms{margin:.25rem 0;color:#40554e;font-size:.94rem}
+#consult-form textarea,#expert-form select{width:100%;font:inherit;padding:.6rem;border:1px solid #718f9f;border-radius:.55rem}
 </style>
 <link rel="stylesheet" href="tema-interno.css?v=3">
 </head>
@@ -249,13 +252,16 @@ footer{padding-bottom:5.5rem}
 <button class="send" id="consult-open" type="button" aria-haspopup="dialog">Falar com um consultor</button>
 <dialog id="consult-dialog" aria-labelledby="consult-heading">
 <div class="dialog-head"><h2 id="consult-heading">Consultoria para projetos</h2><button class="close" type="button">Fechar</button></div>
-<p class="fee-note">A consultoria é paga. Você decide se quer contratar após conhecer o valor.</p>
-<p>Formulário demonstrativo. O envio de e-mails ainda está desativado.</p>
+<p>O consultor pode ajudar você a avaliar uma ideia antes de abrir um negócio ou entrar como sócio.</p>
 <form id="consult-form">
 <label>Projeto<select name="project" required></select></label>
-<label>Seu nome<input name="name" required autocomplete="name" maxlength="120"></label>
-<label>E-mail para retorno<input name="email" required type="email" autocomplete="email" maxlength="254"></label>
-<button type="submit" class="send">Simular solicitação</button>
+<label>O que você quer entender?<select name="topic" required><option value="">Escolha um assunto</option><option data-help="Entender quem compraria o produto e quais concorrentes já atendem esse público.">Demanda na região</option><option data-help="Comparar a receita prevista com aluguel, equipamentos e outros gastos.">Custos e faturamento</option><option data-help="Avaliar a participação proposta e o que cada sócio faria no negócio.">Entrada de um sócio</option><option data-help="Descreva o que gostaria de conversar com o consultor.">Outra dúvida</option></select></label>
+<p class="topic-help" aria-live="polite"></p>
+<label>Sua dúvida (opcional)<textarea maxlength="1500" rows="2" placeholder="Ex.: O faturamento previsto cobriria os custos da padaria?"></textarea></label>
+<label>Seu nome<input name="name" autocomplete="name" maxlength="120" required></label>
+<label>E-mail para retorno<input name="email" type="email" autocomplete="email" maxlength="254" required></label>
+<p class="consult-terms">A consultoria é paga. A proposta indicaria por e-mail o valor e o que seria analisado. Você decidiria se quer contratar. Neste protótipo, o pedido é simulado, sem envio ou cobrança.</p>
+<button type="submit" class="send">Simular pedido de proposta</button>
 </form>
 <p id="consult-result" role="status"></p>
 </dialog>
@@ -383,6 +389,12 @@ publishForm.addEventListener('submit', event => {
 const consultDialog = document.querySelector('#consult-dialog');
 const consultForm = document.querySelector('#consult-form');
 const consultResult = document.querySelector('#consult-result');
+const topic = consultForm.elements.topic;
+const hint = consultForm.querySelector('.topic-help');
+topic.addEventListener('change', () => {
+  hint.textContent = topic.selectedOptions[0].dataset.help || '';
+});
+consultForm.addEventListener('reset', () => { hint.textContent = ''; });
 function openConsult(title) {
   consultForm.reset();
   consultResult.textContent = '';
