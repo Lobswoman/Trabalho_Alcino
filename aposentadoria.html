@@ -125,9 +125,10 @@ cnisFile.addEventListener('change',async()=>{
   const lines=[];
   for(let i=1;i<=pdf.numPages;i++){
    const page=await pdf.getPage(i),items=(await page.getTextContent()).items;
+   const viewport=page.getViewport({scale:1});
    const groups=new Map();
-   for(const item of items){if(!item.str?.trim())continue;const y=Math.round(item.transform[5]/3)*3;const a=groups.get(y)||[];a.push({x:item.transform[4],text:item.str});groups.set(y,a);}
-   for(const y of [...groups.keys()].sort((a,b)=>b-a))lines.push(groups.get(y).sort((a,b)=>a.x-b.x).map(t=>t.text).join(' '));
+   for(const item of items){if(!item.str?.trim())continue;const [x,top]=viewport.convertToViewportPoint(item.transform[4],item.transform[5]);const y=Math.round(top/3)*3;const a=groups.get(y)||[];a.push({x,text:item.str});groups.set(y,a);}
+   for(const y of [...groups.keys()].sort((a,b)=>a-b))lines.push(groups.get(y).sort((a,b)=>a.x-b.x).map(t=>t.text).join(' '));
   }
   if(versao!==leitura)return;
   if (!lines.length) throw Error('O PDF está sem texto selecionável. Para importar, use o PDF original baixado do Meu INSS.');
@@ -140,9 +141,11 @@ cnisFile.addEventListener('change',async()=>{
   const today=new Date();const age=dob?today.getFullYear()-dob.getFullYear()-(today.getMonth()<dob.getMonth()||(today.getMonth()===dob.getMonth()&&today.getDate()<dob.getDate())?1:0):null;
   // Identifica somente intervalos de vínculo claramente rotulados. Não soma períodos simultâneos.
   const intervals=[];
+  const hasLinkTable=/Data\s+In[ií]cio\s+Data\s+Fim/i.test(raw);
   for(const line of lines){
    const dates=[...line.matchAll(/\b(\d{2}\/\d{2}\/\d{4})\b/g)].map(m=>m[1]);
-   if(!/in[ií]cio|fim|v[ií]nculo|admiss[aã]o|desligamento/i.test(line)||dates.length<2)continue;
+   const linkRow=hasLinkTable && /^\s*\d+\s+\d{3}\.\d{5}\.\d{2}-\d/.test(line);
+   if(dates.length!==2 || (!linkRow && !/in[ií]cio|fim|v[ií]nculo|admiss[aã]o|desligamento/i.test(line)))continue;
    const a=toDate(dates[0]),b=toDate(dates[1]);if(a&&b&&a<=b&&b<=today)intervals.push([a,b]);
   }
   intervals.sort((a,b)=>a[0]-b[0]);const merged=[];
@@ -199,10 +202,12 @@ cnisFile.addEventListener('change',async()=>{
    msgs.push('Base de '+String(latest%12+1).padStart(2,'0')+'/'+Math.floor(latest/12)+': '+salary.toLocaleString('pt-BR',{style:'currency',currency:'BRL'})+'.');
    if(!recent)msgs.push('A base é antiga e está em valor nominal. Ajuste o salário de referência se sua renda atual mudou.');
   }
+  if(salary===null && /Últ\.?\s*Remun/i.test(raw))msgs.push('Últ. Remun. indica apenas o mês. Para importar o salário, use a versão Relações Previdenciárias e Remunerações.');
   updateRuleField();
   cnisDetails.textContent=msgs.join('\n');
   cnisReview.hidden=!names.length;
   cnisStatus.textContent=names.length?'Preenchido pelo CNIS: '+names.join(', ')+'.'+(salary!==null&&!recent?' A remuneração é antiga. Confira o valor antes de calcular.':''):'Nenhum campo identificado com segurança. Preencha os dados abaixo.';
+  if(salary===null && /Últ\.?\s*Remun/i.test(raw))cnisStatus.textContent+=' Para preencher o salário, use o extrato com valores de remuneração ou digite a base manualmente.';
  }catch(e){if(versao!==leitura)return;cnisStatus.textContent='Não foi possível ler o documento: '+e.message+' Use um PDF com texto selecionável ou preencha manualmente.';}
 });
 const retirementForm=document.getElementById('retirement-form');
