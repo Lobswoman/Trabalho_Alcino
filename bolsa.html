@@ -56,6 +56,8 @@ footer{padding:1rem 0;border-top:1px solid var(--line)}
 @media(max-width:38rem){.guides{grid-template-columns:1fr}.market{padding-inline:.65rem}#market-chart{--chart-height:43rem}}
 .risk-note{margin:1rem 0 1.25rem;padding:.7rem .9rem;border-inline-start:3px solid var(--line);border-radius:0 .45rem .45rem 0;background:#eef4f4;color:var(--muted);font-size:.94rem}
 .risk-note strong{color:var(--ink);margin-inline-end:.3rem}
+#consult-shortcut{position:fixed;right:1rem;bottom:max(1rem,env(safe-area-inset-bottom));z-index:2;border:0;border-radius:2rem;padding:.75rem 1rem;background:#124659;color:white;font:inherit;font-weight:700;cursor:pointer;box-shadow:0 3px 14px #14362f40}
+footer{padding-bottom:5.5rem}
 </style>
 <link rel="stylesheet" href="tema-interno.css?v=3">
 </head>
@@ -101,12 +103,13 @@ footer{padding:1rem 0;border-top:1px solid var(--line)}
 <li>Tire dúvidas sobre o que observar antes de confirmar uma compra.</li>
 </ul>
 <p>As ações podem subir ou cair. Mesmo com orientação profissional, você pode perder dinheiro.</p>
-<details><summary>Falar com um especialista</summary>
-<p id="contact-note">Formulário demonstrativo. O pedido de retorno será simulado e os dados não serão enviados.</p>
+<details id="expert-details"><summary>Falar com um especialista</summary>
+<p id="contact-note">Consultoria paga. Formulário demonstrativo. O pedido de retorno será simulado e os dados não serão enviados.</p>
 <form id="expert-form" aria-describedby="contact-note">
 <label>Nome completo<input autocomplete="name" maxlength="120" required></label>
 <label>Telefone<input type="tel" autocomplete="tel" maxlength="30" required></label>
 <label>E-mail<input type="email" autocomplete="email" maxlength="254" required></label>
+<label>Assunto<select id="consult-asset"><option value="">Dúvidas gerais sobre a bolsa</option></select></label>
 <label>Como podemos ajudar? (opcional)<textarea maxlength="2000"></textarea></label>
 <button type="submit">Simular pedido de retorno</button>
 </form>
@@ -115,6 +118,7 @@ footer{padding:1rem 0;border-top:1px solid var(--line)}
 </details></section>
 </div>
 </main>
+<button type="button" id="consult-shortcut" aria-controls="expert-details">Falar com um consultor</button>
 <footer><div class="wrap">Renda em Frente · Educação financeira</div></footer>
 <script>
 const asset = document.querySelector('#market-asset');
@@ -166,6 +170,15 @@ asset.addEventListener('change', showMarketChart);
 showMarketChart();
 
 const form = document.querySelector('#expert-form');
+const expertDetails = document.querySelector('#expert-details');
+const consultAsset = document.querySelector('#consult-asset');
+for (const option of asset.options) consultAsset.add(option.cloneNode(true));
+document.querySelector('#consult-shortcut').addEventListener('click', () => {
+  expertDetails.open = true;
+  consultAsset.value = asset.value;
+  expertDetails.querySelector('summary').focus({preventScroll: true});
+  expertDetails.scrollIntoView({block: 'start'});
+});
 form.addEventListener('submit', event => {
   event.preventDefault();
   form.reset();
