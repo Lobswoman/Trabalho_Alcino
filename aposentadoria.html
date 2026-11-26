@@ -66,19 +66,19 @@ footer{background:#e9efe7;padding-block:1.25rem;font-weight:650}
 @media(min-width:52.01rem){.cards{grid-template-columns:repeat(4,minmax(0,1fr))}.card h2{font-size:clamp(1.25rem,2vw,1.75rem)}}
 .cnis-import{background:#f0f6f0;border:1px solid #c9ddd0;border-radius:1.1rem;padding:1.3rem;margin:0 0 1.5rem}.cnis-import h3{margin:0 0 .5rem;font-size:1.25rem}.cnis-import p{margin:.5rem 0;color:var(--muted)}.cnis-import input{margin:.5rem 0}.cnis-import label{font-weight:750;display:block;margin-top:1rem}.cnis-import button{margin-top:.7rem}#cnis-details{white-space:pre-line;font-weight:650;margin-top:.8rem}
 .cnis-link{display:inline-block;background:#0e4a3d;color:#fff;padding:.7rem 1rem;border-radius:.7rem;font-weight:750;text-decoration:none}.cnis-link:hover{background:#176957}
-[hidden]{display:none!important}</style></head><body><header><div class="bar wrap"><a href="index.html" style="font-weight:800;text-decoration:none">← Renda em Frente</a></div></header><main><section class="retirement wrap" id="simulador-aposentadoria" aria-labelledby="retirement-title">
+#cnis-review{margin:0 0 1rem;padding:1rem;background:#f0f6f0;border-radius:1rem}#cnis-review summary{cursor:pointer;font-weight:700}#cnis-details{white-space:pre-line}[hidden]{display:none!important}</style></head><body><header><div class="bar wrap"><a href="index.html" style="font-weight:800;text-decoration:none">← Renda em Frente</a></div></header><main><section class="retirement wrap" id="simulador-aposentadoria" aria-labelledby="retirement-title">
 <p class="eyebrow">Planejamento para o futuro</p>
 <h2 id="retirement-title">Simulador de aposentadoria</h2>
 <p class="lead">Veja uma projeção da sua aposentadoria urbana pelo INSS com base no tempo que já contribuiu e na sua renda de referência. Para servidores de regime próprio, use o valor informado pelo órgão responsável.</p>
-<div class="cnis-import"><h3>Importe seu CNIS</h3><p>O CNIS reúne seus vínculos de trabalho e contribuições ao INSS. Acesse o serviço oficial, entre com sua conta gov.br, escolha <strong>Relações Previdenciárias e Remunerações</strong> e baixe o PDF. Depois, selecione o arquivo abaixo para preencher os dados identificados automaticamente.</p><p><a class="cnis-link" href="https://www.gov.br/pt-br/servicos/emitir-extrato-de-contribuicao-cnis" target="_blank" rel="noopener noreferrer">Obter meu CNIS no gov.br ↗</a></p><label for="cnis-file">Selecionar extrato CNIS em PDF</label><input id="cnis-file" type="file" accept=".pdf,application/pdf" aria-describedby="cnis-status"><p id="cnis-status" role="status" aria-live="polite">Nenhum documento selecionado.</p><div id="cnis-review" hidden><p><strong>Confira os dados extraídos antes de calcular.</strong> O CNIS pode conter vínculos simultâneos, lacunas, indicadores e contribuições pendentes de validação.</p><div id="cnis-details"></div><button type="button" id="cnis-apply">Usar dados identificados</button></div></div>
+<div class="cnis-import"><h3>Importe seu CNIS</h3><p>O CNIS reúne seus vínculos de trabalho e contribuições ao INSS. Acesse o serviço oficial, entre com sua conta gov.br, escolha <strong>Relações Previdenciárias e Remunerações</strong> e baixe o PDF. Depois, selecione o arquivo abaixo para preencher os dados identificados automaticamente.</p><p><a class="cnis-link" href="https://www.gov.br/pt-br/servicos/emitir-extrato-de-contribuicao-cnis" target="_blank" rel="noopener noreferrer">Obter meu CNIS no gov.br ↗</a></p><label for="cnis-file">Selecionar extrato CNIS em PDF</label><input id="cnis-file" type="file" accept=".pdf,application/pdf" aria-describedby="cnis-status"><p id="cnis-status" role="status" aria-live="polite">Nenhum documento selecionado.</p></div>
 <form id="retirement-form">
+<details id="cnis-review" hidden><summary>Revisar ou corrigir dados do CNIS</summary><p id="cnis-details"></p><div class="retirement-grid" id="imported-fields"></div></details>
 <div class="retirement-grid">
 <label>Vínculo previdenciário<select name="regime" required><option value="inss">INSS / iniciativa privada</option><option value="federal">Servidor público federal</option><option value="mg">Servidor público estadual de Minas Gerais</option></select></label>
 <label id="regra-inss">Regra de cálculo do INSS<select name="sexo"><option value="">Selecione</option><option value="mulher">Mulher</option><option value="homem">Homem</option></select></label>
 <label id="filiacao-inss">Primeira contribuição ao INSS<select name="filiacao"><option value="">Não sei</option><option value="antes">Antes de 13/11/2019</option><option value="depois">A partir de 13/11/2019</option></select></label>
 <label>Idade atual<input name="idade" type="number" min="18" max="100" placeholder="Sua idade" required></label>
 <label>Idade desejada para se aposentar<input name="idadeAlvo" type="number" min="19" max="100" value="65" required></label>
-<label>Ano de ingresso no vínculo atual<input name="ingresso" type="number" min="1950" max="2026" placeholder="Opcional"></label>
 <label>Tempo total de contribuição (anos)<input name="tempo" type="number" min="0" max="70" step=".1" placeholder="Confira no extrato" required></label>
 <label>Salário de contribuição de referência (R$)<input name="salario" type="number" min="0" step=".01" placeholder="Ex.: 3500"></label>
 <label>Renda mensal desejada na aposentadoria (R$)<input name="renda" type="number" min="1" step=".01" value="4000" required></label>
@@ -88,18 +88,33 @@ footer{background:#e9efe7;padding-block:1.25rem;font-weight:650}
 <button type="submit">Calcular planejamento</button>
 </form>
 <div class="retirement-output" id="retirement-result" role="status" aria-live="polite" hidden></div>
-<p class="retirement-note">Ferramenta educativa. O ingresso e o regime ajudam a contextualizar as regras, mas não permitem determinar, sozinhos, o direito ou o valor de aposentadoria. A simulação usa hipóteses financeiras, não substitui o Meu INSS nem o órgão gestor do regime próprio. Não armazenamos os dados preenchidos.</p>
+<p class="retirement-note">Ferramenta educativa. A simulação usa hipóteses financeiras, não substitui o Meu INSS nem o órgão gestor do regime próprio. Não armazenamos os dados preenchidos.</p>
 </section>
 </main><footer><div class="wrap">Renda em Frente</div></footer><script>
 // O documento é interpretado localmente. Dados ambíguos nunca são preenchidos automaticamente.
 const cnisFile=document.getElementById('cnis-file'),cnisStatus=document.getElementById('cnis-status'),cnisReview=document.getElementById('cnis-review'),cnisDetails=document.getElementById('cnis-details');
-let cnisCandidate=null;
+const importedFields=document.getElementById('imported-fields');
+const resultPanel=document.getElementById('retirement-result');
+function applyReadField(field,value){
+ const label=field.closest('label');
+ const marker=document.createComment(field.name);
+ label.before(marker);
+ camposImportados.set(field,marker);
+ field.value=String(value);
+ importedFields.append(label);
+}
 let leitura=0;
 const camposImportados=new Map();
 cnisFile.addEventListener('change',async()=>{
- for(const [field,value] of camposImportados){if(field.value===value)field.value='';}
+ for(const [field,marker] of camposImportados){
+  marker.replaceWith(field.closest('label'));
+  field.value='';
+ }
+ resultPanel.hidden=true;
+ cnisReview.open=false;
+ updateRuleField();
  camposImportados.clear();
- const versao=++leitura;cnisCandidate=null;cnisReview.hidden=true;const file=cnisFile.files[0];if(!file){cnisStatus.textContent='Nenhum documento selecionado.';return;}
+ const versao=++leitura;cnisReview.hidden=true;const file=cnisFile.files[0];if(!file){cnisStatus.textContent='Nenhum documento selecionado.';return;}
  if(file.size>12*1024*1024||!(/\.pdf$/i.test(file.name))){cnisStatus.textContent='Escolha um PDF de até 12 MB.';return;}
  cnisStatus.textContent='Lendo PDF localmente...';
  try{
@@ -137,50 +152,58 @@ cnisFile.addEventListener('change',async()=>{
   // Reconhece colunas de competência e remuneração. Ignora tabelas com outras bases.
   const months=new Map();
   let remunerationTable=false;
-  let ambiguous=false;
+  const ambiguous=new Set();
+  let paymentTable=false;
   for(const line of lines){
    if(/competência/i.test(line)){
+    paymentTable=/competência\s+data\s+(?:de\s+)?(?:pagamento|pgto\.?)\s+(?:valor\s+da\s+)?contribuição\s+sal[aá]rio\s+(?:de\s+)?contribuição/i.test(line);
     remunerationTable=/remuneraç[ãa]o/i.test(line) && !/sal[aá]rio de contribui|valor da contribui/i.test(line);
     continue;
    }
-   if(/relações previdenciárias|origem do vínculo|benefício|recolhimentos|indicadores:|legenda de/i.test(line)) remunerationTable=false;
-   if(!remunerationTable) continue;
-   for(const m of line.matchAll(/(?:^|\s)(0[1-9]|1[0-2])\/(\d{4})\s+(?:R\$\s*)?((?:\d{1,3}(?:\.\d{3})+|\d+),\d{2})(?=\s|$)/g)){
+   if(/relações previdenciárias|origem do vínculo|benefício|recolhimentos|indicadores:|legenda de/i.test(line)) remunerationTable=paymentTable=false;
+   if(!remunerationTable&&!paymentTable) continue;
+   const pattern=paymentTable?/(?:^|\s)(0[1-9]|1[0-2])\/(\d{4})\s+\d{2}\/\d{2}\/\d{4}\s+(?:R\$\s*)?[\d.]+,\d{2}\s+(?:R\$\s*)?([\d.]+,\d{2})(?=\s|$)/g:/(?:^|\s)(0[1-9]|1[0-2])\/(\d{4})\s+(?:R\$\s*)?((?:\d{1,3}(?:\.\d{3})+|\d+),\d{2})(?=\s|$)/g;
+   for(const m of line.matchAll(pattern)){
     const year=Number(m[2]),month=Number(m[1]);
     if(year<1900 || new Date(year,month-1,1)>today) continue;
     const key=year*12+month-1;
     const amount=Number(m[3].replaceAll('.','').replace(',','.'));
     if(!amount)continue;
-    if(months.has(key)) ambiguous=true;
+    if(months.has(key)) ambiguous.add(key);
     months.set(key,amount);
    }
   }
   const latest=months.size?Math.max(...months.keys()):null;
   const recent=latest!==null && today.getFullYear()*12+today.getMonth()-latest<=12;
-  const salary=recent&&!ambiguous?months.get(latest):null;
+  const salary=latest!==null&&latest>=1994*12+6&&!ambiguous.has(latest)?months.get(latest):null;
   const duration=months.size?months.size/12:(merged.length?years:null);
-  cnisCandidate={age,years:duration,salary};
-  const msgs=[];
-  if(age!==null&&age>=18&&age<=100)msgs.push('Idade identificada: '+age+' anos.');
-  if(months.size)msgs.push('Meses distintos com remuneração identificada: '+months.size+'. Isso pode ser só parte do CNIS. Confira lacunas, vínculos e indicadores.');
-  else if(merged.length)msgs.push('Duração aproximada dos períodos legíveis: '+Math.round(days)+' dias. Confira se correspondem a todo o seu histórico.');
-  if(salary!==null)msgs.push('Última remuneração legível ('+String(latest%12+1).padStart(2,'0')+'/'+Math.floor(latest/12)+'): '+salary.toLocaleString('pt-BR',{style:'currency',currency:'BRL'})+'. Confira se representa sua renda de contribuição.');
-  else msgs.push('Preencha o salário de contribuição de referência. Não foi identificada uma remuneração recente e inequívoca.');
-  if(duration===null)msgs.push('O tempo total precisa ser preenchido manualmente.');
-  msgs.push('Somente os dados identificados serão aplicados. Revise antes de calcular.');
-  cnisDetails.textContent=msgs.join('\n');cnisReview.hidden=false;cnisStatus.textContent='Leitura concluída. Revise as informações antes de aplicá-las.';
+  const form=document.getElementById('retirement-form');
+  const msgs=[],names=[];
+  const apply=(name,value,title)=>{
+   applyReadField(form.elements[name],value);
+   names.push(title);
+  };
+  if(age!==null&&age>=18&&age<=100)apply('idade',age,'idade');
+  const sexValues=new Set([...raw.matchAll(/\bsexo\s*:?\s*(masculino|feminino|M|F)\b/gi)].map(m=>/^m/i.test(m[1])?'homem':'mulher'));
+  if(sexValues.size===1)apply('sexo',[...sexValues][0],'regra de cálculo');
+  const filiation=raw.match(/\bdata\s+(?:da\s+primeira\s+|de\s+|da\s+)filia[çc][ãa]o\s+ao\s+(?:RGPS|INSS)\s*:?\s*(\d{2}\/\d{2}\/\d{4})/i);
+  const firstDate=filiation?toDate(filiation[1]):null;
+  if(firstDate && firstDate<=today)apply('filiacao',firstDate<new Date(2019,10,13)?'antes':'depois','primeira filiação');
+  if(duration!==null&&duration<=70){
+   apply('tempo',duration.toFixed(1),'tempo identificado');
+   msgs.push(months.size?'Meses distintos com remuneração ou salário de contribuição: '+months.size+'.':'Duração dos períodos legíveis: '+days+' dias.');
+   msgs.push('Confira se os períodos lidos cobrem todo o histórico.');
+  }
+  if(salary!==null){
+   apply('salario',salary.toFixed(2),'salário de referência');
+   msgs.push('Base de '+String(latest%12+1).padStart(2,'0')+'/'+Math.floor(latest/12)+': '+salary.toLocaleString('pt-BR',{style:'currency',currency:'BRL'})+'.');
+   if(!recent)msgs.push('A base é antiga e está em valor nominal. Ajuste o salário de referência se sua renda atual mudou.');
+  }
+  updateRuleField();
+  cnisDetails.textContent=msgs.join('\n');
+  cnisReview.hidden=!names.length;
+  cnisStatus.textContent=names.length?'Preenchido pelo CNIS: '+names.join(', ')+'.'+(salary!==null&&!recent?' A remuneração é antiga. Confira o valor antes de calcular.':''):'Nenhum campo identificado com segurança. Preencha os dados abaixo.';
  }catch(e){if(versao!==leitura)return;cnisStatus.textContent='Não foi possível ler o documento: '+e.message+' Use um PDF com texto selecionável ou preencha manualmente.';}
-});
-document.getElementById('cnis-apply').addEventListener('click',()=>{
- if(!cnisCandidate)return;
- const form=document.getElementById('retirement-form');
- const aplicar=(field,value)=>{field.value=value;camposImportados.set(field,String(value));};
- if(cnisCandidate.age!==null&&cnisCandidate.age>=18&&cnisCandidate.age<=100)aplicar(form.elements.idade,cnisCandidate.age);
- if(cnisCandidate.salary!=null)aplicar(form.elements.salario,cnisCandidate.salary.toFixed(2));
- if(cnisCandidate.years!==null)aplicar(form.elements.tempo,cnisCandidate.years.toFixed(1));
- // Ano de ingresso no vínculo atual não equivale ao primeiro vínculo do CNIS.
- cnisStatus.textContent='Dados identificados aplicados. Confira os campos e complete os que faltam.';
- form.scrollIntoView({behavior:'smooth',block:'start'});
 });
 const retirementForm=document.getElementById('retirement-form');
 const ruleField=document.getElementById('regra-inss');
