@@ -77,7 +77,7 @@ footer{background:#e9efe7;padding-block:1.25rem;font-weight:650}
 <label>Idade atual<input name="idade" type="number" min="18" max="100" value="40" required></label>
 <label>Idade desejada para se aposentar<input name="idadeAlvo" type="number" min="19" max="100" value="65" required></label>
 <label>Ano de ingresso no vínculo atual<input name="ingresso" type="number" min="1950" max="2026" value="2016" required></label>
-<label>Tempo total de contribuição (anos)<input name="tempo" type="number" min="0" max="70" step=".5" value="15" required></label>
+<label>Tempo total de contribuição (anos)<input name="tempo" type="number" min="0" max="70" step=".1" value="15" required></label>
 <label>Remuneração mensal bruta (R$)<input name="salario" type="number" min="0" step=".01" value="5000" required></label>
 <label>Renda mensal desejada na aposentadoria (R$)<input name="renda" type="number" min="1" step=".01" value="4000" required></label>
 <label>Benefício previdenciário estimado por fonte oficial (R$)<input name="beneficio" type="number" min="0" step=".01" placeholder="Opcional"></label>
@@ -94,7 +94,7 @@ const cnisFile=document.getElementById('cnis-file'),cnisStatus=document.getEleme
 let cnisCandidate=null;
 cnisFile.addEventListener('change',async()=>{
  cnisCandidate=null;cnisReview.hidden=true;const file=cnisFile.files[0];if(!file)return;
- if(file.size>12*1024*1024||!(/\\.pdf$/i.test(file.name))){cnisStatus.textContent='Escolha um PDF de até 12 MB.';return;}
+ if(file.size>12*1024*1024||!(/\.pdf$/i.test(file.name))){cnisStatus.textContent='Escolha um PDF de até 12 MB.';return;}
  cnisStatus.textContent='Lendo PDF localmente...';
  try{
   const pdfjs=await import('https://cdnjs.cloudflare.com/ajax/libs/pdf.js/4.10.38/pdf.min.mjs');
@@ -108,17 +108,17 @@ cnisFile.addEventListener('change',async()=>{
    for(const item of items){if(!item.str?.trim())continue;const y=Math.round(item.transform[5]/3)*3;const a=groups.get(y)||[];a.push({x:item.transform[4],text:item.str});groups.set(y,a);}
    for(const y of [...groups.keys()].sort((a,b)=>b-a))lines.push(groups.get(y).sort((a,b)=>a.x-b.x).map(t=>t.text).join(' '));
   }
-  const raw=lines.join('\\n');
+  const raw=lines.join('\n');
   if(!/CNIS|Cadastro Nacional de Informações Sociais|Extrato Previdenciário/i.test(raw))throw Error('Não foi possível confirmar que o arquivo é um extrato CNIS.');
   // A data de nascimento é usada apenas quando explicitamente rotulada no documento.
-  const birth=raw.match(/Data\\s+de\\s+Nascimento\\s*:?\\s*(\\d{2}\\/\\d{2}\\/\\d{4})/i);
+  const birth=raw.match(/Data\s+de\s+Nascimento\s*:?\s*(\d{2}\/\d{2}\/\d{4})/i);
   const toDate=t=>{const [d,m,y]=t.split('/').map(Number);const v=new Date(y,m-1,d);return v.getFullYear()===y&&v.getMonth()===m-1&&v.getDate()===d?v:null};
   const dob=birth?toDate(birth[1]):null;
   const today=new Date();const age=dob?today.getFullYear()-dob.getFullYear()-(today.getMonth()<dob.getMonth()||(today.getMonth()===dob.getMonth()&&today.getDate()<dob.getDate())?1:0):null;
   // Identifica somente intervalos de vínculo claramente rotulados. Não soma períodos simultâneos.
   const intervals=[];
   for(const line of lines){
-   const dates=[...line.matchAll(/\\b(\\d{2}\\/\\d{2}\\/\\d{4})\\b/g)].map(m=>m[1]);
+   const dates=[...line.matchAll(/\b(\d{2}\/\d{2}\/\d{4})\b/g)].map(m=>m[1]);
    if(!/in[ií]cio|fim|v[ií]nculo|admiss[aã]o|desligamento/i.test(line)||dates.length<2)continue;
    const a=toDate(dates[0]),b=toDate(dates[1]);if(a&&b&&a<=b&&b<=today)intervals.push([a,b]);
   }
@@ -131,7 +131,7 @@ cnisFile.addEventListener('change',async()=>{
   if(merged.length)msgs.push('Períodos identificados: '+merged.length+'; duração aproximada sem sobreposição: '+years.toFixed(1)+' anos (sujeita a conferência).');
   if(!msgs.length)msgs.push('Não foi possível extrair idade ou períodos com confiança. Você pode continuar manualmente.');
   msgs.push('Não é possível obter o valor oficial da aposentadoria somente a partir deste arquivo.');
-  cnisDetails.textContent=msgs.join('\\n');cnisReview.hidden=false;cnisStatus.textContent='Leitura concluída. Revise as informações antes de aplicá-las.';
+  cnisDetails.textContent=msgs.join('\n');cnisReview.hidden=false;cnisStatus.textContent='Leitura concluída. Revise as informações antes de aplicá-las.';
  }catch(e){cnisStatus.textContent='Não foi possível ler o documento: '+e.message+' Use um PDF com texto selecionável ou preencha manualmente.';}
 });
 document.getElementById('cnis-apply').addEventListener('click',()=>{
