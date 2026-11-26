@@ -85,6 +85,14 @@ details[open] .revenue dl{display:grid;grid-template-columns:repeat(auto-fit,min
 #publish-form label{display:grid;gap:.25rem;font-weight:650}
 #publish-form input,#publish-form select,#publish-form textarea{width:100%;padding:.55rem .65rem;border:1px solid #718f9f;border-radius:.55rem;font:inherit;background:#fff;color:var(--ink)}
 #publish-status:not(:empty){margin-bottom:1rem}
+#consult-open{position:fixed;right:1rem;bottom:max(1rem,env(safe-area-inset-bottom));z-index:2;border-radius:2rem;box-shadow:0 3px 14px #14362f40}
+footer{padding-bottom:5.5rem}
+#consult-form,#consult-form label{display:grid;gap:.4rem}
+#consult-form{gap:.9rem}
+#consult-form input,#consult-form select{min-width:0;width:100%;padding:.6rem;border:1px solid #718f9f;border-radius:.55rem;font:inherit}
+#publish-form .consult-choice{display:flex;align-items:center;gap:.6rem}
+#publish-form .consult-choice input{width:1.1rem;height:1.1rem;flex:none}
+.fee-note{font-size:.9rem;color:var(--muted)}
 </style>
 <link rel="stylesheet" href="tema-interno.css?v=3">
 </head>
@@ -238,6 +246,19 @@ details[open] .revenue dl{display:grid;grid-template-columns:repeat(auto-fit,min
 </section>
 </main>
 <footer><div class="wrap">Renda em Frente · Educação financeira</div></footer>
+<button class="send" id="consult-open" type="button" aria-haspopup="dialog">Falar com um consultor</button>
+<dialog id="consult-dialog" aria-labelledby="consult-heading">
+<div class="dialog-head"><h2 id="consult-heading">Consultoria para projetos</h2><button class="close" type="button">Fechar</button></div>
+<p class="fee-note">A consultoria é paga. Você decide se quer contratar após conhecer o valor.</p>
+<p>Formulário demonstrativo. O envio de e-mails ainda está desativado.</p>
+<form id="consult-form">
+<label>Projeto<select name="project" required></select></label>
+<label>Seu nome<input name="name" required autocomplete="name" maxlength="120"></label>
+<label>E-mail para retorno<input name="email" required type="email" autocomplete="email" maxlength="254"></label>
+<button type="submit" class="send">Simular solicitação</button>
+</form>
+<p id="consult-result" role="status"></p>
+</dialog>
 <dialog id="publish-dialog" aria-labelledby="publish-title">
 <div class="dialog-head"><h2 id="publish-title">Publicar meu projeto</h2><button type="button" class="close">Fechar</button></div>
 <p>Versão demonstrativa. O projeto fica disponível neste navegador.</p>
@@ -247,6 +268,8 @@ details[open] .revenue dl{display:grid;grid-template-columns:repeat(auto-fit,min
 <label>Etapa<select name="stage" required><option value="inicio">Em estruturação</option><option value="local">Local definido</option></select></label>
 <label>Porte previsto<select name="size" required><option value="pequeno">Pequeno porte</option><option value="medio">Médio porte</option><option value="grande">Grande porte</option></select></label>
 <label>Resumo e o que você procura em um sócio<textarea name="description" rows="4" required maxlength="1000"></textarea></label>
+<label class="consult-choice"><input type="checkbox" name="consult" aria-describedby="publish-fee">Quero conversar com um consultor sobre meu projeto</label>
+<small class="fee-note" id="publish-fee">Consultoria paga e opcional. Ao publicar, você poderá preencher o formulário demonstrativo.</small>
 <button type="submit" class="send">Publicar neste navegador</button>
 <p id="publish-error" role="status"></p>
 </form>
@@ -351,8 +374,35 @@ publishForm.addEventListener('submit', event => {
   }
   addLocalProject(entry);
   filters.reset();
+  const wantsConsult = fields.consult.checked;
   publishDialog.close();
   publishStatus.textContent = message;
+  if (wantsConsult) openConsult(entry.title);
+});
+
+const consultDialog = document.querySelector('#consult-dialog');
+const consultForm = document.querySelector('#consult-form');
+const consultResult = document.querySelector('#consult-result');
+function openConsult(title) {
+  consultForm.reset();
+  consultResult.textContent = '';
+  const select = consultForm.elements.project;
+  select.replaceChildren(new Option('Selecione o projeto', ''));
+  for (const card of cards) {
+    const name = card.querySelector('h3').textContent;
+    select.add(new Option(name, name));
+  }
+  select.value = title || '';
+  consultDialog.showModal();
+}
+document.querySelector('#consult-open').addEventListener('click', () => {
+  const open = cards.filter(card => !card.hidden && card.querySelector('details').open);
+  openConsult(open.length === 1 ? open[0].querySelector('h3').textContent : '');
+});
+consultDialog.querySelector('.close').addEventListener('click', () => consultDialog.close());
+consultForm.addEventListener('submit', event => {
+  event.preventDefault();
+  consultResult.textContent = 'Simulação concluída. Nenhum e-mail foi enviado.';
 });
 
 const dialog = document.querySelector('#contact-dialog');
